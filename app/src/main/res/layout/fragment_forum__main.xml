@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".forum.Forum_MainFragment">
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_side"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:headerLayout="@layout/header_navside"
+        app:menu="@menu/overflow_menu"
+        android:layout_gravity="start"/>
+
+    <LinearLayout
+        android:id="@+id/Forum_MainContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ForumMainAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_rounded_blue_grey"
+            android:paddingBottom="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/TVUpperAppBarForumMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/donegal_one"
+                android:paddingLeft="50dp"
+                android:paddingTop="10dp"
+                android:paddingRight="50dp"
+                android:paddingBottom="10dp"
+                android:text="Forum"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/baseline_add_circle_outline_white"
+                android:background="@color/transparent"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+            
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:layout_constraintTop_toBottomOf="@id/TVUpperAppBarForumMain"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/TVUpperAppBarForumMain"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
+                android:id="@+id/filterContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <Button
+                    android:id="@+id/MyTopics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/donegal_one"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:backgroundTint="@color/sky_blue"
+                    android:text="My Topics"
+                    android:textAllCaps="false"/>
+
+                <Button
+                    android:id="@+id/FeaturedTopics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:backgroundTint="@color/sky_blue"
+                    android:text="Featured Topics"
+                    android:fontFamily="@font/donegal_one"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:textAllCaps="false"/>
+
+                <Button
+                    android:id="@+id/MostRecent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                    android:text="Most Recent"
+                    android:textAllCaps="false"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:fontFamily="@font/donegal_one"
+                    android:layout_marginRight="10dp"
+                    android:backgroundTint="@color/sky_blue"/>
+
+                <Button
+                    android:id="@+id/MostLikes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                    android:text="Most Likes"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:fontFamily="@font/donegal_one"
+                    android:textAllCaps="false"
+                    android:backgroundTint="@color/sky_blue"/>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:id="@+id/ForumMainRecyclerViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/RVForumRefresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/RVForum"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <include
+        layout="@layout/toolbar"/>
+
+
+</androidx.drawerlayout.widget.DrawerLayout>

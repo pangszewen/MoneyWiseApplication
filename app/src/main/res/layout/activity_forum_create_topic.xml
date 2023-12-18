@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".forum.Forum_CreateTopic_Activity">
+
+    <LinearLayout
+        android:id="@+id/ForumCreateTopicAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/upper_app_bar_rectangle"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/backButton_createTopic"
+            android:layout_width="54dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/transparent"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/round_arrow_back_black" />
+
+            <TextView
+                android:id="@+id/TVUpperAppBarForumCreateTopic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/donegal_one"
+                android:text="Create New Topic"
+                android:textColor="@color/dark_blue"
+                android:textSize="30sp"
+                android:textStyle="bold"/>
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/createTopicRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ForumCreateTopicAppBar"
+        app:layout_constraintVertical_bias="0.0">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true">
+
+    <LinearLayout
+        android:id="@+id/ForumCreateTopicContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_rounded_blue_grey"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@id/ForumCreateTopicAppBar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:id="@+id/UploadImageContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/RLChooseImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:background="@color/grey">
+
+                <View
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/baseline_camera_alt_black"/>
+
+            </RelativeLayout>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/TVTopicSubject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/donegal_one"
+            android:text="Subject"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/ETTopicSubject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rectangle_rounded_corners_light_cream_yellow_with_border"
+            android:backgroundTint="@color/white"
+            android:ems="10"
+            android:hint="Type what you want to discuss here..."
+            android:inputType="text"
+            android:padding="20dp"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/TVTopicDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/donegal_one"
+            android:text="Description"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/ETTopicDescription"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rectangle_rounded_corners_light_cream_yellow_with_border"
+            android:backgroundTint="@color/white"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="What is this topic about?"
+            android:inputType="textMultiLine"
+            android:maxLines="100"
+            android:overScrollMode="always"
+            android:padding="20dp"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="vertical"
+            android:scrollHorizontally="false"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_createTopic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/dark_yellow"
+            android:text="CREATE"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

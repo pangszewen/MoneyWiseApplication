@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "908049854515",
+    "project_id": "money-wise-c4250",
+    "storage_bucket": "money-wise-c4250.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908049854515:android:f467d74c8f9cc3869cb346",
+        "android_client_info": {
+          "package_name": "com.company.madassignment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcFc4bz-AaQrfISRzYLbgWAn9ls8trBaE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908049854515:android:6d56618a891c10619cb346",
+        "android_client_info": {
+          "package_name": "com.example.madassignment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcFc4bz-AaQrfISRzYLbgWAn9ls8trBaE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908049854515:android:0f4e26854bc93ad79cb346",
+        "android_client_info": {
+          "package_name": "com.example.moneywise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcFc4bz-AaQrfISRzYLbgWAn9ls8trBaE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

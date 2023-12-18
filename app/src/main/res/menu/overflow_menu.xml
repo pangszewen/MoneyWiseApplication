@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+    <item
+        android:id="@+id/overflowHome"
+        android:title="Home"
+        android:icon="@drawable/outline_home_white"/>
+    <item
+        android:id="@+id/overflowExpenses"
+        android:title="Expenses"
+        android:icon="@drawable/outline_expenses_white"/>
+    <item
+        android:id="@+id/overflowCnq"
+        android:title="@string/Cnq"
+        android:icon="@drawable/outline_cnq_white"/>
+    <item
+        android:id="@+id/overflowSnn"
+        android:title="@string/Snn"
+        android:icon="@drawable/outline_snn_white"/>
+    <item
+        android:id="@+id/overflowForum"
+        android:title="Forum"
+        android:icon="@drawable/outline_forum_white"/>
+    </group>
+
+    <group android:checkableBehavior="single">
+
+    <item
+        android:id="@+id/overflowProfile"
+        android:title="Profile">
+        <menu>
+                <item
+                    android:id="@+id/overflowAboutApp"
+                    android:title="About App"
+                    android:icon="@drawable/baseline_favorite_border_white"/>
+                <item
+                    android:id="@+id/overflowLogout"
+                    android:title="Log out"
+                    android:icon="@drawable/baseline_logout_white"/>
+        </menu>
+    </item>
+    </group>
+
+</menu>
