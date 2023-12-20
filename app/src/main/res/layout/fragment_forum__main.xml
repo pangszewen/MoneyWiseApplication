@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".forum.Forum_MainFragment">
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_side"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:headerLayout="@layout/header_navside"
-        app:menu="@menu/overflow_menu"
-        android:layout_gravity="start"/>
 
     <LinearLayout
         android:id="@+id/Forum_MainContainer"
@@ -49,6 +41,19 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
+                android:id="@+id/btn_searchIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/baseline_search_white"
+                android:background="@color/transparent"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="60dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+            <ImageButton
+                android:id="@+id/btn_createTopic"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:scaleType="fitCenter"
@@ -58,15 +63,32 @@
                 android:layout_marginRight="10dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintRight_toRightOf="parent"/>
-            
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                app:layout_constraintTop_toBottomOf="@id/TVUpperAppBarForumMain"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
+
+            <RelativeLayout
+                android:id="@+id/search_box_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="fill_horizontal"
+                android:focusable="true"
+                app:layout_constraintTop_toBottomOf="@id/TVUpperAppBarForumMain">
+
+                <com.example.moneywise.forum.ClearableAutoCompleteTextView
+                    android:id="@+id/search_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:padding="5dp"
+                    android:background="@drawable/rectangle_rounded_white"
+                    android:dropDownVerticalOffset="5dp"
+                    android:dropDownWidth="wrap_content"
+                    android:inputType="textAutoComplete|textAutoCorrect"
+                    android:popupBackground="@color/white"
+                    android:textColor="@color/white" >
+                </com.example.moneywise.forum.ClearableAutoCompleteTextView>
+
+            </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -172,8 +194,5 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <include
-        layout="@layout/toolbar"/>
 
-
-</androidx.drawerlayout.widget.DrawerLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

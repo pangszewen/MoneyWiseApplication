@@ -1,5 +1,6 @@
 package com.example.moneywise.forum;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,8 +9,10 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.moneywise.R;
+import com.example.moneywise.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,16 +25,16 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Forum_MyTopic_Activity extends AppCompatActivity {
-    Forum_Adapter forumAdapter;
+    MyTopic_Adapter myTopicAdapter;
     FirebaseFirestore db;
     FirebaseAuth auth;
     FirebaseUser user;
     String userID;
     RecyclerView RVMyTopics;
-    ImageButton backButton_myTopic;
-    FloatingActionButton fab_add_topic;
+    ImageButton backButton_myTopic, btn_createTopic;
     ProgressBar progressBar;
 
     @Override
@@ -42,23 +45,29 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        userID = user.getUid();
+        //userID = user.getUid();
+        userID = "Zqa2pZRzccPx13bEjxZho9UVlT83";
         RVMyTopics = findViewById(R.id.RVMyTopics);
-        backButton_myTopic = findViewById(R.id.backButton_myTopic);
-        fab_add_topic = findViewById(R.id.fab_add_topic);
+        backButton_myTopic = findViewById(R.id.backButton_myTopics);
+        btn_createTopic = findViewById(R.id.btn_createTopic);
         progressBar = findViewById(R.id.progressBar);
 
         backButton_myTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Forum_MyTopic_Activity.this, Forum_MainActivity.class));
+                Intent intent = new Intent(Forum_MyTopic_Activity.this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
             }
         });
 
-        fab_add_topic.setOnClickListener(new View.OnClickListener() {
+        btn_createTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Forum_MyTopic_Activity.this, Forum_CreateTopic_Activity.class));
+                Intent intent = new Intent(Forum_MyTopic_Activity.this, Forum_CreateTopic_Activity.class);
+                intent.putExtra("class", Forum_MyTopic_Activity.class.toString());
+                startActivity(intent);
                 finish();
             }
         });
@@ -75,10 +84,20 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
                         myTopicList.add(topic);
                     }
                 }
-                forumAdapter = new Forum_Adapter(Forum_MyTopic_Activity.this, myTopicList);
-                forumMainActivity.prepareRecyclerView(Forum_MyTopic_Activity.this, RVMyTopics, myTopicList);
+                prepareRecyclerView(Forum_MyTopic_Activity.this, RVMyTopics, myTopicList);
                 progressBar.setVisibility(View.GONE);
             }
         });
+    }
+
+    public void prepareRecyclerView(Context context, RecyclerView RV, List<ForumTopic> object){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
+        RV.setLayoutManager(linearLayoutManager);
+        preAdapter(context, RV, object);
+    }
+
+    public void preAdapter(Context context, RecyclerView RV, List<ForumTopic> object){
+        myTopicAdapter = new MyTopic_Adapter(context, object);
+        RV.setAdapter(myTopicAdapter);
     }
 }

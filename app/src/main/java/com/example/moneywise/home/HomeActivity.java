@@ -39,8 +39,6 @@ public class HomeActivity extends AppCompatActivity {
         FCVHome = findViewById(R.id.FCVHome);
         bottomNavigationView = findViewById(R.id.bottomHomeNavigationView);
         bottomNavigationView.setBackground(null);
-        MenuItem menuItemDisable = bottomNavigationView.getMenu().findItem(R.id.iconHome);
-        menuItemDisable.setEnabled(false);
         replaceFragment(new HomeFragment());
 
         setSupportActionBar(toolbar);

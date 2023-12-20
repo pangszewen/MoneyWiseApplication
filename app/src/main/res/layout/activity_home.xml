@@ -6,19 +6,11 @@
      android:layout_height="match_parent"
      tools:context=".home.HomeActivity">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/FCVHome"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent">
-
-    </androidx.fragment.app.FragmentContainerView>
-
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/DLHomePage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="80dp"
         android:fitsSystemWindows="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent">
@@ -31,6 +23,15 @@
             app:menu="@menu/overflow_menu"
             android:layout_gravity="start"
             android:backgroundTint="@color/white"/>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/FCVHome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+        </androidx.fragment.app.FragmentContainerView>
 
     </androidx.drawerlayout.widget.DrawerLayout>
 

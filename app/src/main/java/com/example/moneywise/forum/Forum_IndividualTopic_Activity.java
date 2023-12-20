@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.moneywise.R;
+import com.example.moneywise.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,8 +57,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     Random rand = new Random();
     TextView TVSubject, TVAuthor, TVDatePosted, TVDescription, TVNumberOfDiscussion;
     EditText ETComment;
-    Button btn_comment;
-    ImageButton backButton_individualTopic, likeButton;
+    ImageButton backButton_individualTopic, likeButton, btn_comment;
     ProgressBar progressBar;
     RecyclerView RVIndividualTopicDiscussion, RVTopicImage;
     SwipeRefreshLayout RVIndividualTopicRefresh;
@@ -75,7 +75,8 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        userID = user.getUid();
+        userID = "Zqa2pZRzccPx13bEjxZho9UVlT83";
+        //userID = user.getUid();
         TVSubject = findViewById(R.id.TVSubject);
         TVAuthor = findViewById(R.id.TVAuthor);
         TVDatePosted = findViewById(R.id.TVDatePosted);
@@ -83,7 +84,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         TVNumberOfDiscussion = findViewById(R.id.TVNumberOfDiscussion);
         ETComment = findViewById(R.id.ETComment);
         btn_comment = findViewById(R.id.btn_postComment);
-        backButton_individualTopic = findViewById(R.id.backButton_individualTopic);
+        backButton_individualTopic = findViewById(R.id.backButton_individualTopics);
         RVIndividualTopicDiscussion = findViewById(R.id.RVIndividualTopicDiscussion);
         RVTopicImage = findViewById(R.id.RVTopicImage);
         RVIndividualTopicRefresh = findViewById(R.id.RVIndividualTopicRefresh);
@@ -141,13 +142,15 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         backButton_individualTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Forum_IndividualTopic_Activity.this, Forum_MainActivity.class);
+                Intent intent = new Intent(Forum_IndividualTopic_Activity.this, HomeActivity.class);
                 if(previousClass.equals(Forum_MyTopic_Activity.class.toString())){
                     intent = new Intent(Forum_IndividualTopic_Activity.this, Forum_MyTopic_Activity.class);
-                }else if(previousClass.equals(Forum_MainActivity.class.toString())){
-                    intent = new Intent(Forum_IndividualTopic_Activity.this, Forum_MainActivity.class);
+                }else if(previousClass.equals(HomeActivity.class.toString())){
+                    intent = new Intent(Forum_IndividualTopic_Activity.this, HomeActivity.class);
                 }
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -171,8 +174,10 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot dc = task.getResult();
                 TextView TVNumberOfDiscussion = findViewById(R.id.TVNumberOfDiscussion);
+                TextView TVNumberOfComments = findViewById(R.id.TVNumberOfComment);
                 ForumTopic topic = convertDocumentToForumTopic(dc);
                 TVNumberOfDiscussion.setText("(" + topic.getCommentID().size() + ")");
+                TVNumberOfComments.setText(String.valueOf(topic.getCommentID().size()));
             }
         });
     }
@@ -185,7 +190,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                 DocumentSnapshot dc = task.getResult();
                 TextView TVNumberOfLikes = findViewById(R.id.TVNumberOfLikes);
                 ForumTopic topic = convertDocumentToForumTopic(dc);
-                TVNumberOfLikes.setText(topic.getLikes().size() + " people liked");
+                TVNumberOfLikes.setText(String.valueOf(topic.getLikes().size()));
             }
         });
     }
@@ -196,7 +201,6 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot dc = task.getResult();
-                TextView TVNumberOfLikes = findViewById(R.id.TVNumberOfLikes);
                 ForumTopic topic = convertDocumentToForumTopic(dc);
                 List<String> likes = topic.getLikes();
                 deleteOrAddLikeInTopic(likes);
@@ -217,18 +221,22 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     public void changeLikeButtonColor(ForumTopic topic){
         List<String> likes = topic.getLikes();
         if(likes.contains(userID)){
-            likeButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#00FFFFFF")));
+            likeButton.setImageResource(R.drawable.outline_thumb_up_black);
+            //likeButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#00FFFFFF")));
         }else{
-            likeButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FDDD5C")));
+            likeButton.setImageResource(R.drawable.baseline_thumb_up_black);
+            //likeButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FDDD5C")));
         }
     }
 
     public void setLikeButtonColor(){
         List<String> likes = topic.getLikes();
         if(!likes.contains(userID)){
-            likeButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#00FFFFFF")));
+            likeButton.setImageResource(R.drawable.outline_thumb_up_black);
+            //likeButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#00FFFFFF")));
         }else{
-            likeButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FDDD5C")));
+            likeButton.setImageResource(R.drawable.baseline_thumb_up_black);
+            //likeButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FDDD5C")));
         }
     }
 
@@ -258,7 +266,8 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
             public void onComplete(@NonNull Task<ListResult> task) {
                 if (task.isSuccessful()) {
                     List<StorageReference> items = task.getResult().getItems();
-                    final ArrayList<String> images = new ArrayList<>();
+                    Log.d("TAG", items.toString());
+                    final String[] images = new String[items.size()];
                     final AtomicInteger count = new AtomicInteger(0);
 
                     for (int i = 0; i < items.size(); i++) {
@@ -267,7 +276,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Uri uri) {
                                 String imageUri = uri.toString();
-                                images.add(imageUri);
+                                images[index] = imageUri;
                                 int completedCount = count.incrementAndGet();
 
                                 if (completedCount == items.size()) {
@@ -286,33 +295,6 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                 }
             }
         });
-        /*
-        StorageReference storageReference = storage.getReference("FORUM_IMAGES/" + topic.getTopicID());
-        storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {
-            @Override
-            public void onComplete(@NonNull Task<ListResult> task) {
-                if(task.isSuccessful()){
-                    Log.d("TAG", task.getResult().toString());
-                    ArrayList<String> images = new ArrayList<>();
-                    int i=-1;
-                    for(StorageReference ref : task.getResult().getItems()){
-                        i++;
-                        ref.child("Image " + i + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                String imageUri = uri.toString();
-                                Log.d("TAG", imageUri);
-                                images.add(imageUri);
-                            }
-                        });
-                    }
-                    Log.d("TAG", images.toString());
-                    prepareRVImage(Forum_IndividualTopic_Activity.this, RVTopicImage, images);
-                }
-            }
-        });
-
-         */
     }
 
     public void prepareRVDiscussion(Context context, RecyclerView RV, ArrayList<ForumComment> object){
@@ -326,13 +308,13 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         RV.setAdapter(discussionAdapter);
     }
 
-    public void prepareRVImage(Context context, RecyclerView RV, ArrayList<String> object){
+    public void prepareRVImage(Context context, RecyclerView RV, String[] object){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
         RV.setLayoutManager(linearLayoutManager);
         preAdapterRVImage(context, RV, object);
     }
 
-    public void preAdapterRVImage(Context context, RecyclerView RV, ArrayList<String> object){
+    public void preAdapterRVImage(Context context, RecyclerView RV, String[] object){
         topicImageAdapter = new TopicImage_Adapter(context, object);
         RV.setAdapter(topicImageAdapter);
     }

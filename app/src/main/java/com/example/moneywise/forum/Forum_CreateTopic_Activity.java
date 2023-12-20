@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,12 +27,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.moneywise.R;
+import com.example.moneywise.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -51,6 +55,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
     FirebaseFirestore db;
     Random rand = new Random();
     EditText ETTopicSubject, ETTopicDescription;
+    TextView TVAccount;
     Button btn_createTopic;
     ImageButton backButton_createTopic;
     ProgressBar progressBar;
@@ -62,6 +67,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
     ArrayList<String> urlsList;
     FirebaseAuth auth;
     FirebaseUser user;
+    String userID, previousClass;
     FirebaseStorage storage;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -72,19 +78,31 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_forum_create_topic);
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
-        auth=FirebaseAuth.getInstance();
-        user= auth.getCurrentUser();
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        //userID = user.getUid();
+        userID = "Zqa2pZRzccPx13bEjxZho9UVlT83";
         chooseImageList = new ArrayList<>();
         urlsList = new ArrayList<>();
+        previousClass = getIntent().getStringExtra("class");
 
         ETTopicSubject = findViewById(R.id.ETTopicSubject);
         ETTopicDescription = findViewById(R.id.ETTopicDescription);
+        TVAccount = findViewById(R.id.TVAccount);
         btn_createTopic = findViewById(R.id.btn_createTopic);
         backButton_createTopic = findViewById(R.id.backButton_createTopic);
         progressBar = findViewById(R.id.progressBar);
         pickImageButton = findViewById(R.id.RLChooseImage);
         viewPager = findViewById(R.id.viewPager);
         createTopicRefresh = findViewById(R.id.createTopicRefresh);
+
+        DocumentReference ref = db.collection("USER_DETAILS").document(userID);
+        ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                TVAccount.setText(documentSnapshot.get("name").toString());
+            }
+        });
 
         createTopicRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -112,8 +130,15 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         backButton_createTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Forum_CreateTopic_Activity.this, Forum_MyTopic_Activity.class);
+                Intent intent = new Intent(Forum_CreateTopic_Activity.this, HomeActivity.class);
+                if(previousClass.equals(Forum_MyTopic_Activity.class.toString())){
+                    intent = new Intent(Forum_CreateTopic_Activity.this, Forum_MyTopic_Activity.class);
+                }else if(previousClass.equals(HomeActivity.class.toString())){
+                    intent = new Intent(Forum_CreateTopic_Activity.this, HomeActivity.class);
+                }
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -178,7 +203,8 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
                     forumTopicList.add(topic);
                 }
                 String topicID = generateTopicID(forumTopicList);
-                String userID = user.getUid();
+                //String userID = user.getUid();
+                String userID = "Zqa2pZRzccPx13bEjxZho9UVlT83";
                 ForumTopic newTopic = new ForumTopic(topicID, userID, TopicSubject, TopicDescription);
                 insertTopicIntoDatabase(newTopic);
                 uploadImages(newTopic.getTopicID());

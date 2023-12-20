@@ -15,9 +15,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class TopicImage_Adapter extends RecyclerView.Adapter<TopicImage_Adapter.TopicImage_AdapterVH>{
-    ArrayList<String> images = new ArrayList<>();
+    String[] images = new String[0];
     Context context;
-    public TopicImage_Adapter(Context context, ArrayList<String> images){
+    public TopicImage_Adapter(Context context, String[] images){
         this.images = images;
         this.context = context;
     }
@@ -31,13 +31,13 @@ public class TopicImage_Adapter extends RecyclerView.Adapter<TopicImage_Adapter.
 
     @Override
     public void onBindViewHolder(@NonNull TopicImage_AdapterVH holder , int position) {
-        String image = images.get(position);
-        Picasso.get().load(image).into(holder.imageView);
+        String image = images[position];
+        Picasso.get().load(image).resize(1000, 1000).centerInside().into(holder.imageView);
     }
 
     @Override
     public int getItemCount() {
-        return images.size();
+        return images.length;
     }
 
     public static class TopicImage_AdapterVH extends RecyclerView.ViewHolder{
