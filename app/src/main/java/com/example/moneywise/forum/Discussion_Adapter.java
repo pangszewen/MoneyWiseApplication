@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneywise.R;
+import com.example.moneywise.login_register.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -21,7 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Discussion_Adapter extends RecyclerView.Adapter<Discussion_Adapter.Discussion_AdapterVH> {
-    FirebaseFirestore db;
+    Firebase_Forum firebase = new Firebase_Forum();
     ArrayList<ForumComment> forumComments = new ArrayList<>();
     Context context;
     public Discussion_Adapter(Context context, ArrayList<ForumComment> forumComments){
@@ -46,18 +47,10 @@ public class Discussion_Adapter extends RecyclerView.Adapter<Discussion_Adapter.
 
         holder.commentDatePosted.setText(formattedCommentDate);
         holder.commentContent.setText(content);
-        db = FirebaseFirestore.getInstance();
-        DocumentReference ref = db.collection("USER_DETAILS").document(forumComment.getUserID());
-        ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        firebase.getUser(forumComment.getUserID(), new Firebase_Forum.UserCallback() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    //User user = convertDocumentToUser(documentSnapshot);
-                    //holder.commentUsername.setText(user.getName());
-                    holder.commentUsername.setText(documentSnapshot.get("name").toString());
-                } else {
-                    Toast.makeText(context, "user not found", Toast.LENGTH_SHORT).show();
-                }
+            public void onUserReceived(User user) {
+                holder.commentUsername.setText(user.getName());
             }
         });
     }
@@ -76,20 +69,4 @@ public class Discussion_Adapter extends RecyclerView.Adapter<Discussion_Adapter.
             commentContent = itemView.findViewById(R.id.discussion_content);
         }
     }
-
-    /*
-    public User convertDocumentToUser(DocumentSnapshot dc){
-        User user = new User();
-        user.setUserID(dc.getId().toString());
-        user.setName(dc.get("name").toString());
-        user.setGender(dc.get("gender").toString());
-        user.setAge((Long)dc.get("age"));
-        user.setQualification(dc.get("qualification").toString());
-        user.setRole(dc.get("role").toString());
-
-        return user;
-    }
-
-     */
-
 }

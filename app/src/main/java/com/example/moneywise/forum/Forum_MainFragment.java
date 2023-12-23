@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -34,8 +35,7 @@ public class Forum_MainFragment extends Fragment {
 
     RecyclerView RVForum;
     Forum_Adapter forumAdapter;
-    FirebaseFirestore db;
-    List<ForumTopic> forumTopics;
+    Firebase_Forum firebase = new Firebase_Forum();
     Button btn_myTopic;
     ImageButton btn_createTopic, btn_searchIcon;
     ClearableAutoCompleteTextView search_box;
@@ -50,7 +50,6 @@ public class Forum_MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.fragment_forum__main, container, false);
-        db = FirebaseFirestore.getInstance();
         btn_myTopic = rootview.findViewById(R.id.MyTopics);
         RVForum = rootview.findViewById(R.id.RVForum);
         RVForumRefresh = rootview.findViewById(R.id.RVForumRefresh);
@@ -61,6 +60,27 @@ public class Forum_MainFragment extends Fragment {
         progressBar = rootview.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
         setUpRVForum();
+
+        btn_searchIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleSearch(false);
+            }
+        });
+
+        search_box.setOnClearListener(new ClearableAutoCompleteTextView.OnClearListener() {
+            @Override
+            public void onClear() {
+                toggleSearch(true);
+            }
+        });
+
+        search_box.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
 
         btn_myTopic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,30 +109,22 @@ public class Forum_MainFragment extends Fragment {
     }
 
     public void setUpRVForum() {
-        forumTopics = new ArrayList<>();
-        CollectionReference collectionReference = db.collection("FORUM_TOPIC");
-        collectionReference.orderBy("datePosted", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                List<ForumTopic> forumTopicList = new ArrayList<>();
-                for (QueryDocumentSnapshot dc : task.getResult()) {
-                    ForumTopic topic = convertDocumentToForumTopic(dc);
-                    forumTopicList.add(topic);
-                }
-                prepareRecyclerView(getActivity(), RVForum, forumTopicList);
+            public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
+                prepareRecyclerView(getActivity(), RVForum, forumTopics);
                 progressBar.setVisibility(View.GONE);
             }
         });
-
     }
 
-    public void prepareRecyclerView(Context context, RecyclerView RV, List<ForumTopic> object) {
+    public void prepareRecyclerView(Context context, RecyclerView RV,   ArrayList<ForumTopic> object) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         RV.setLayoutManager(linearLayoutManager);
         preAdapter(context, RV, object);
     }
 
-    public void preAdapter(Context context, RecyclerView RV, List<ForumTopic> object) {
+    public void preAdapter(Context context, RecyclerView RV, ArrayList<ForumTopic> object) {
         forumAdapter = new Forum_Adapter(context, object);
         RV.setAdapter(forumAdapter);
     }
@@ -138,17 +150,4 @@ public class Forum_MainFragment extends Fragment {
 
     }
 
-    public ForumTopic convertDocumentToForumTopic(QueryDocumentSnapshot dc) {
-        ForumTopic topic = new ForumTopic();
-        topic.setTopicID(dc.getId());
-        topic.setUserID(dc.get("userID").toString());
-        topic.setDatePosted(dc.get("datePosted").toString());
-        topic.setSubject(dc.get("subject").toString());
-        topic.setDescription(dc.get("description").toString());
-        // Firestore retrieves List objects as List<Object> and not as ArrayList<String>
-        topic.setLikes((List<String>) dc.get("likes"));
-        topic.setCommentID((List<String>) dc.get("commentID"));
-
-        return topic;
-    }
 }

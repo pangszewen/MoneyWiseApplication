@@ -29,9 +29,10 @@ import java.util.List;
 
 public class Forum_MyTopic_Activity extends AppCompatActivity {
     MyTopic_Adapter myTopicAdapter;
-    FirebaseFirestore db;
     FirebaseAuth auth;
     FirebaseUser user;
+
+    Firebase_Forum firebase = new Firebase_Forum();
     String userID;
     RecyclerView RVMyTopics;
     ImageButton backButton_myTopic, btn_createTopic;
@@ -42,7 +43,6 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
         Forum_MainActivity forumMainActivity = new Forum_MainActivity();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum_my_topic);
-        db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         //userID = user.getUid();
@@ -51,6 +51,8 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
         backButton_myTopic = findViewById(R.id.backButton_myTopics);
         btn_createTopic = findViewById(R.id.btn_createTopic);
         progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        setUpRVMyTopics();
 
         backButton_myTopic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,16 +73,15 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
                 finish();
             }
         });
+    }
 
-        progressBar.setVisibility(View.VISIBLE);
-        CollectionReference collectionReference = db.collection("FORUM_TOPIC");
-        collectionReference.orderBy("datePosted", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    public void setUpRVMyTopics(){
+        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
                 ArrayList<ForumTopic> myTopicList = new ArrayList<>();
-                for(QueryDocumentSnapshot dc : task.getResult()){
-                    if(dc.get("userID").toString().equals(userID)) {
-                        ForumTopic topic = forumMainActivity.convertDocumentToForumTopic(dc);
+                for(ForumTopic topic : forumTopics){
+                    if(topic.getUserID().equals(userID)) {
                         myTopicList.add(topic);
                     }
                 }

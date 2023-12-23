@@ -40,6 +40,9 @@ public class ForumTopic {
         this.commentID = commentID;
     }
 
+    public ForumTopic(ForumTopic topic) {
+    }
+
 
     public String getTopicID() {
         return topicID;

@@ -1,6 +1,8 @@
 package com.example.moneywise.forum;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +36,8 @@ import java.util.List;
 
 public class MyTopic_Adapter extends RecyclerView.Adapter<MyTopic_Adapter.MyTopic_AdapterVH>{
     List<ForumTopic> forumTopics = new ArrayList<>();
-    FirebaseStorage storage;
+    FirebaseFirestore db;
+    Firebase_Forum firebase = new Firebase_Forum();
     Context context;
 
     public MyTopic_Adapter(Context context, List<ForumTopic> forumTopics) {
@@ -59,31 +63,12 @@ public class MyTopic_Adapter extends RecyclerView.Adapter<MyTopic_Adapter.MyTopi
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedTopicDate = topicDate.format(formatter);
 
-        storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference("FORUM_IMAGES/" + forumTopic.getTopicID());
-        storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {
+        firebase.getFirstTopicImage(forumTopic.getTopicID(), new Firebase_Forum.FirstTopicImageCallback() {
             @Override
-            public void onComplete(@NonNull Task<ListResult> task) {
-                if (task.isSuccessful()) {
-                    List<StorageReference> items = task.getResult().getItems();
-
-                    if (!items.isEmpty()) {
-                        // Get the first item (image) in the folder
-                        items.get(0).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                String firstImageUri = uri.toString();
-                                Picasso.get().load(firstImageUri).into(holder.topicImage);
-                                // Process the first image URI as needed
-                                // Here you can use the URI or load the image
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Handle failure if needed
-                            }
-                        });
-                    }
+            public void onFirstTopicImageReceived(Uri uri) {
+                String firstImageUri = uri.toString();
+                if (position == holder.getAdapterPosition()) {
+                    Picasso.get().load(firstImageUri).into(holder.topicImage);
                 }
             }
         });
@@ -93,27 +78,28 @@ public class MyTopic_Adapter extends RecyclerView.Adapter<MyTopic_Adapter.MyTopi
         holder.topicComments.setText(String.valueOf(topicComments.size()) + " comments");
         holder.topicDate.setText(formattedTopicDate);
 
+        Intent intent = new Intent(context, Forum_IndividualTopic_Activity.class);
+        // pass data from this activity to another activity
+        // must be String
+        intent.putExtra("topicID", forumTopic.getTopicID());
+        intent.putExtra("userID", forumTopic.getUserID());
+        intent.putExtra("datePosted", forumTopic.getDatePosted().toString());
+        intent.putExtra("subject", forumTopic.getSubject());
+        intent.putExtra("description", forumTopic.getDescription());
+        intent.putExtra("likes", forumTopic.getLikes().toString());
+        intent.putExtra("commentID", forumTopic.getCommentID().toString());
+        intent.putExtra("class", context.getClass().toString());
         holder.btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //developing
+                context.startActivity(intent);
+
             }
         });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, Forum_IndividualTopic_Activity.class);
-                // pass data from this activity to another activity
-                // must be String
-                intent.putExtra("topicID", forumTopic.getTopicID());
-                intent.putExtra("userID", forumTopic.getUserID());
-                intent.putExtra("datePosted", forumTopic.getDatePosted().toString());
-                intent.putExtra("subject", forumTopic.getSubject());
-                intent.putExtra("description", forumTopic.getDescription());
-                intent.putExtra("likes", forumTopic.getLikes().toString());
-                intent.putExtra("commentID", forumTopic.getCommentID().toString());
-                intent.putExtra("class", context.getClass().toString());
                 context.startActivity(intent);
             }
         });
@@ -122,6 +108,45 @@ public class MyTopic_Adapter extends RecyclerView.Adapter<MyTopic_Adapter.MyTopi
     @Override
     public int getItemCount() {
         return forumTopics.size();
+    }
+
+    private void showDeleteConfirmationDialog(final int position) {
+        ForumTopic topicToDelete = forumTopics.get(position);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Confirm Deletion")
+                .setMessage("Are you sure you want to delete " + topicToDelete.getSubject() + " ?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteItem(position);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User clicked "No", do nothing
+                    }
+                })
+                .show();
+    }
+
+    private void deleteItem(int position) {
+        ForumTopic deleteTopic = forumTopics.get(position);
+        db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("your_collection_name").document(deleteTopic.getTopicID());
+        docRef.delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(context, "Topic deleted successfully", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Failed to delete the document
+                        Toast.makeText(context, "Topic failed to delete", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     public class MyTopic_AdapterVH extends RecyclerView.ViewHolder{

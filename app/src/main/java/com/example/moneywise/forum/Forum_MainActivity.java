@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Forum_MainActivity extends AppCompatActivity {
+    /*
     RecyclerView RVForum;
     Forum_Adapter forumAdapter;
     BottomNavigationView bottomNavigationView;
@@ -180,4 +181,5 @@ public class Forum_MainActivity extends AppCompatActivity {
     }
 
      */
+
 }

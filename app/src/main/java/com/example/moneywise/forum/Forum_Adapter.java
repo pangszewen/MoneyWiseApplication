@@ -1,5 +1,6 @@
 package com.example.moneywise.forum;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneywise.R;
+import com.example.moneywise.login_register.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,12 +37,11 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_AdapterVH> {
-    List<ForumTopic> forumTopics = new ArrayList<>();
-    FirebaseFirestore db;
-    FirebaseStorage storage;
+    ArrayList<ForumTopic> forumTopics = new ArrayList<>();
+    Firebase_Forum firebase = new Firebase_Forum();
     Context context;
 
-    public Forum_Adapter(Context context, List<ForumTopic> forumTopics) {
+    public Forum_Adapter(Context context, ArrayList<ForumTopic> forumTopics) {
         this.forumTopics = forumTopics;
         this.context = context;
     }
@@ -56,7 +57,7 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Forum_AdapterVH holder, int position) {
+    public void onBindViewHolder(@NonNull Forum_AdapterVH holder, @SuppressLint("RecyclerView") int position) {
         ForumTopic forumTopic = forumTopics.get(position);
         String topicSubject = forumTopic.getSubject();
         List<String> topicLikes = forumTopic.getLikes();
@@ -64,43 +65,20 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedTopicDate = topicDate.format(formatter);
 
-        db = FirebaseFirestore.getInstance();
-        DocumentReference ref = db.collection("USER_DETAILS").document(forumTopic.getUserID());
-        ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        firebase.getUser(forumTopic.getUserID(), new Firebase_Forum.UserCallback() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                holder.topicAuthor.setText("by " + documentSnapshot.get("name").toString());
+            public void onUserReceived(User user) {
+                holder.topicAuthor.setText("by " + user.getName());
             }
         });
 
         holder.topicImage.setImageResource(R.drawable.outline_image_grey);
-        storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference("FORUM_IMAGES/" + forumTopic.getTopicID());
-        storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {
+        firebase.getFirstTopicImage(forumTopic.getTopicID(), new Firebase_Forum.FirstTopicImageCallback() {
             @Override
-            public void onComplete(@NonNull Task<ListResult> task) {
-                Log.d("TAG", "complete");
-                if (task.isSuccessful()) {
-                    Log.d("TAG", "success");
-                    List<StorageReference> items = task.getResult().getItems();
-                    Log.d("TAG", items.toString());
-                    if (!items.isEmpty()) {
-                        // Get the first item (image) in the folder
-                        items.get(0).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                String firstImageUri = uri.toString();
-                                if (position == holder.getAdapterPosition()) {
-                                    Picasso.get().load(firstImageUri).into(holder.topicImage);
-                                }
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Handle failure if needed
-                            }
-                        });
-                    }
+            public void onFirstTopicImageReceived(Uri uri) {
+                String firstImageUri = uri.toString();
+                if (position == holder.getAdapterPosition()) {
+                    Picasso.get().load(firstImageUri).into(holder.topicImage);
                 }
             }
         });

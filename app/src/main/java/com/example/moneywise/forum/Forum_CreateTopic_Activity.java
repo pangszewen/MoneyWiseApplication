@@ -28,6 +28,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.moneywise.R;
 import com.example.moneywise.home.HomeActivity;
+import com.example.moneywise.login_register.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -67,13 +68,13 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
     ArrayList<String> urlsList;
     FirebaseAuth auth;
     FirebaseUser user;
+    Firebase_Forum firebase = new Firebase_Forum();
     String userID, previousClass;
     FirebaseStorage storage;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Forum_MainActivity forumMainActivity = new Forum_MainActivity();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum_create_topic);
         db = FirebaseFirestore.getInstance();
@@ -96,13 +97,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
         createTopicRefresh = findViewById(R.id.createTopicRefresh);
 
-        DocumentReference ref = db.collection("USER_DETAILS").document(userID);
-        ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                TVAccount.setText(documentSnapshot.get("name").toString());
-            }
-        });
+        setTVAccount();
 
         createTopicRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -147,18 +142,35 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 String TopicSubject = ETTopicSubject.getText().toString();
                 String TopicDescription = ETTopicDescription.getText().toString();
-                if(TextUtils.isEmpty(TopicSubject)){
-                    Toast.makeText(Forum_CreateTopic_Activity.this, "Topic subject is required", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(TextUtils.isEmpty(TopicDescription)){
-                    Toast.makeText(Forum_CreateTopic_Activity.this, "Topic description is required", Toast.LENGTH_SHORT).show();
+                if(!checkTopicCredentials(TopicSubject, TopicDescription)){
                     return;
                 }
                 progressBar.setVisibility(View.VISIBLE);
                 createTopic(TopicSubject, TopicDescription);
-                Intent intent = new Intent(Forum_CreateTopic_Activity.this, Forum_MainActivity.class);
+                Intent intent = new Intent(Forum_CreateTopic_Activity.this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
+            }
+        });
+    }
+
+    public boolean checkTopicCredentials(String subject, String description){
+        if(TextUtils.isEmpty(subject)){
+            Toast.makeText(Forum_CreateTopic_Activity.this, "Topic subject is required", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(TextUtils.isEmpty(description)){
+            Toast.makeText(Forum_CreateTopic_Activity.this, "Topic description is required", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    public void setTVAccount(){
+        firebase.getUser(userID, new Firebase_Forum.UserCallback() {
+            @Override
+            public void onUserReceived(User user) {
+                TVAccount.setText(user.getName());
             }
         });
     }
@@ -191,20 +203,10 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
 
 
     private void createTopic(String TopicSubject, String TopicDescription){
-        Forum_MainActivity forumMainActivity = new Forum_MainActivity();
-        CollectionReference collectionReference = db.collection("FORUM_TOPIC");
-        collectionReference.orderBy("datePosted", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                progressBar.setVisibility(View.GONE);
-                List<ForumTopic> forumTopicList = new ArrayList<>();
-                for(QueryDocumentSnapshot dc : task.getResult()){
-                    ForumTopic topic =  forumMainActivity.convertDocumentToForumTopic(dc);
-                    forumTopicList.add(topic);
-                }
-                String topicID = generateTopicID(forumTopicList);
-                //String userID = user.getUid();
-                String userID = "Zqa2pZRzccPx13bEjxZho9UVlT83";
+            public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
+                String topicID = generateTopicID(forumTopics);
                 ForumTopic newTopic = new ForumTopic(topicID, userID, TopicSubject, TopicDescription);
                 insertTopicIntoDatabase(newTopic);
                 uploadImages(newTopic.getTopicID());
@@ -213,35 +215,14 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
     }
 
     private void uploadImages(String topicID){
-        for(int i =0; i<chooseImageList.size(); i++){
-            Uri image = chooseImageList.get(i);
-            if(image!=null){
-                StorageReference reference = storage.getReference().child("FORUM_IMAGES").child(topicID);
-                StorageReference imageName = reference.child("Image " + i + ".jpg");
-                imageName.putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    }
-                });
-            }
-        }
+        firebase.insertForumImages(chooseImageList, topicID);
     }
 
     private void insertTopicIntoDatabase(ForumTopic topic){
-        Map<String, Object> map = new HashMap<>();
-        map.put("userID", topic.getUserID());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        String formattedDateTime = topic.getDatePosted().format(formatter);
-        map.put("datePosted", formattedDateTime);
-        map.put("subject", topic.getSubject());
-        map.put("description", topic.getDescription());
-        map.put("likes", topic.getLikes());
-        map.put("commentID", topic.getCommentID());
-        db.collection("FORUM_TOPIC").document(topic.getTopicID()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        firebase.createTopic(topic, new Firebase_Forum.CreateTopicCallback() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()) {
+            public void onCreateTopic(boolean status) {
+                if(status) {
                     Toast.makeText(Forum_CreateTopic_Activity.this, "Topic successfully posted", Toast.LENGTH_SHORT).show();
                     Toast.makeText(Forum_CreateTopic_Activity.this, "Refresh forum to view topic", Toast.LENGTH_LONG).show();
                 }else {
