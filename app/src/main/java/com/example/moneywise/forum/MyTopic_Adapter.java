@@ -92,8 +92,14 @@ public class MyTopic_Adapter extends RecyclerView.Adapter<MyTopic_Adapter.MyTopi
         holder.btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(intent);
-
+                DeleteTopic deleteTopic = new DeleteTopic();
+                deleteTopic.showDeleteConfirmationDialog(context, forumTopics.get(position), new DeleteTopic.ConfirmationDialogCallback() {
+                    @Override
+                    public void onConfirmation(boolean status) {
+                        if(status)
+                            deleteTopic.deleteTopic(context, forumTopics.get(position));
+                    }
+                });
             }
         });
 
@@ -108,45 +114,6 @@ public class MyTopic_Adapter extends RecyclerView.Adapter<MyTopic_Adapter.MyTopi
     @Override
     public int getItemCount() {
         return forumTopics.size();
-    }
-
-    private void showDeleteConfirmationDialog(final int position) {
-        ForumTopic topicToDelete = forumTopics.get(position);
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Confirm Deletion")
-                .setMessage("Are you sure you want to delete " + topicToDelete.getSubject() + " ?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        deleteItem(position);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // User clicked "No", do nothing
-                    }
-                })
-                .show();
-    }
-
-    private void deleteItem(int position) {
-        ForumTopic deleteTopic = forumTopics.get(position);
-        db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("your_collection_name").document(deleteTopic.getTopicID());
-        docRef.delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(context, "Topic deleted successfully", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Failed to delete the document
-                        Toast.makeText(context, "Topic failed to delete", Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 
     public class MyTopic_AdapterVH extends RecyclerView.ViewHolder{

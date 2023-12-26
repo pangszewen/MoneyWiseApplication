@@ -48,7 +48,7 @@ public class CommentTopic {
             public void onInsertForumComment(boolean status) {
                 if(status) {
                     Toast.makeText(context, "Comment successfully posted", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(context, "Refresh discussion to view comment", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Please refresh", Toast.LENGTH_LONG).show();
                 }else {
                     Toast.makeText(context, "Comment failed to post", Toast.LENGTH_SHORT).show();
                 }

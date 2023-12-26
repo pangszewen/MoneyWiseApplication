@@ -2,10 +2,12 @@ package com.example.moneywise.forum;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +65,7 @@ public class Forum_MainFragment extends Fragment {
         search_box.setVisibility(View.GONE);
         progressBar = rootview.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
+        search_box.setThreshold(3);
         setUpRVForum();
         setSearchBarAdapter();
 
@@ -81,14 +84,35 @@ public class Forum_MainFragment extends Fragment {
             }
         });
 
+        search_box.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_NUMPAD_ENTER) {
+                    if (event.getAction() == KeyEvent.ACTION_UP) {
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                        search_box.dismissDropDown(); // Hide the dropdown
+                    }
+                    return true; // Consume the event
+                }
+                return false;
+            }
+        });
+
+
         search_box.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d("TAG", "keyword: " + s);
                 adapter.getFilter().filter(s);
                 ArrayList<ForumTopic> filteredList = adapter.getFilteredList();
+                Log.d("TAG", "filtered:");
+                for(ForumTopic topic: filteredList) {
+                    Log.d("TAG",  topic.getSubject());
+                }
                 setRVForumBasedOnSearchResult(filteredList);
             }
 
@@ -186,7 +210,5 @@ public class Forum_MainFragment extends Fragment {
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(search_box, InputMethodManager.SHOW_IMPLICIT);
         }
-
     }
-
 }

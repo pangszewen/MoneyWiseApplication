@@ -1,5 +1,6 @@
 package com.example.moneywise.forum;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
@@ -236,6 +237,28 @@ public class Firebase_Forum {
         });
     }
 
+    public interface DeleteTopicCallback{
+        void onDeleteTopic(boolean status);
+    }
+
+    public void deleteTopic(String topicID, DeleteTopicCallback callback){
+        DocumentReference docRef = forumTopicRef.document(topicID);
+        docRef.delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callback.onDeleteTopic(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Failed to delete the document
+                        callback.onDeleteTopic(false);
+                    }
+                });
+    }
+
     public void addLike(String topicID){
         DocumentReference ref = db.collection("FORUM_TOPIC").document(topicID);
         ref.update("likes", FieldValue.arrayUnion(userID)).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -307,7 +330,8 @@ public class Firebase_Forum {
         user.setName(dc.get("name").toString());
         user.setGender(dc.get("gender").toString());
         user.setDob(dc.get("dob").toString());
-        user.setQualification(dc.get("qualification").toString());
+        if(dc.get("qualification")!=null)
+            user.setQualification(dc.get("qualification").toString());
         user.setRole(dc.get("role").toString());
 
         return user;

@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.moneywise.R;
 import com.example.moneywise.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,11 +33,11 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
     MyTopic_Adapter myTopicAdapter;
     FirebaseAuth auth;
     FirebaseUser user;
-
     Firebase_Forum firebase = new Firebase_Forum();
     String userID;
     RecyclerView RVMyTopics;
     ImageButton backButton_myTopic, btn_createTopic;
+    SwipeRefreshLayout RVMyTopicsRefresh;
     ProgressBar progressBar;
 
     @Override
@@ -50,6 +52,7 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
         RVMyTopics = findViewById(R.id.RVMyTopics);
         backButton_myTopic = findViewById(R.id.backButton_myTopics);
         btn_createTopic = findViewById(R.id.btn_createTopic);
+        RVMyTopicsRefresh = findViewById(R.id.RVMyTopicsRefresh);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
         setUpRVMyTopics();
@@ -71,6 +74,14 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
                 intent.putExtra("class", Forum_MyTopic_Activity.class.toString());
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        RVMyTopicsRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setUpRVMyTopics();
+                RVMyTopicsRefresh.setRefreshing(false);
             }
         });
     }

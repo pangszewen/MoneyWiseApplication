@@ -21,7 +21,6 @@ public class ForumTopic_SearchAdapter extends ArrayAdapter<ForumTopic> {
     public ForumTopic_SearchAdapter(Context context, ArrayList<ForumTopic> topics) {
         super(context, R.layout.forum_dropdown, topics);
         this.context = context;
-        Log.d("TAG", "total: " + String.valueOf(topics.size()));
         this.originalList = new ArrayList<>(topics);
         this.filteredList = new ArrayList<>(topics);
     }
@@ -75,10 +74,9 @@ public class ForumTopic_SearchAdapter extends ArrayAdapter<ForumTopic> {
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 clear();
                 addAll((ArrayList<ForumTopic>) results.values);
+                notifyDataSetChanged();
                 filteredList.clear();
                 filteredList.addAll((ArrayList<ForumTopic>) results.values);
-                Log.d("TAG", "filtered; " + String.valueOf(results.values));
-                notifyDataSetChanged();
             }
 
             @Override

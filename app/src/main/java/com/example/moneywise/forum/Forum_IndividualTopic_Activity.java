@@ -59,7 +59,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     Discussion_Adapter discussionAdapter;
     TopicImage_Adapter topicImageAdapter;
     TextView TVSubject, TVAuthor, TVDatePosted, TVDescription, TVNumberOfDiscussion, TVNumberOfComment, TVNumberOfLikes;
-    ImageButton backButton_individualTopic, likeButton;
+    ImageButton backButton_individualTopic, likeButton, btn_delete;
     ClearableAutoCompleteComment comment_box;
     RecyclerView RVIndividualTopicDiscussion, RVTopicImage;
     SwipeRefreshLayout RVIndividualTopicRefresh;
@@ -86,6 +86,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         TVNumberOfComment = findViewById(R.id.TVNumberOfComment);
         TVNumberOfLikes = findViewById(R.id.TVNumberOfLikes);
         backButton_individualTopic = findViewById(R.id.backButton_individualTopics);
+        btn_delete = findViewById(R.id.btn_delete);
         RVIndividualTopicDiscussion = findViewById(R.id.RVIndividualTopicDiscussion);
         RVTopicImage = findViewById(R.id.RVTopicImage);
         RVIndividualTopicRefresh = findViewById(R.id.RVIndividualTopicRefresh);
@@ -111,7 +112,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         setRVIndividualTopicDiscussion();
         setRVTopicImage();
         setLikeButtonDrawable(this.topic);
-
+        setVisibilityOfDeleteButton();
 
         comment_box.setOnClearListener(new ClearableAutoCompleteComment.OnClearListener() {
             @Override
@@ -131,15 +132,23 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         backButton_individualTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Forum_IndividualTopic_Activity.this, HomeActivity.class);
-                if(previousClass.equals(Forum_MyTopic_Activity.class.toString())){
-                    intent = new Intent(Forum_IndividualTopic_Activity.this, Forum_MyTopic_Activity.class);
-                }else if(previousClass.equals(HomeActivity.class.toString())){
-                    intent = new Intent(Forum_IndividualTopic_Activity.this, HomeActivity.class);
-                }
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                finish();
+                backToPreviousActivity();
+            }
+        });
+
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DeleteTopic deleteTopic = new DeleteTopic();
+                deleteTopic.showDeleteConfirmationDialog(Forum_IndividualTopic_Activity.this, topic, new DeleteTopic.ConfirmationDialogCallback() {
+                    @Override
+                    public void onConfirmation(boolean status) {
+                        if(status) {
+                            deleteTopic.deleteTopic(Forum_IndividualTopic_Activity.this, topic);
+                            backToPreviousActivity();
+                        }
+                    }
+                });
             }
         });
 
@@ -220,6 +229,18 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         });
     }
 
+    public void setVisibilityOfDeleteButton(){
+        firebase.getUser(userID, new Firebase_Forum.UserCallback() {
+            @Override
+            public void onUserReceived(User user) {
+                if (topic.getUserID().equals(user.getUserID()) || user.getRole().equals("Admin"))
+                    btn_delete.setVisibility(View.VISIBLE);
+                else
+                    btn_delete.setVisibility(View.GONE);
+            }
+        });
+    }
+
     // Comment topic
     protected void toggleComment() {
             String comment = comment_box.getText().toString();
@@ -233,9 +254,6 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                 Toast.makeText(this, "No comment", Toast.LENGTH_SHORT).show();
             }
     }
-
-
-
 
     // Like topic methods
     public void pressedLikeButton(){
@@ -274,6 +292,18 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         }else{
             likeButton.setImageResource(R.drawable.baseline_thumb_up_black);
         }
+    }
+
+    public void backToPreviousActivity(){
+        Intent intent = new Intent(Forum_IndividualTopic_Activity.this, HomeActivity.class);
+        if(previousClass.equals(Forum_MyTopic_Activity.class.toString())){
+            intent = new Intent(Forum_IndividualTopic_Activity.this, Forum_MyTopic_Activity.class);
+        }else if(previousClass.equals(HomeActivity.class.toString())){
+            intent = new Intent(Forum_IndividualTopic_Activity.this, HomeActivity.class);
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        finish();
     }
 
     // Prepare RV methods
