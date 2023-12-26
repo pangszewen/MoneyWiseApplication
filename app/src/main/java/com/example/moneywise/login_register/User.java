@@ -4,26 +4,26 @@ public class User {
     private String userID;
     private String name;
     private String gender;
-    private int age;
+    private String dob;
     private String qualification;
     private String role;
 
     public User(){}
 
-    public User(String userID, String name, String gender, int age){
+    public User(String userID, String name, String gender, String dob){
         this.userID = userID;
         this.name = name;
         this.gender = gender;
-        this.age = age;
+        this.dob = dob;
         this.qualification = null;
         this.role = "Learner";
     }
 
-    public User(String userID, String name, String gender, int age, String qualification){
+    public User(String userID, String name, String gender, String dob, String qualification){
         this.userID = userID;
         this.name = name;
         this.gender = gender;
-        this.age = age;
+        this.dob = dob;
         this.qualification = qualification;
         this.role = "Advisor";
     }
@@ -52,16 +52,12 @@ public class User {
         this.gender = gender;
     }
 
-    public int getAge() {
-        return age;
+    public String getDob() {
+        return dob;
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setAge(Long age){
-        this.age = age != null ? age.intValue() : 0;
+    public void setDob(String dob) {
+        this.dob = dob;
     }
 
     public String getQualification() {

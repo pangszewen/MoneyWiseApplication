@@ -60,7 +60,6 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     TopicImage_Adapter topicImageAdapter;
     TextView TVSubject, TVAuthor, TVDatePosted, TVDescription, TVNumberOfDiscussion, TVNumberOfComment, TVNumberOfLikes;
     ImageButton backButton_individualTopic, likeButton;
-    ProgressBar progressBar;
     ClearableAutoCompleteComment comment_box;
     RecyclerView RVIndividualTopicDiscussion, RVTopicImage;
     SwipeRefreshLayout RVIndividualTopicRefresh;
@@ -91,7 +90,6 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         RVTopicImage = findViewById(R.id.RVTopicImage);
         RVIndividualTopicRefresh = findViewById(R.id.RVIndividualTopicRefresh);
         likeButton = findViewById(R.id.likeButton);
-        progressBar = findViewById(R.id.progressBar);
         comment_box = findViewById(R.id.comment_box);
 
         topic.setTopicID(getIntent().getStringExtra("topicID"));
@@ -226,17 +224,17 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     protected void toggleComment() {
             String comment = comment_box.getText().toString();
             if(!TextUtils.isEmpty(comment)){
-                progressBar.setVisibility(View.VISIBLE);
                 commentTopic.createComment(topic.getTopicID(), userID, comment, Forum_IndividualTopic_Activity.this);
-                progressBar.setVisibility(View.GONE);
+                comment_box.setText("");
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(comment_box.getWindowToken(), 0);
+
             }else{
                 Toast.makeText(this, "No comment", Toast.LENGTH_SHORT).show();
             }
-            comment_box.setText("");
-            // hide the keyboard
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(comment_box.getWindowToken(), 0);
     }
+
+
 
 
     // Like topic methods

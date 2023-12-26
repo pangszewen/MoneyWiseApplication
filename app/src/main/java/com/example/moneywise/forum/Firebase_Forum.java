@@ -306,7 +306,7 @@ public class Firebase_Forum {
         user.setUserID(dc.getId().toString());
         user.setName(dc.get("name").toString());
         user.setGender(dc.get("gender").toString());
-        user.setAge((Long)dc.get("age"));
+        user.setDob(dc.get("dob").toString());
         user.setQualification(dc.get("qualification").toString());
         user.setRole(dc.get("role").toString());
 

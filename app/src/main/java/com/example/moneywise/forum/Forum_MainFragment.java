@@ -3,12 +3,15 @@ package com.example.moneywise.forum;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -40,6 +43,7 @@ public class Forum_MainFragment extends Fragment {
     ImageButton btn_createTopic, btn_searchIcon;
     ClearableAutoCompleteTextView search_box;
     SwipeRefreshLayout RVForumRefresh;
+    ForumTopic_SearchAdapter adapter;
     ProgressBar progressBar;
 
     @Override
@@ -60,6 +64,7 @@ public class Forum_MainFragment extends Fragment {
         progressBar = rootview.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
         setUpRVForum();
+        setSearchBarAdapter();
 
         btn_searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,13 +77,32 @@ public class Forum_MainFragment extends Fragment {
             @Override
             public void onClear() {
                 toggleSearch(true);
+                setUpRVForum();
             }
+        });
+
+        search_box.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.getFilter().filter(s);
+                ArrayList<ForumTopic> filteredList = adapter.getFilteredList();
+                setRVForumBasedOnSearchResult(filteredList);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
 
         search_box.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                ForumTopic selectedTopic = adapter.getItem(position);
+                ArrayList<ForumTopic> topics = new ArrayList<>();
+                topics.add(selectedTopic);
+                setRVForumBasedOnSearchResult(topics);
             }
         });
 
@@ -114,6 +138,21 @@ public class Forum_MainFragment extends Fragment {
             public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
                 prepareRecyclerView(getActivity(), RVForum, forumTopics);
                 progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+
+    public void setRVForumBasedOnSearchResult(ArrayList<ForumTopic> selectedTopic){
+        prepareRecyclerView(getActivity(), RVForum, selectedTopic);
+    }
+
+    public void setSearchBarAdapter(){
+        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
+            @Override
+            public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
+                adapter = new ForumTopic_SearchAdapter(getActivity(), forumTopics);
+                search_box.setAdapter(adapter);
             }
         });
     }

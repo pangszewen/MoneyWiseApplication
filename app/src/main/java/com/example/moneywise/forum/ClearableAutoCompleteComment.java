@@ -46,8 +46,10 @@ public class ClearableAutoCompleteComment extends androidx.appcompat.widget.AppC
                     return false;
 
                 if (event.getX() > et.getWidth() - et.getPaddingRight() - sendButton.getIntrinsicWidth()) {
+                    et.clearFocus();
                     onClearListener.onClear();
                     justCleared = true;
+                    return true;
                 }
                 return false;
             }
