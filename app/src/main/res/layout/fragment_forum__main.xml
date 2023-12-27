@@ -124,18 +124,6 @@
                     android:textAllCaps="false"/>
 
                 <Button
-                    android:id="@+id/FeaturedTopics"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:backgroundTint="@color/sky_blue"
-                    android:text="Featured Topics"
-                    android:fontFamily="@font/donegal_one"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:textAllCaps="false"/>
-
-                <Button
                     android:id="@+id/MostRecent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -149,11 +137,36 @@
                     android:backgroundTint="@color/sky_blue"/>
 
                 <Button
+                    android:id="@+id/FeaturedTopics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:backgroundTint="@color/sky_blue"
+                    android:fontFamily="@font/donegal_one"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="Featured Topics"
+                    android:textAllCaps="false" />
+
+                <Button
                     android:id="@+id/MostLikes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:theme="@style/Theme.AppCompat.Light.NoActionBar"
                     android:text="Most Likes"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/donegal_one"
+                    android:textAllCaps="false"
+                    android:backgroundTint="@color/sky_blue"/>
+
+                <Button
+                    android:id="@+id/MostComments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                    android:text="Most Comments"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:fontFamily="@font/donegal_one"

@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
@@ -34,6 +35,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Forum_MainFragment extends Fragment {
@@ -41,7 +45,8 @@ public class Forum_MainFragment extends Fragment {
     RecyclerView RVForum;
     Forum_Adapter forumAdapter;
     Firebase_Forum firebase = new Firebase_Forum();
-    Button btn_myTopic;
+    Button btn_myTopic, btn_mostRecent, btn_featuredTopics, btn_mostLikes, btn_mostComments;
+    Button[] filterButtons;
     ImageButton btn_createTopic, btn_searchIcon;
     ClearableAutoCompleteTextView search_box;
     SwipeRefreshLayout RVForumRefresh;
@@ -57,6 +62,11 @@ public class Forum_MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.fragment_forum__main, container, false);
         btn_myTopic = rootview.findViewById(R.id.MyTopics);
+        btn_mostRecent = rootview.findViewById(R.id.MostRecent);
+        btn_featuredTopics = rootview.findViewById(R.id.FeaturedTopics);
+        btn_mostLikes = rootview.findViewById(R.id.MostLikes);
+        btn_mostComments = rootview.findViewById(R.id.MostComments);
+        filterButtons = new Button[]{btn_mostRecent, btn_featuredTopics, btn_mostLikes, btn_mostComments};
         RVForum = rootview.findViewById(R.id.RVForum);
         RVForumRefresh = rootview.findViewById(R.id.RVForumRefresh);
         btn_createTopic = rootview.findViewById(R.id.btn_createTopic);
@@ -66,8 +76,8 @@ public class Forum_MainFragment extends Fragment {
         progressBar = rootview.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
         search_box.setThreshold(3);
-        setUpRVForum();
         setSearchBarAdapter();
+        setMostRecentFilter();
 
         btn_searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +90,7 @@ public class Forum_MainFragment extends Fragment {
             @Override
             public void onClear() {
                 toggleSearch(true);
-                setUpRVForum();
+                setMostRecentFilter();
             }
         });
 
@@ -137,6 +147,46 @@ public class Forum_MainFragment extends Fragment {
             }
         });
 
+        btn_mostRecent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                resetButtonTextColor();
+                btn_mostRecent.setTextColor(getResources().getColor(R.color.blue));
+                setMostRecentFilter();
+            }
+        });
+
+        btn_featuredTopics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                resetButtonTextColor();
+                btn_featuredTopics.setTextColor(getResources().getColor(R.color.blue));
+                setFeaturedTopicsFilter();
+            }
+        });
+
+        btn_mostLikes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                resetButtonTextColor();
+                btn_mostLikes.setTextColor(getResources().getColor(R.color.blue));
+                setMostLikesFilter();
+            }
+        });
+
+        btn_mostComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                resetButtonTextColor();
+                btn_mostComments.setTextColor(getResources().getColor(R.color.blue));
+                setMostCommentsFilter();
+            }
+        });
+
         btn_createTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,21 +199,14 @@ public class Forum_MainFragment extends Fragment {
         RVForumRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                setUpRVForum();
+                btn_mostRecent.performClick();
                 RVForumRefresh.setRefreshing(false);
             }
         });
-        return rootview;
-    }
 
-    public void setUpRVForum() {
-        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
-            @Override
-            public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
-                prepareRecyclerView(getActivity(), RVForum, forumTopics);
-                progressBar.setVisibility(View.GONE);
-            }
-        });
+        btn_mostRecent.performClick();
+
+        return rootview;
     }
 
 
@@ -211,4 +254,81 @@ public class Forum_MainFragment extends Fragment {
             imm.showSoftInput(search_box, InputMethodManager.SHOW_IMPLICIT);
         }
     }
+
+    public void setMostRecentFilter(){
+        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
+            @Override
+            public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
+                prepareRecyclerView(getActivity(), RVForum, forumTopics);
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public void setFeaturedTopicsFilter() {
+        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
+            @Override
+            public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
+                // Sort the forumTopics based on total likes and comments
+                Collections.sort(forumTopics, new Comparator<ForumTopic>() {
+                    @Override
+                    public int compare(ForumTopic topic1, ForumTopic topic2) {
+                        int totalLikesAndComments1 = topic1.getLikes().size() + topic1.getCommentID().size();
+                        int totalLikesAndComments2 = topic2.getLikes().size() + topic2.getCommentID().size();
+                        // Sort in descending order
+                        return Integer.compare(totalLikesAndComments2, totalLikesAndComments1);
+                    }
+                });
+                prepareRecyclerView(getActivity(), RVForum, forumTopics);
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public void setMostLikesFilter() {
+        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
+            @Override
+            public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
+                // Sort the forumTopics based on total likes
+                Collections.sort(forumTopics, new Comparator<ForumTopic>() {
+                    @Override
+                    public int compare(ForumTopic topic1, ForumTopic topic2) {
+                        int totalLikes1 = topic1.getLikes().size();
+                        int totalLikes2 = topic2.getLikes().size();
+                        // Sort in descending order
+                        return Integer.compare(totalLikes2, totalLikes1);
+                    }
+                });
+                prepareRecyclerView(getActivity(), RVForum, forumTopics);
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public void setMostCommentsFilter() {
+        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
+            @Override
+            public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
+                // Sort the forumTopics based on total likes and comments
+                Collections.sort(forumTopics, new Comparator<ForumTopic>() {
+                    @Override
+                    public int compare(ForumTopic topic1, ForumTopic topic2) {
+                        int totalComments1 = topic1.getCommentID().size();
+                        int totalComments2 = topic2.getCommentID().size();
+                        // Sort in descending order
+                        return Integer.compare(totalComments2, totalComments1);
+                    }
+                });
+                prepareRecyclerView(getActivity(), RVForum, forumTopics);
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public void resetButtonTextColor(){
+        for(Button button : filterButtons){
+            button.setTextColor(getResources().getColor(R.color.white));
+        }
+    }
+
 }
