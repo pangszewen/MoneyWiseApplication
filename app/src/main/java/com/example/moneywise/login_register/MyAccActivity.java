@@ -52,6 +52,7 @@ public class MyAccActivity extends AppCompatActivity {
     FirebaseStorage fStorage;
     String uid;
     Uri profilepic_uri;
+    ArrayAdapter<CharSequence> g_adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +83,7 @@ public class MyAccActivity extends AppCompatActivity {
         loadDetailsFromDB();
 
         spinner_gender=findViewById(R.id.gender_spinner);
-        ArrayAdapter<CharSequence> g_adapter=ArrayAdapter.createFromResource(
+        g_adapter=ArrayAdapter.createFromResource(
                 this,
                 R.array.genders,
                 R.layout.dropdown_item
@@ -114,7 +115,6 @@ public class MyAccActivity extends AppCompatActivity {
             }
         });
 
-
         btn_change_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,7 +126,6 @@ public class MyAccActivity extends AppCompatActivity {
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email=editTextemail.getText().toString();
                 String name=editTextname.getText().toString();
                 String gender=spinner_gender.getText().toString();
                 String dob=editTextDOB.getText().toString();
@@ -173,7 +172,11 @@ public class MyAccActivity extends AppCompatActivity {
                 String name=value.getString("name");
                 detail_name.setText(name);
                 editTextname.setText(name);
-                spinner_gender.setText(value.getString("gender"));
+                String selectedGender = value.getString("gender");
+                int position = g_adapter.getPosition(selectedGender);
+                if (position != -1) {
+                    spinner_gender.setListSelection(position);
+                }
                 editTextDOB.setText(value.getString("dob"));
             }
         });
