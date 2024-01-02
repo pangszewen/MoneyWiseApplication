@@ -42,7 +42,6 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Forum_MainActivity forumMainActivity = new Forum_MainActivity();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum_my_topic);
         auth = FirebaseAuth.getInstance();

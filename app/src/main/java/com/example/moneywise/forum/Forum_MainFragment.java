@@ -200,6 +200,7 @@ public class Forum_MainFragment extends Fragment {
             @Override
             public void onRefresh() {
                 btn_mostRecent.performClick();
+                setSearchBarAdapter();
                 RVForumRefresh.setRefreshing(false);
             }
         });
@@ -329,6 +330,16 @@ public class Forum_MainFragment extends Fragment {
         for(Button button : filterButtons){
             button.setTextColor(getResources().getColor(R.color.white));
         }
+    }
+
+    public void updateAdapterWithNewTopic(ForumTopic newTopic) {
+        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
+            @Override
+            public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
+                adapter = new ForumTopic_SearchAdapter(getActivity(), forumTopics);
+                search_box.setAdapter(adapter);
+            }
+        });
     }
 
 }
