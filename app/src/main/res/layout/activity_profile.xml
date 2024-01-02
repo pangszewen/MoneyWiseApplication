@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".login_register.ProfileActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_grey"
+        android:elevation="4dp"
+        android:padding="15dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_arrow_back_white"
+            android:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/profile_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pt_sans"
+            android:text="@string/profile"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
+
+        <RelativeLayout
+            android:id="@+id/user_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginHorizontal="12dp"
+            android:background="@drawable/rectangle_rounded_corners_dark_yellow"
+            android:backgroundTint="@color/sky_blue"
+            android:gravity="start"
+            android:padding="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_txt">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/profile_pic_cardview"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="15dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="250dp">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/profile_pic"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center"
+                    app:cardCornerRadius="250dp">
+
+                    <ImageView
+                        android:id="@+id/IV_profilepic"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/profile_pic" />
+
+                </androidx.cardview.widget.CardView>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/detail_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_toEndOf="@+id/profile_pic_cardview"
+                android:text="@string/name"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/detail_role"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/detail_name"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/profile_pic_cardview"
+                android:text="@string/role"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/gender_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/detail_name"
+                android:layout_above="@+id/detail_role"
+                android:background="@drawable/baseline_female_24" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="10dp"
+            android:padding="10dp"
+            android:background="@drawable/rectangle_rounded_white"
+            android:backgroundTint="@color/white"
+            android:orientation="vertical"
+            android:elevation="5dp">
+
+            <RelativeLayout
+                android:id="@+id/myacc_column"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp">
+
+                <ImageView
+                    android:id="@+id/myacc_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/myacc_icon" />
+
+                <TextView
+                    android:id="@+id/myacc_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_toEndOf="@+id/myacc_icon"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="@string/my_account"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/myacc_txt"
+                    android:layout_toEndOf="@+id/myacc_icon"
+                    android:fontFamily="@font/pt_sans"
+                    android:textColor="#ABABAB"
+                    android:text="Make changes to your account"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:id="@+id/myacc_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/baseline_keyboard_arrow_right_24"
+                    app:tint="#ABABAB" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/theme_column"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp">
+
+                <ImageView
+                    android:id="@+id/theme_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/theme_icon" />
+
+                <TextView
+                    android:id="@+id/theme_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_toEndOf="@+id/theme_icon"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="Theme"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/theme_txt"
+                    android:layout_toEndOf="@+id/theme_icon"
+                    android:fontFamily="@font/pt_sans"
+                    android:textColor="#ABABAB"
+                    android:text="Manage your app theme"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:id="@+id/theme_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/baseline_keyboard_arrow_right_24"
+                    app:tint="#ABABAB" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/noti_column"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp">
+
+                <ImageView
+                    android:id="@+id/noti_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/noti_icon" />
+
+                <TextView
+                    android:id="@+id/noti_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_toEndOf="@+id/noti_icon"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="Notification"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/noti_txt"
+                    android:layout_toEndOf="@+id/noti_icon"
+                    android:fontFamily="@font/pt_sans"
+                    android:textColor="#ABABAB"
+                    android:text="Manage your notification"
+                    android:textSize="14dp" />
+
+                <Switch
+                    android:id="@+id/noti_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:thumb="@drawable/bg_thumb2"
+                    android:track="@drawable/bg_track2" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/adm_column"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp">
+
+                <ImageView
+                    android:id="@+id/adm_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/adm_icon" />
+
+                <TextView
+                    android:id="@+id/adm_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_toEndOf="@+id/adm_icon"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="Administrator Mode"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/adm_txt"
+                    android:layout_toEndOf="@+id/adm_icon"
+                    android:fontFamily="@font/pt_sans"
+                    android:textColor="#ABABAB"
+                    android:text="Manage forum and courses"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:id="@+id/adm_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/baseline_keyboard_arrow_right_24"
+                    app:tint="#ABABAB" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/logout_column"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp">
+
+                <ImageView
+                    android:id="@+id/logout_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/logout_icon" />
+
+                <TextView
+                    android:id="@+id/logout_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_toEndOf="@+id/logout_icon"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="Log out"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/logout_txt"
+                    android:layout_toEndOf="@+id/logout_icon"
+                    android:fontFamily="@font/pt_sans"
+                    android:textColor="#ABABAB"
+                    android:text="Further secure your account for safety"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:id="@+id/logout_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/baseline_keyboard_arrow_right_24"
+                    app:tint="#ABABAB" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/pt_sans"
+                android:text="More"
+                android:textColor="@color/black"
+                android:textSize="23dp" />
+
+            <RelativeLayout
+                android:id="@+id/hs_column"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp">
+
+                <ImageView
+                    android:id="@+id/hs_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/hs_icon" />
+
+                <TextView
+                    android:id="@+id/hs_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_toEndOf="@+id/hs_icon"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="@string/help_support"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+                <ImageView
+                    android:id="@+id/hs_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/baseline_keyboard_arrow_right_24"
+                    app:tint="#ABABAB" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/about_column"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp">
+
+                <ImageView
+                    android:id="@+id/about_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/about_icon" />
+
+                <TextView
+                    android:id="@+id/about_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_toEndOf="@+id/about_icon"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="About App"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+                <ImageView
+                    android:id="@+id/about_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/baseline_keyboard_arrow_right_24"
+                    app:tint="#ABABAB" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

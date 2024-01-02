@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:paddingVertical="30dp"
+    android:paddingHorizontal="30dp"
+    tools:context=".login_register.VerifyEmailActivity">
+
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:layout_gravity="left"
+        android:layout_marginBottom="25dp"
+        app:srcCompat="@drawable/round_arrow_back_white"
+        app:tint="@color/black" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        app:srcCompat="@drawable/baseline_verified_24"
+        app:tint="@color/blue" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:text="Verify your email"
+        android:fontFamily="@font/pt_sans"
+        android:textColor="@color/blue"
+        android:textStyle="bold"
+        android:textSize="36sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A verification email has been sent to your email address. Please check your email and click on the link to verify your email address."
+        android:textSize="16sp"
+        android:layout_marginBottom="30dp"
+        android:fontFamily="@font/pt_sans"/>
+
+    <Button
+        android:id="@+id/btn_send_ve"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/pt_sans"
+        android:backgroundTint="@color/blue"
+        android:background="@drawable/rectangle_rounded_corners_dark_yellow"
+        android:text="Send Again"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/cooldown"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:fontFamily="@font/pt_sans"
+        android:gravity="center"
+        android:text="60"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:background="@drawable/rectangle_rounded_corners_dark_yellow"
+        android:backgroundTint="@color/sky_blue"/>
+</LinearLayout>

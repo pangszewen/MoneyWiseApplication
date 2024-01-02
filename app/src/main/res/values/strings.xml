@@ -14,4 +14,34 @@
     <string name="Cnq">Courses &amp; Quizzes</string>
     <string name="Snn">Scholarship &amp; News</string>
 
+    //Login_register
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_up_u"><u>Sign up</u></string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="forget_password"><u>Forget password?</u></string>
+    <string name="name">Name</string>
+    <string name="gender">Gender</string>
+    <string-array name="genders">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+    <string name="role">Role</string>
+    <string-array name="roles">
+        <item>Learner</item>
+        <item>Advisor</item>
+    </string-array>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="first_name">First Name</string>
+    <string name="learner">LEARNER</string>
+    <string name="advisor">ADVISOR</string>
+    <string name="age">Age</string>
+    <string name="qualification">Qualification</string>
+    <string name="profile">Profile</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="sign_in_u"><u>Sign in</u></string>
+    <string name="help_support"><![CDATA[Help & Support]]></string>
+    <string name="my_account">My Account</string>
 </resources>
