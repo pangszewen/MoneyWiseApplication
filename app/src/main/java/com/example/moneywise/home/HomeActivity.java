@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -23,6 +24,8 @@ import com.example.moneywise.forum.Forum_MainFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class HomeActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
@@ -30,18 +33,28 @@ public class HomeActivity extends AppCompatActivity {
     NavigationView navigationView;
     FragmentContainerView FCVHome;
     Toolbar toolbar;
+    TextView TVWelcome;
+    FirebaseAuth auth;
+    FirebaseUser user;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        //userID = user.getUid();
+        userID = "Zqa2pZRzccPx13bEjxZho9UVlT83";
         drawerLayout = findViewById(R.id.DLHomePage);
         navigationView = findViewById(R.id.nav_side);
         toolbar = findViewById(R.id.myToolBar);
         FCVHome = findViewById(R.id.FCVHome);
+        TVWelcome = findViewById(R.id.TVWelcome);
         bottomNavigationView = findViewById(R.id.bottomHomeNavigationView);
         bottomNavigationView.setBackground(null);
         replaceFragment(new HomeFragment());
+
 
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

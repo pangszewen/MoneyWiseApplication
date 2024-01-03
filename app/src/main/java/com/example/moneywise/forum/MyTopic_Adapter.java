@@ -1,8 +1,6 @@
 package com.example.moneywise.forum;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -11,22 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneywise.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
@@ -36,8 +23,7 @@ import java.util.List;
 
 public class MyTopic_Adapter extends RecyclerView.Adapter<MyTopic_Adapter.MyTopic_AdapterVH>{
     List<ForumTopic> forumTopics = new ArrayList<>();
-    FirebaseFirestore db;
-    Firebase_Forum firebase = new Firebase_Forum();
+    Firebase_Forum firebaseForum = new Firebase_Forum();
     Context context;
 
     public MyTopic_Adapter(Context context, List<ForumTopic> forumTopics) {
@@ -63,7 +49,7 @@ public class MyTopic_Adapter extends RecyclerView.Adapter<MyTopic_Adapter.MyTopi
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedTopicDate = topicDate.format(formatter);
 
-        firebase.getFirstTopicImage(forumTopic.getTopicID(), new Firebase_Forum.FirstTopicImageCallback() {
+        firebaseForum.getFirstTopicImage(forumTopic.getTopicID(), new Firebase_Forum.FirstTopicImageCallback() {
             @Override
             public void onFirstTopicImageReceived(Uri uri) {
                 String firstImageUri = uri.toString();

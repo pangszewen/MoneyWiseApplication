@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.widget.Toast;
 
 public class DeleteTopic {
-    Firebase_Forum firebase = new Firebase_Forum();
+    Firebase_Forum firebaseForum = new Firebase_Forum();
 
     public interface ConfirmationDialogCallback{
         void onConfirmation(boolean status);
@@ -31,7 +31,7 @@ public class DeleteTopic {
 
 
     public void deleteTopic(Context context, ForumTopic deleteTopic) {
-        firebase.deleteTopic(deleteTopic.getTopicID(), new Firebase_Forum.DeleteTopicCallback() {
+        firebaseForum.deleteTopic(deleteTopic.getTopicID(), new Firebase_Forum.DeleteTopicCallback() {
             @Override
             public void onDeleteTopic(boolean status) {
                 if (status) {

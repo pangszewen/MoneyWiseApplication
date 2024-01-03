@@ -4,41 +4,29 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneywise.R;
+import com.example.moneywise.login_register.Firebase_User;
 import com.example.moneywise.login_register.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.Firebase;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_AdapterVH> {
     ArrayList<ForumTopic> forumTopics = new ArrayList<>();
-    Firebase_Forum firebase = new Firebase_Forum();
+    Firebase_Forum firebaseForum = new Firebase_Forum();
+    Firebase_User firebaseUser = new Firebase_User();
     Context context;
 
     public Forum_Adapter(Context context, ArrayList<ForumTopic> forumTopics) {
@@ -65,7 +53,7 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedTopicDate = topicDate.format(formatter);
 
-        firebase.getUser(forumTopic.getUserID(), new Firebase_Forum.UserCallback() {
+        firebaseUser.getUser(forumTopic.getUserID(), new Firebase_Forum.UserCallback() {
             @Override
             public void onUserReceived(User user) {
                 holder.topicAuthor.setText("by " + user.getName());
@@ -73,7 +61,7 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
         });
 
         holder.topicImage.setImageResource(R.drawable.outline_image_grey);
-        firebase.getFirstTopicImage(forumTopic.getTopicID(), new Firebase_Forum.FirstTopicImageCallback() {
+        firebaseForum.getFirstTopicImage(forumTopic.getTopicID(), new Firebase_Forum.FirstTopicImageCallback() {
             @Override
             public void onFirstTopicImageReceived(Uri uri) {
                 String firstImageUri = uri.toString();
