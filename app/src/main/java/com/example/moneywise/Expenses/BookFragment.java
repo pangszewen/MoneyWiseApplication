@@ -210,6 +210,9 @@ public class BookFragment extends Fragment {
                             // Convert to int if the decimal part is zero
                             newBudget = (int) budget;
                             budgetTV.setText("RM" + Integer.toString((int)newBudget));
+                            if (budget==0){
+                                budgetTV.setText("Not Set");
+                            }
                         } else {
                             newBudget = budget;
                             budgetTV.setText("RM" + Double.toString(newBudget));

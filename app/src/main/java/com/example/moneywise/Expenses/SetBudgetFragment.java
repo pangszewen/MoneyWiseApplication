@@ -238,8 +238,10 @@ public class SetBudgetFragment extends Fragment {
                     } else {
                         // Document does not exist, add a new one
                         monthBudgetCollection.add(budget).addOnSuccessListener(documentReference -> {
-                                    Toast.makeText(requireContext(), "Budget saved successfully", Toast.LENGTH_SHORT).show();
-                                    // Clear the UI or perform any other necessary actions
+                                    if (!toastShown) {
+                                        Toast.makeText(requireContext(), "Budget saved successfully", Toast.LENGTH_SHORT).show();
+                                        toastShown = true;
+                                    }
                                 })
                                 .addOnFailureListener(e -> {
                                     Toast.makeText(requireContext(), "Failed to save budget", Toast.LENGTH_SHORT).show();

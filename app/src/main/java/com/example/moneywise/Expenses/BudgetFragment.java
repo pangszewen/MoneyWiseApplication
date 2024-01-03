@@ -208,6 +208,9 @@ public class BudgetFragment extends Fragment {
                     // Convert to int if the decimal part is zero
                     newBudget = (int) budget;
                     tvBudget0.setText("RM" + Integer.toString((int)newBudget));
+                    if (budget==0){
+                        tvBudget0.setText("Not Set");
+                    }
                 } else {
                     newBudget = budget;
                     tvBudget0.setText("RM" + Double.toString(newBudget));
