@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".scholarship.NewsFullActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:gravity="center_horizontal"
+        android:id="@+id/toolbarToolbar"
+        android:layout_height="65dp"
+        android:layout_width="match_parent"
+        app:contentInsetStart="0dp"
+        style="@style/rectangle_header_blue_grey">
+        <LinearLayout android:id="@+id/header_title"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:layout_marginTop="18dp"
+            android:layout_width="match_parent"
+            android:orientation="horizontal">
+            <ImageView android:id="@+id/imageArrowleft"
+                android:layout_height="30dp"
+                android:layout_width="30dp"
+                android:layout_marginStart="15dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_arrowleft"
+                tools:ignore="ContentDescription" />
+            <TextView android:ellipsize="end"
+                android:id="@+id/txtNews"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="140dp"
+                android:layout_width="wrap_content"
+                android:singleLine="true"
+                style="@style/txtDonegalOneregular20_white"
+                android:text="News"/>
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbarToolbar"
+        android:id="@+id/web_view"/>
+
+</RelativeLayout>

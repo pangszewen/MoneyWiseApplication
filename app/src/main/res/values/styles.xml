@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    //shapes
+
+    <style name="groupStyle_white_rec">
+        <item name="android:background">@drawable/rectangle_bg_white</item>
+    </style>
+
+    <style name="groupStyleblack">
+        <item name="android:background">@drawable/rectangle_bg_black</item>
+    </style>
+
+    <style name="btnSolidRounded">
+        <item name="android:textSize">13dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+        <item name="android:background">@drawable/rectangle_bg_dark_blue_grey_radius_20</item>
+    </style>
+
+    <style name="rectangle_light_grey">
+        <item name="android:background">@drawable/rectangle_bg_light_grey</item>
+    </style>
+
+    <style name="rectangle_header_blue_grey">
+        <item name="android:background">@drawable/rectangle_bg_header_blue_grey</item>
+    </style>
+
+    <style name="scho_main_rectangle_header_blue_grey">
+        <item name="android:background">@drawable/rectangle_rounded_blue_grey</item>
+    </style>
+
+
+    <style name="EditTextStyle">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/mid_dark_grey</item>
+        <item name="android:fontFamily">@font/donegal_one</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+        <item name="android:background">@drawable/rectangle_bg_white_radius_20_5</item>
+    </style>
+
+    <style name="rectangle_white_radius20">
+        <item name="android:background">@drawable/rectangle_bg_white_radius_10</item>
+    </style>
+
+    <style name="txtRoundedOutline">
+        <item name="android:textSize">13dp</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+        <item name="android:background">@drawable/rectangle_border_blue_radius_12</item>
+    </style>
+
+    <style name="rectangle_border_grey">
+        <item name="android:background">@drawable/rectangle_border_gray_600_radius_tl_4_tr_4</item>
+    </style>
+
+
+
+    //Donegal One
+
+    <style name="txtDonegalOneregular8_dark_grey">
+        <item name="android:textSize">8dp</item>
+        <item name="android:textColor">@color/dark_grey_2</item>
+        <item name="android:fontFamily">@font/donegal_one</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="txtDonegalOneregular20_white">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/donegal_one</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="txtDonegalregular28">
+        <item name="android:textSize">28dp</item>
+        <item name="android:textColor">@color/dark_blue_grey</item>
+        <item name="android:fontFamily">@font/donegal_one</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+
+    //PT Sans
+
+    <style name="txtPTSansregular8_dark_grey">
+        <item name="android:textSize">8dp</item>
+        <item name="android:textColor">@color/dark_grey_2</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="txtPTSansregular8_blue">
+        <item name="android:textSize">8dp</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="txtPTSansbold11">
+        <item name="android:textSize">11dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+
+    <style name="txtPTSansregular12">
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="txtPTSansregular12_white">
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="txtPTSansregular14">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="txtPTSansregular14_dark_grey">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/dark_grey_2</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="txtPTSansregular15_dark_grey">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/dark_grey_2</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="txtPTSansregular15">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="txtPTSansbold15">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/ptsansbold</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+
+    <style name="txtPTSansregular16">
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="txtPTSansbold20_white">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+
+    <style name="txtPTSansbold20">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+
+    <style name="txtPTSansbold26_black">
+        <item name="android:textSize">26dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/ptsansbold</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="txtPTSansbold24_black">
+        <item name="android:textSize">24dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/ptsansbold</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="txtPTSansregular20">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="txtPTSansregular20_1">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="txtPTSansregular21_sharp_blue">
+        <item name="android:textSize">21dp</item>
+        <item name="android:textColor">@color/sharp_blue</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+
+    <style name="txtPTSansbold24_white">
+        <item name="android:textSize">24dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+
+    <style name="txtPTSansbold26">
+        <item name="android:textSize">26dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+
+</resources>
