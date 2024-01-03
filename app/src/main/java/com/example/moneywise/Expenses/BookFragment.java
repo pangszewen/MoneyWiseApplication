@@ -63,6 +63,8 @@ public class BookFragment extends Fragment {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user = auth.getCurrentUser();
     String userID = user.getUid();
+    TextView budgetTV, expenseTV, differenceTV, monthTV;
+    ProgressBar progressBar;
     Timestamp timestamp = Timestamp.now();
     Date currentDate = new Date(timestamp.getSeconds() * 1000); // Convert seconds to milliseconds
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMMyyyy", Locale.US);
@@ -124,75 +126,14 @@ public class BookFragment extends Fragment {
 
         recyclerView = rootView.findViewById(R.id.scrollView2);
         RVRefreshExpense = rootView.findViewById(R.id.swipeRefreshLayout);
-        TextView budgetTV = rootView.findViewById(R.id.TVAmountBudget);
-        TextView expenseTV = rootView.findViewById(R.id.TVAmountExpenses);
-        TextView differenceTV = rootView.findViewById(R.id.TVAmountBalance);
-        TextView monthTV = rootView.findViewById(R.id.TVMonth);
-        monthTV.setText(formattedDate);
+        budgetTV = rootView.findViewById(R.id.TVAmountBudget);
+        expenseTV = rootView.findViewById(R.id.TVAmountExpenses);
+        differenceTV = rootView.findViewById(R.id.TVAmountBalance);
+        monthTV = rootView.findViewById(R.id.TVMonth);
+        setExpensesView();
         //final double[] budget = {0};
         setUpRVExpense();
-        ProgressBar progressBar = rootView.findViewById(R.id.progressBar);
-
-        fbe.getBudget(0, new Firebase_Expenses.BudgetCallback() {
-            @Override
-            public void onBudgetRetrieved(double budget) {
-                // Assign the retrieved budget to the array
-                //budget = retrievedBudget;
-
-                double newBudget;
-
-                if (budget % 1 == 0) {
-                    // Convert to int if the decimal part is zero
-                    newBudget = (int) budget;
-                    budgetTV.setText("RM" + Integer.toString((int)newBudget));
-                    if (budget==0){
-                        budgetTV.setText("Not Set");
-                    }
-                } else {
-                    newBudget = budget;
-                    budgetTV.setText("RM" + Double.toString(newBudget));
-                }
-                fbe.calculateTotalExpense(new Firebase_Expenses.TotalExpenseCallback() {
-                    double newExpense;
-                    @Override
-                    public void onTotalExpenseCalculated(double totalExpense) {
-                        if (totalExpense % 1 == 0) {
-                            // Convert to int if the decimal part is zero
-                            newExpense = (int) totalExpense;
-                            expenseTV.setText("RM" + Integer.toString((int)newExpense));
-                        } else {
-                            newExpense = totalExpense;
-                            expenseTV.setText("RM" + Double.toString(newExpense));
-                        }
-
-                        // Calculate the difference using the array
-                        double difference = newBudget - newExpense;
-
-                        if (difference % 1 == 0) {
-                            // Convert to int if the decimal part is zero
-                            int newDifference = (int) difference;
-                            differenceTV.setText("RM" + Integer.toString(newDifference));
-                        } else {
-                            differenceTV.setText("RM" + Double.toString(difference));
-                        }
-                        try {
-                            int progress = (int) ((newExpense / newBudget) * 100);
-                            progressBar.setProgress(progress);
-                        } catch (NumberFormatException e) {
-                            // Handle the case where parsing fails
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Exception exception) {
-                        // Handle the error, e.g., log it or display a message
-                        exception.printStackTrace();
-                    }
-                });
-            }
-        });
-
+        progressBar = rootView.findViewById(R.id.progressBar);
 
         RVRefreshExpense.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -263,6 +204,69 @@ public class BookFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    public void setExpensesView(){
+        monthTV.setText(formattedDate);
+        fbe.getBudget(0, new Firebase_Expenses.BudgetCallback() {
+            @Override
+            public void onBudgetRetrieved(double budget) {
+                // Assign the retrieved budget to the array
+                //budget = retrievedBudget;
+
+                double newBudget;
+
+                if (budget % 1 == 0) {
+                    // Convert to int if the decimal part is zero
+                    newBudget = (int) budget;
+                    budgetTV.setText("RM" + Integer.toString((int)newBudget));
+                    if (budget==0){
+                        budgetTV.setText("Not Set");
+                    }
+                } else {
+                    newBudget = budget;
+                    budgetTV.setText("RM" + Double.toString(newBudget));
+                }
+                fbe.calculateTotalExpense(new Firebase_Expenses.TotalExpenseCallback() {
+                    double newExpense;
+                    @Override
+                    public void onTotalExpenseCalculated(double totalExpense) {
+                        if (totalExpense % 1 == 0) {
+                            // Convert to int if the decimal part is zero
+                            newExpense = (int) totalExpense;
+                            expenseTV.setText("RM" + Integer.toString((int)newExpense));
+                        } else {
+                            newExpense = totalExpense;
+                            expenseTV.setText("RM" + Double.toString(newExpense));
+                        }
+
+                        // Calculate the difference using the array
+                        double difference = newBudget - newExpense;
+
+                        if (difference % 1 == 0) {
+                            // Convert to int if the decimal part is zero
+                            int newDifference = (int) difference;
+                            differenceTV.setText("RM" + Integer.toString(newDifference));
+                        } else {
+                            differenceTV.setText("RM" + Double.toString(difference));
+                        }
+                        try {
+                            int progress = (int) ((newExpense / newBudget) * 100);
+                            progressBar.setProgress(progress);
+                        } catch (NumberFormatException e) {
+                            // Handle the case where parsing fails
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+                        // Handle the error, e.g., log it or display a message
+                        exception.printStackTrace();
+                    }
+                });
+            }
+        });
     }
 
     private void replaceFragment(Fragment fragment) {
