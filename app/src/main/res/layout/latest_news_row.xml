@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.cardview.widget.CardView
+    android:id="@+id/newsCard"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
 
     <LinearLayout
         android:id="@+id/latest_news_row_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="0.7"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp">
 
             <TextView
@@ -41,7 +41,7 @@
                 android:text="title"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/black"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 android:textStyle="bold"/>
 
         </LinearLayout>
@@ -61,8 +61,6 @@
         android:layout_height="1dp"
         android:layout_marginRight="160dp"
         android:layout_marginLeft="10dp"
-        android:background="@color/darker_grey"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/latest_news_row_container" />
+        android:background="@color/darker_grey" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -66,6 +66,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(),NewsFullActivity.class);
             intent.putExtra("url", article.getUrl());
+            intent.putExtra("originActivity", "FindNewsActivity");
             v.getContext().startActivity(intent);
             ((Activity) v.getContext()).finish();
         });
