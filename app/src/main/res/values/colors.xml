@@ -25,4 +25,11 @@
     <color name="brown">#7B5C4B</color>
     <color name="green">#008000</color>
     <color name="pink">#FFEBF3</color>
+
+    <color name="header_blue_grey">#485d74</color>
+    <color name="mid_dark_grey">#4c000000</color>
+    <color name="dark_grey_2">#7f000000</color>
+    <color name="dark_blue_grey">#b227437b</color>
+    <color name="sharp_blue">#3f51b5</color>
+    <color name="light_grey">#66d9d9d9</color>
 </resources>

@@ -52,6 +52,7 @@ dependencies {
     implementation ("net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation ("com.github.bumptech.glide:glide:4.11.0")
+    implementation ("com.github.KwabenBerko:News-API-Java:1.0.2")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.11.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.example.moneywise.R;
 import com.example.moneywise.forum.Forum_MainFragment;
+import com.example.moneywise.scholarship.ScholarshipMainFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
@@ -64,6 +65,9 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
                 }else if(itemID== R.id.iconCnq){
                     //startActivity(new Intent(HomeActivity.this, activity_course_display.class));
+                    return true;
+                }else if(itemID== R.id.iconSnn) {
+                    replaceFragment(new ScholarshipMainFragment());
                     return true;
                 }else
                     return false;
