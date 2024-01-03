@@ -30,6 +30,7 @@
 
             <!-- Your content goes here -->
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ExpensesView"
                 android:layout_width="329dp"
                 android:layout_height="match_parent">
 

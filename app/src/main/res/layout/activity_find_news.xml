@@ -17,16 +17,15 @@
         <androidx.appcompat.widget.Toolbar
             android:gravity="center_horizontal"
             android:id="@+id/toolbarToolbar"
-            android:layout_height="65dp"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
             app:contentInsetStart="0dp"
             style="@style/rectangle_header_blue_grey">
-            <LinearLayout android:id="@+id/header_title"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
-                android:layout_marginTop="18dp"
-                android:layout_width="match_parent"
-                android:orientation="horizontal">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp">
                 <ImageView android:id="@+id/imageArrowleft"
                     android:layout_height="30dp"
                     android:layout_width="30dp"
@@ -34,44 +33,41 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/img_arrowleft"
                     tools:ignore="ContentDescription"
-                    tools:src="@drawable/img_arrowleft"/>
-                <TextView android:ellipsize="end"
+                    tools:src="@drawable/img_arrowleft"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+                <TextView
                     android:id="@+id/txtNews"
-                    android:gravity="center"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="140dp"
                     android:layout_width="wrap_content"
                     android:singleLine="true"
-                    style="@style/txtDonegalOneregular20_white"
-                    android:text="News"/>
-            </LinearLayout>
-        </androidx.appcompat.widget.Toolbar>
-
-        <FrameLayout
-            android:id="@+id/frameSearch"
-            style="@style/rectangle_header_blue_grey"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start">
-
+                    style="@style/txtDonegalOneregular25_white"
+                    android:text="News"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchNews"
                 android:background="@drawable/rectangle_bg_white_radius_20_5"
                 android:drawableStart="@drawable/img_search_icon"
-                android:ellipsize="end"
                 style="@style/txtDonegalregular28"
                 app:queryHint="Search"
                 app:iconifiedByDefault="false"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="5dp"
-                android:layout_width="350dp"
-                android:paddingBottom="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_width="match_parent"
                 android:singleLine="true"
-                tools:ignore="Autofill"/>
-
-        </FrameLayout>
+                tools:ignore="Autofill"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtNews"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -79,7 +75,9 @@
             android:id="@+id/recyclerNewsList"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             itemSpace="25dp"
