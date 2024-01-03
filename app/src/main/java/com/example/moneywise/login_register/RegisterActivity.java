@@ -189,6 +189,7 @@ public class RegisterActivity extends AppCompatActivity {
         userdetails.put("gender",gender);
         userdetails.put("dob",DOB);
         userdetails.put("role",role);
+        userdetails.put("notification",true);
         documentReference.set(userdetails).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
