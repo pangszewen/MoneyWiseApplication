@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="20dp"
+    android:layout_margin="5dp">
+    <FrameLayout android:id="@+id/frameNews"
+        android:layout_gravity="center"
+        android:layout_height="210dp"
+        android:layout_width="373dp">
+
+        <ImageView android:id="@+id/imageNews"
+            android:layout_gravity="start"
+            android:layout_height="210dp"
+            android:layout_width="match_parent"
+            android:scaleType="fitXY"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/img_image184"/>
+        <LinearLayout android:id="@+id/linearDetails"
+            android:gravity="start|bottom"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linearAuthorAndDate"
+                android:background="@drawable/rectangle_bg_white_radius_tl_tr_20"
+                android:alpha="0.9"
+                android:gravity="start|bottom"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                >
+                <TextView android:ellipsize="end"
+                    android:id="@+id/txtAuthorName"
+                    android:layout_gravity="start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:singleLine="true"
+                    style="@style/txtPTSansregular12"
+                    tools:text="Aiman Hakim"/>
+
+                <TextView android:ellipsize="end"
+                    android:id="@+id/txtDate"
+                    android:gravity="end"
+                    android:layout_gravity="end"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.6"                    android:singleLine="true"
+                    style="@style/txtPTSansregular12"
+                    tools:text="23 April 2023"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_bg_white_radius_bl_br_20"
+                android:alpha="0.9"
+                >
+            <TextView
+                android:layout_gravity="bottom"
+                android:id="@+id/txtNewsTitle"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="8dp"
+                android:layout_width="match_parent"
+                style="@style/txtPTSansbold20"
+                tools:text="India Shelter Finance IPO: 10 must-know points from RHP"/>
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</androidx.cardview.widget.CardView>

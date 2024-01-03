@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".scholarship.AdminAddScholarshipActivity">
+
+    <LinearLayout android:gravity="center_horizontal"
+        android:id="@+id/linearAddScholarship"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:gravity="center_horizontal"
+            android:id="@+id/toolbarToolbar"
+            android:layout_height="70dp"
+            android:layout_width="match_parent"
+            app:contentInsetStart="0dp"
+            style="@style/rectangle_header_blue_grey">
+            <LinearLayout
+                android:id="@+id/header_title"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:layout_marginTop="18dp"
+                android:layout_width="match_parent"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/imageArrowleft"
+                    android:layout_height="30dp"
+                    android:layout_width="30dp"
+                    android:layout_marginStart="15dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img_arrowleft"
+                    tools:ignore="ContentDescription" />
+                <TextView android:ellipsize="end"
+                    android:id="@+id/txtScholarship"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="90dp"
+                    android:layout_width="wrap_content"
+                    android:singleLine="true"
+                    style="@style/txtDonegalOneregular20_white"
+                    android:text="Add Scholarship"/>
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout android:gravity="center_horizontal"
+                android:id="@+id/linearSchoDetails"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                style="@style/groupStyle_white_rec">
+
+                <LinearLayout android:gravity="center_horizontal"
+                    android:id="@+id/linearTitle"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout android:gravity="center_horizontal"
+                        android:id="@+id/linearContentTitle"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        style="@style/rectangle_border_grey">
+                        <LinearLayout android:gravity="start"
+                            android:id="@+id/linearStateLayerTitle"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_width="match_parent"
+                            android:orientation="vertical">
+                            <TextView android:ellipsize="end"
+                                android:id="@+id/headerTitle"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_width="wrap_content"
+                                android:lineSpacingExtra="3dp"
+                                android:paddingBottom="1dp"
+                                android:paddingEnd="4dp"
+                                android:singleLine="true"
+                                style="@style/txtPTSansregular14_dark_grey"
+                                android:text="Title"/>
+
+                            <EditText android:ellipsize="end"
+                                android:id="@+id/ETTitle"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
+                                android:letterSpacing="0.03"
+                                android:lineSpacingExtra="5dp"
+                                android:singleLine="true"
+                                style="@style/txtPTSansregular16"
+                                android:hint="eg. MoneyWise Scholarship"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:gravity="center_horizontal"
+                    android:id="@+id/linearInstitution"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout android:gravity="center_horizontal"
+                        android:id="@+id/linearContentInstitution"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        style="@style/rectangle_border_grey">
+                        <LinearLayout android:gravity="start"
+                            android:id="@+id/linearStateLayerInstitution"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_width="match_parent"
+                            android:orientation="vertical">
+                            <TextView android:ellipsize="end"
+                                android:id="@+id/headerInstitution"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_width="wrap_content"
+                                android:lineSpacingExtra="3dp"
+                                android:paddingBottom="1dp"
+                                android:paddingEnd="4dp"
+                                android:singleLine="true"
+                                style="@style/txtPTSansregular14_dark_grey"
+                                android:text="Institution/Organization"/>
+
+                            <EditText android:ellipsize="end"
+                                android:id="@+id/ETInsititution"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
+                                android:letterSpacing="0.03"
+                                android:lineSpacingExtra="5dp"
+                                style="@style/txtPTSansregular16"
+                                android:hint="eg. MoneyWise University"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:gravity="center_horizontal"
+                    android:id="@+id/linearDeadline"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout android:gravity="center_horizontal"
+                        android:id="@+id/linearContentDeadline"
+                        android:layout_height="80dp"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        style="@style/rectangle_border_grey">
+                        <LinearLayout android:gravity="start"
+                            android:id="@+id/linearStateLayerDeadline"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_width="290dp"
+                            android:orientation="vertical">
+                            <TextView android:ellipsize="end"
+                                android:id="@+id/headerDeadline"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_width="wrap_content"
+                                android:lineSpacingExtra="3dp"
+                                android:paddingBottom="1dp"
+                                android:paddingEnd="4dp"
+                                android:singleLine="true"
+                                style="@style/txtPTSansregular14_dark_grey"
+                                android:text="Deadline(UTC+8)"/>
+
+                            <TextView
+                                android:id="@+id/txtDeadline"
+                                style="@style/txtPTSansregular14_dark_grey"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginEnd="10dp"
+                                android:ellipsize="end"
+                                android:letterSpacing="0.03"
+                                android:lineSpacingExtra="5dp"
+                                android:text="DD/MM/YYYY" />
+
+                        </LinearLayout>
+                        <ImageView android:id="@+id/imageCalendar"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="17dp"
+                            android:layout_marginTop="35dp"
+                            android:layout_width="24dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/img_calendar"
+                            tools:ignore="ContentDescription"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:gravity="center_horizontal"
+                    android:id="@+id/linearAbout"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout android:gravity="center_horizontal"
+                        android:id="@+id/linearContentAbout"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        style="@style/rectangle_border_grey">
+                        <LinearLayout android:gravity="start"
+                            android:id="@+id/linearStateLayerAbout"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_width="match_parent"
+                            android:orientation="vertical">
+                            <TextView android:ellipsize="end"
+                                android:id="@+id/headerAbout"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_width="wrap_content"
+                                android:lineSpacingExtra="3dp"
+                                android:paddingBottom="1dp"
+                                android:paddingEnd="4dp"
+                                android:singleLine="true"
+                                style="@style/txtPTSansregular14_dark_grey"
+                                android:text="About"/>
+
+                            <EditText android:ellipsize="end"
+                                android:id="@+id/ETAbout"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
+                                android:letterSpacing="0.03"
+                                android:lineSpacingExtra="5dp"
+                                style="@style/txtPTSansregular16"
+                                android:hint="Enter a short description"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:gravity="center_horizontal"
+                    android:id="@+id/linearValue"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout android:gravity="center_horizontal"
+                        android:id="@+id/linearContentValue"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        style="@style/rectangle_border_grey">
+                        <LinearLayout android:gravity="start"
+                            android:id="@+id/linearStateLayerValue"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_width="match_parent"
+                            android:orientation="vertical">
+                            <TextView android:ellipsize="end"
+                                android:id="@+id/headerValue"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_width="wrap_content"
+                                android:lineSpacingExtra="3dp"
+                                android:paddingBottom="1dp"
+                                android:paddingEnd="4dp"
+                                android:singleLine="true"
+                                style="@style/txtPTSansregular14_dark_grey"
+                                android:text="Value of Scholarship"/>
+
+                            <EditText android:ellipsize="end"
+                                android:id="@+id/ETValue"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
+                                android:letterSpacing="0.03"
+                                android:lineSpacingExtra="5dp"
+                                style="@style/txtPTSansregular16"
+                                android:hint="Enter the amount or value here..."/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:gravity="center_horizontal"
+                    android:id="@+id/linearDetails"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout android:gravity="center_horizontal"
+                        android:id="@+id/linearContentDetails"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        style="@style/rectangle_border_grey">
+                        <LinearLayout android:gravity="start"
+                            android:id="@+id/linearStateLayerDetails"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_width="match_parent"
+                            android:orientation="vertical">
+                            <TextView android:ellipsize="end"
+                                android:id="@+id/headerDetails"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_width="wrap_content"
+                                android:lineSpacingExtra="3dp"
+                                android:paddingBottom="1dp"
+                                android:paddingEnd="4dp"
+                                android:singleLine="true"
+                                style="@style/txtPTSansregular14_dark_grey"
+                                android:text="Details"/>
+
+                            <EditText android:ellipsize="end"
+                                android:id="@+id/ETDetails"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
+                                android:letterSpacing="0.03"
+                                android:lineSpacingExtra="5dp"
+                                style="@style/txtPTSansregular16"
+                                android:hint="Enter the details here..."/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:gravity="center_horizontal"
+                    android:id="@+id/linearWebsite"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="25dp"
+                    android:paddingBottom="20dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout android:gravity="center_horizontal"
+                        android:id="@+id/linearContentWebsite"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        style="@style/rectangle_border_grey">
+                        <LinearLayout android:gravity="start"
+                            android:id="@+id/linearStateLayerWebsite"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_width="match_parent"
+                            android:orientation="vertical">
+                            <TextView android:ellipsize="end"
+                                android:id="@+id/headerWebsite"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_width="wrap_content"
+                                android:lineSpacingExtra="3dp"
+                                android:paddingBottom="1dp"
+                                android:paddingEnd="4dp"
+                                android:singleLine="true"
+                                style="@style/txtPTSansregular14_dark_grey"
+                                android:text="Website"/>
+
+                            <EditText android:ellipsize="end"
+                                android:id="@+id/ETWebsite"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
+                                android:letterSpacing="0.03"
+                                android:lineSpacingExtra="5dp"
+                                style="@style/txtPTSansregular16"
+                                android:hint="Enter a URL"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:gravity="bottom|center_horizontal"
+            android:id="@+id/linearApply"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            style="@style/rectangle_header_blue_grey">
+            <Button android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:id="@+id/btnSave"
+                android:background="@color/transparent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="18dp"
+                android:layout_marginTop="17dp"
+                android:layout_width="wrap_content"
+                android:lineSpacingExtra="6dp"
+                android:singleLine="true"
+                android:textAllCaps="true"
+                style="@style/txtPTSansregular20_1"
+                android:text="Save"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
