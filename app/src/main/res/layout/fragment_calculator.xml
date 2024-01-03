@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/calcCL"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Base.Theme.Expenses"
+    tools:context=".Expenses.CalculatorFragment">
+
+    <LinearLayout
+        android:id="@+id/calcLinear"
+        android:layout_width="412dp"
+        android:layout_height="573dp"
+        android:background="@color/light_blue"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnCancelAll"
+                android:layout_width="15dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/light_blue"
+                android:src="@drawable/cross_svgrepo_com" />
+
+
+            <TextView
+                android:id="@+id/TVAddExpense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/pt_sans"
+                android:gravity="center_horizontal"
+                android:text="Add Expense"
+                android:textColor="@color/dark_grey"
+                android:textSize="25dp" />
+
+            <ImageButton
+                android:id="@+id/btnConfirmAll"
+                android:layout_width="15dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/light_blue"
+                android:src="@drawable/tick_svgrepo_com" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/button_Meal"
+                    android:layout_width="73dp"
+                    android:layout_height="63dp"
+                    android:layout_marginLeft="24dp"
+                    android:backgroundTint="@color/light_cream_yellow"
+                    android:drawableTop="@drawable/hamburger_burger_svgrepo_com" />
+
+                <Button
+                    android:id="@+id/button_Daily"
+                    android:layout_width="73dp"
+                    android:layout_height="63dp"
+                    android:layout_marginLeft="24dp"
+                    android:backgroundTint="@color/light_cream_yellow"
+                    android:drawableTop="@drawable/groceries_grocery_svgrepo_com" />
+
+                <Button
+                    android:id="@+id/button_Transport"
+                    android:layout_width="73dp"
+                    android:layout_height="63dp"
+                    android:layout_marginLeft="24dp"
+                    android:backgroundTint="@color/light_cream_yellow"
+                    android:drawableTop="@drawable/bus_svgrepo_com" />
+
+                <Button
+                    android:id="@+id/button_Communicate"
+                    android:layout_width="73dp"
+                    android:layout_height="63dp"
+                    android:layout_marginLeft="24dp"
+                    android:backgroundTint="@color/light_cream_yellow"
+                    android:drawableTop="@drawable/smartphone_touch_screen_svgrepo_com" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="3dp">
+
+                <Button
+                    android:id="@+id/button_Recreation"
+                    android:layout_width="73dp"
+                    android:layout_height="63dp"
+                    android:layout_marginLeft="24dp"
+                    android:backgroundTint="@color/light_cream_yellow"
+                    android:drawableTop="@drawable/cinema_screen_cinema_svgrepo_com" />
+
+                <Button
+                    android:id="@+id/button_Medical"
+                    android:layout_width="73dp"
+                    android:layout_height="63dp"
+                    android:layout_marginLeft="24dp"
+                    android:backgroundTint="@color/light_cream_yellow"
+                    android:drawableTop="@drawable/medical_kit_svgrepo_com" />
+
+                <Button
+                    android:id="@+id/button_Others"
+                    android:layout_width="73dp"
+                    android:layout_height="63dp"
+                    android:layout_marginLeft="24dp"
+                    android:backgroundTint="@color/light_cream_yellow"
+                    android:drawableTop="@drawable/more_circle_horizontal_svgrepo_com" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:background="#fddd5c"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="348dp"
+                android:layout_height="33dp"
+                android:id="@+id/CLResult"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/resultTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="0"
+                    android:textSize="30dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/myrTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="3dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="(RM)"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/resultTV" />
+
+                <EditText
+                    android:id="@+id/descET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:hint="Description"
+                    android:textSize="13dp"
+                    android:backgroundTint="@android:color/transparent"
+                    android:background="@null"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/calcLL"
+                android:layout_width="348dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="6dp"
+                android:background="@color/grey"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="337dp"
+                    android:layout_height="55dp"
+                    android:layout_marginLeft="6dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_7"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginLeft="13dp"
+                        android:backgroundTint="@color/dark_grey"
+                        android:paddingTop="4dp"
+                        android:text="7"
+                        android:textSize="26dp"
+                        app:cornerRadius="36dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_8"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginLeft="17dp"
+                        android:backgroundTint="@color/dark_grey"
+                        android:paddingTop="4dp"
+                        android:text="8"
+                        android:textSize="26dp"
+                        app:cornerRadius="36dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_9"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginLeft="17dp"
+                        android:backgroundTint="@color/dark_grey"
+                        android:paddingTop="4dp"
+                        android:text="9"
+                        android:textSize="26dp"
+                        app:cornerRadius="36dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="337dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="6dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_4"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="13dp"
+                        android:backgroundTint="@color/dark_grey"
+                        android:paddingTop="4dp"
+                        android:text="4"
+                        android:textSize="26dp"
+                        app:cornerRadius="36dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_5"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="17dp"
+                        android:backgroundTint="@color/dark_grey"
+                        android:paddingTop="4dp"
+                        android:text="5"
+                        android:textSize="26dp"
+                        app:cornerRadius="36dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_6"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="17dp"
+                        android:backgroundTint="@color/dark_grey"
+                        android:paddingTop="4dp"
+                        android:text="6"
+                        android:textSize="26dp"
+                        app:cornerRadius="36dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="337dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="6dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_1"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="13dp"
+                        android:backgroundTint="@color/dark_grey"
+                        android:paddingTop="4dp"
+                        android:text="1"
+                        android:textSize="26dp"
+                        app:cornerRadius="36dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_2"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="17dp"
+                        android:backgroundTint="@color/dark_grey"
+                        android:paddingTop="4dp"
+                        android:text="2"
+                        android:textSize="26dp"
+                        app:cornerRadius="36dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_3"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="17dp"
+                        android:backgroundTint="@color/dark_grey"
+                        android:paddingTop="4dp"
+                        android:text="3"
+                        android:textSize="26dp"
+                        app:cornerRadius="36dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="337dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_Point"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="13dp"
+                        android:backgroundTint="@color/dark_grey"
+                        android:paddingTop="0dp"
+                        android:text="."
+                        android:textSize="30dp"
+                        app:cornerRadius="36dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_0"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="17dp"
+                        android:backgroundTint="@color/dark_grey"
+                        android:paddingTop="4dp"
+                        android:text="0"
+                        android:textSize="26dp"
+                        app:cornerRadius="36dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_Cancel"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="17dp"
+                        android:backgroundTint="@color/dark_grey"
+                        android:padding="16dp"
+                        app:cornerRadius="36dp"
+                        app:icon="@drawable/baseline_cancel_24"
+                        app:iconGravity="textEnd" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
