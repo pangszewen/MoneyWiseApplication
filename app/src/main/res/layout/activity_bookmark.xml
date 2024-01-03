@@ -21,13 +21,10 @@
             android:layout_width="match_parent"
             app:contentInsetStart="0dp"
             style="@style/rectangle_header_blue_grey">
-            <LinearLayout
-                android:id="@+id/header_title"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
-                android:layout_marginTop="18dp"
-                android:layout_width="match_parent"
-                android:orientation="horizontal">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/imageArrowleft"
                     android:layout_height="30dp"
@@ -35,46 +32,37 @@
                     android:layout_marginStart="15dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/img_arrowleft"
-                    tools:ignore="ContentDescription"/>
-                <TextView android:ellipsize="end"
+                    tools:ignore="ContentDescription"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <TextView
                     android:id="@+id/txtBookmark"
-                    android:gravity="center"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="110dp"
                     android:layout_width="wrap_content"
                     android:singleLine="true"
-                    style="@style/txtDonegalOneregular20_white"
-                    android:text="Bookmark"/>
-            </LinearLayout>
+                    style="@style/txtDonegalOneregular25_white"
+                    android:text="Bookmark"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
 
-        <LinearLayout android:gravity="center_horizontal"
-            android:id="@+id/linearScholarshipList"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="9dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            style="@style/rectangle_white_radius20">
-
-            <LinearLayout android:gravity="center_horizontal"
+            <LinearLayout
+                android:gravity="center_horizontal"
                 android:id="@+id/linearBookmarkList"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="9dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 style="@style/rectangle_white_radius20">
-                <TextView android:ellipsize="end"
+                <TextView
                     android:gravity="center_horizontal"
                     android:id="@+id/txtScholarshipOffered"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
                     android:layout_width="match_parent"
+                    android:layout_margin="10dp"
                     android:singleLine="true"
                     android:textAllCaps="true"
                     style="@style/txtPTSansbold20"
@@ -84,13 +72,12 @@
                     android:layout_gravity="center"
                     android:id="@+id/recyclerBookmarkList"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_width="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/scholarship_item"/>
 
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

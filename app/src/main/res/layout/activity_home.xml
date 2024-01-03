@@ -46,7 +46,7 @@
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomHomeAppBar"
             android:layout_width="match_parent"
-            android:layout_height="78dp"
+            android:layout_height="80dp"
             android:layout_gravity="bottom"
             android:backgroundTint="@color/light_blue_grey"
             android:background="@color/transparent">

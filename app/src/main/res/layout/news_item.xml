@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-
+    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="8dp"
     app:cardCornerRadius="20dp"
@@ -10,7 +9,7 @@
     <FrameLayout android:id="@+id/frameNews"
         android:layout_gravity="center"
         android:layout_height="210dp"
-        android:layout_width="373dp">
+        android:layout_width="match_parent">
 
         <ImageView android:id="@+id/imageNews"
             android:layout_gravity="start"
@@ -23,10 +22,9 @@
             android:gravity="start|bottom"
             android:layout_height="match_parent"
             android:layout_marginEnd="10dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="10dp"
             android:layout_marginBottom="15dp"
             android:layout_width="match_parent"
-
             android:orientation="vertical">
 
             <LinearLayout
@@ -34,6 +32,7 @@
                 android:background="@drawable/rectangle_bg_white_radius_tl_tr_20"
                 android:alpha="0.9"
                 android:gravity="start|bottom"
+                android:padding="5dp"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
@@ -57,7 +56,8 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="8dp"
                     android:layout_width="0dp"
-                    android:layout_weight="0.6"                    android:singleLine="true"
+                    android:layout_weight="0.6"
+                    android:singleLine="true"
                     style="@style/txtPTSansregular12"
                     tools:text="23 April 2023"/>
 
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/rectangle_bg_white_radius_bl_br_20"
                 android:alpha="0.9"
-                >
+                android:paddingBottom="5dp">
             <TextView
                 android:layout_gravity="bottom"
                 android:id="@+id/txtNewsTitle"
