@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/custom_toast_layout.xml -->
+<!-- res/layout/custom_toast_layout.xml -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/custom_toast_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#CC000000"
+    android:gravity="center">
+
+    <!-- Message TextView -->
+    <TextView
+        android:id="@+id/custom_toast_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/pt_sans"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"/>
+
+    <!-- Percentage TextView -->
+    <TextView
+        android:id="@+id/custom_toast_percentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:fontFamily="@font/pt_sans"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>
+

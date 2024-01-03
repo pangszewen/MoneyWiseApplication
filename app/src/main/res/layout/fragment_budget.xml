@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/swipeRefreshLayout"
+    android:theme="@style/Base.Theme.Expenses"
+    tools:context=".Expenses.BudgetFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/budgetCL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <com.example.moneywise.Expenses.CircularProgressBar
+        android:id="@+id/PBBudget"
+        android:layout_width="256dp"
+        android:layout_height="220dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="6dp"
+        android:background="@android:color/transparent"
+        android:paddingLeft="30dp"
+        android:paddingTop="30dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/TVBudgetPercent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:fontFamily="@font/donegal_one"
+            android:text="xx%"
+            android:textSize="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/PBBudget" />
+
+        <TextView
+            android:id="@+id/budgetTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="190dp"
+            android:fontFamily="@font/donegal_one"
+            android:text="RMxx"
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/TVSlash"
+            app:layout_constraintTop_toTopOf="@+id/PBBudget" />
+
+        <TextView
+            android:id="@+id/ExpenseTV3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="190dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/donegal_one"
+            android:text="RMxx"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/TVSlash"
+            app:layout_constraintTop_toTopOf="@+id/PBBudget" />
+
+        <TextView
+            android:id="@+id/TVSlash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="196dp"
+            android:fontFamily="@font/donegal_one"
+            android:text="/"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/LLBudget"
+            android:layout_width="367dp"
+            android:layout_height="350dp"
+            android:layout_marginTop="33dp"
+            android:background="@drawable/circular_lightblue"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/budgetTv">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/btnMeal"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="6dp"
+                    android:backgroundTint="@color/transparent"
+                    android:drawableTop="@drawable/small_hamburger_burger_svgrepo_com"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvMeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="Meal"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/btnMeal"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvBudgetMeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="1dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="budget amount"
+                    android:textColor="@color/medium_grey"
+                    android:textSize="13dp"
+                    app:layout_constraintStart_toEndOf="@+id/btnMeal"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMeal" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarMeal"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="134dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvUsedMeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="130dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="RMxx"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvLeftMeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="14dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="RMX-xx"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/btnDaily"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="6dp"
+                    android:backgroundTint="@color/transparent"
+                    android:drawableTop="@drawable/small_groceries_grocery_svgrepo_com"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvDaily"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="Daily"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/btnDaily"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvBudgetDaily"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="1dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="budget amount"
+                    android:textColor="@color/medium_grey"
+                    android:textSize="13dp"
+                    app:layout_constraintStart_toEndOf="@+id/btnDaily"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDaily" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarDaily"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="134dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvUsedDaily"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="130dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="RMxx"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvLeftDaily"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="14dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="RMX-xx"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/btnTransport"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="6dp"
+                    android:backgroundTint="@color/transparent"
+                    android:drawableTop="@drawable/small_bus_svgrepo_com"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvTransport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="Transport"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/btnTransport"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvBudgetTransport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="1dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="budget amount"
+                    android:textColor="@color/medium_grey"
+                    android:textSize="13dp"
+                    app:layout_constraintStart_toEndOf="@+id/btnTransport"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTransport" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarTransport"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="134dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvUsedTransport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="130dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="RMxx"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvLeftTransport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="14dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="RMX-xx"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/btnCommunicate"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="6dp"
+                    android:backgroundTint="@color/transparent"
+                    android:drawableTop="@drawable/small_smartphone_touch_screen_svgrepo_com"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvCommunicate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="Communicate"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/btnCommunicate"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvBudgetCommunicate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="1dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="budget amount"
+                    android:textColor="@color/medium_grey"
+                    android:textSize="13dp"
+                    app:layout_constraintStart_toEndOf="@+id/btnCommunicate"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCommunicate" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarCommunicate"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="134dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvUsedCommunicate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="130dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="RMxx"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvLeftCommunicate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="14dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="RMX-xx"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/btnRecreation"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="6dp"
+                    android:backgroundTint="@color/transparent"
+                    android:drawableTop="@drawable/small_cinema_screen_cinema_svgrepo_com"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvRecreation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="Recreation"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/btnRecreation"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvBudgetRecreation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="1dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="budget amount"
+                    android:textColor="@color/medium_grey"
+                    android:textSize="13dp"
+                    app:layout_constraintStart_toEndOf="@+id/btnRecreation"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRecreation" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarRecreation"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="134dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvUsedRecreation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="130dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="RMxx"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvLeftRecreation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="14dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="RMX-xx"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/btnMedical"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="6dp"
+                    android:backgroundTint="@color/transparent"
+                    android:drawableTop="@drawable/small_medical_kit_svgrepo_com"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvMedical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="Medical"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/btnMedical"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvBudgetMedical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="1dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="budget amount"
+                    android:textColor="@color/medium_grey"
+                    android:textSize="13dp"
+                    app:layout_constraintStart_toEndOf="@+id/btnMedical"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMedical" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarMedical"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="134dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvUsedMedical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="130dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="RMxx"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvLeftMedical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="14dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="RMX-xx"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/btnOthers"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="6dp"
+                    android:backgroundTint="@color/transparent"
+                    android:drawableTop="@drawable/small_more_circle_horizontal_svgrepo_com"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvOthers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="Others"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/btnOthers"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvBudgetOthers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="1dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="budget amount"
+                    android:textColor="@color/medium_grey"
+                    android:textSize="13dp"
+                    app:layout_constraintStart_toEndOf="@+id/btnOthers"
+                    app:layout_constraintTop_toBottomOf="@+id/tvOthers" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarOthers"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="134dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvUsedOthers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="130dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="RMxx"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvLeftOthers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="14dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/pt_sans"
+                    android:text="RMX-xx"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonSetBudget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="260dp"
+            android:layout_marginTop="218dp"
+            android:backgroundTint="@color/transparent"
+            android:fontFamily="@font/donegal_one"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="Edit Budget"
+            android:textColor="@color/dark_grey"
+            android:textSize="17dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
