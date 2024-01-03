@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -28,28 +27,15 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.moneywise.R;
 import com.example.moneywise.home.HomeActivity;
+import com.example.moneywise.login_register.Firebase_User;
 import com.example.moneywise.login_register.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class Forum_CreateTopic_Activity extends AppCompatActivity {
@@ -68,7 +54,8 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
     ArrayList<String> urlsList;
     FirebaseAuth auth;
     FirebaseUser user;
-    Firebase_Forum firebase = new Firebase_Forum();
+    Firebase_Forum firebaseForum = new Firebase_Forum();
+    Firebase_User firebaseUser = new Firebase_User();
     String userID, previousClass;
     FirebaseStorage storage;
 
@@ -167,7 +154,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
     }
 
     public void setTVAccount(){
-        firebase.getUser(userID, new Firebase_Forum.UserCallback() {
+        firebaseUser.getUser(userID, new Firebase_Forum.UserCallback() {
             @Override
             public void onUserReceived(User user) {
                 TVAccount.setText(user.getName());
@@ -203,7 +190,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
 
 
     private void createTopic(String TopicSubject, String TopicDescription){
-        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
+        firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
             public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
                 String topicID = generateTopicID(forumTopics);
@@ -215,11 +202,11 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
     }
 
     private void uploadImages(String topicID){
-        firebase.insertForumImages(chooseImageList, topicID);
+        firebaseForum.insertForumImages(chooseImageList, topicID);
     }
 
     private void insertTopicIntoDatabase(ForumTopic topic){
-        firebase.createTopic(topic, new Firebase_Forum.CreateTopicCallback() {
+        firebaseForum.createTopic(topic, new Firebase_Forum.CreateTopicCallback() {
             @Override
             public void onCreateTopic(boolean status) {
                 if(status) {
