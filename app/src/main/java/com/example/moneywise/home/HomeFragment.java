@@ -21,7 +21,9 @@ import com.example.moneywise.R;
 import com.example.moneywise.forum.Firebase_Forum;
 import com.example.moneywise.login_register.Firebase_User;
 import com.example.moneywise.login_register.ProfileActivity;
+
 import com.example.moneywise.login_register.User;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,15 +48,17 @@ public class HomeFragment extends Fragment {
     Date currentDate = new Date(timestamp.getSeconds() * 1000); // Convert seconds to milliseconds
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMMyyyy", Locale.US);
     String formattedDate = dateFormat.format(currentDate);
+
     String userID;
     ArrayList<Article> articleList = new ArrayList<>();
     LatestNewsAdapter adapter;
     RecyclerView RVLatestNews;
     SwipeRefreshLayout RVLatestNewsRefresh;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        getNews(null);
     }
 
     @Override

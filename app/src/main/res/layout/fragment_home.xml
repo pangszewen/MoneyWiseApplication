@@ -232,6 +232,7 @@
             android:orientation="vertical"
             tools:listitem="@layout/latest_news_row"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
         </androidx.recyclerview.widget.RecyclerView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

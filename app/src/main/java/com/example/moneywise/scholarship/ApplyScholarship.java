@@ -3,6 +3,7 @@ package com.example.moneywise.scholarship;
 import static android.widget.Toast.LENGTH_SHORT;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -37,8 +38,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -59,7 +63,7 @@ public class ApplyScholarship extends AppCompatActivity {
     String userID;
     FirebaseFirestore db;
     ImageView bookmark;
-    boolean isSaved;
+    boolean isSaved,notification;
 
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
@@ -72,15 +76,27 @@ public class ApplyScholarship extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apply_scholarship);
 
+        auth= FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+        userID = user.getUid();
+
+
         createNotificationChannel();
 
+
+
         // Register a local broadcast receiver
+        Log.d("TAG","Notification 3"+notification);
         localReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 // Handle the broadcast and call makeNotification
-                String scholarshipTitle = intent.getStringExtra("scholarshipTitle");
-                makeNotification(scholarshipTitle);
+                if (notification){
+                    String scholarshipTitle = intent.getStringExtra("scholarshipTitle");
+                    makeNotification(scholarshipTitle);
+                    Log.d("TAG","Notification enabled");
+                }
             }
         };
 
@@ -115,10 +131,20 @@ public class ApplyScholarship extends AppCompatActivity {
         String numericPart = scholarshipID.replaceAll("\\D+", "");
         scholarshipNum = Integer.parseInt(numericPart) + defaultValue;
 
-        auth= FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
-        db = FirebaseFirestore.getInstance();
-        userID = user.getUid();
+        DocumentReference ref= db.collection("USER_DETAILS").document(userID);
+        ref.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                notification=value.getBoolean("notification");
+                Log.d("TAG","Notification 1"+notification);
+                Log.d("TAG","userid "+userID);
+                if (notification){
+                    Log.d("TAG","Notification 2"+notification);
+                }if(!notification){
+                    Log.d("TAG","Notification 2"+notification);
+                }
+            }
+        });
 
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
@@ -140,6 +166,8 @@ public class ApplyScholarship extends AppCompatActivity {
         bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Log.d("TAG","Notification bookmark"+notification);
                 // Toggle the saved status
                 isSaved = !isSaved;
 

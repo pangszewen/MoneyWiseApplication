@@ -78,4 +78,6 @@ public class LatestNewsAdapter extends RecyclerView.Adapter<LatestNewsAdapter.Ne
             imageView = itemView.findViewById(R.id.IVTopic);
         }
     }
+
 }
+
