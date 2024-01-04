@@ -35,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,6 +71,7 @@ public class MyAccActivity extends AppCompatActivity {
         editLayoutDOB=findViewById(R.id.EditLayoutDOB);
         editTextDOB=findViewById(R.id.editTextDOB);
         fStore=FirebaseFirestore.getInstance();
+        fStorage=FirebaseStorage.getInstance();
         uid=mAuth.getCurrentUser().getUid();
 
         btn_back.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +82,7 @@ public class MyAccActivity extends AppCompatActivity {
             }
         });
 
+        displayProfilePic(uid);
         loadDetailsFromDB();
 
         spinner_gender=findViewById(R.id.gender_spinner);
@@ -135,30 +138,21 @@ public class MyAccActivity extends AppCompatActivity {
                 }
 
                 uploadProfilePicture(profilepic_uri);
-                //mAuth.getCurrentUser().updateEmail("user@example.com").addOnSuccessListener(new OnSuccessListener<Void>() {
-                    //@Override
-                    //public void onSuccess(Void unused) {
-                        DocumentReference ref= fStore.collection("USER_DETAILS").document(uid);
-                        Map<String,Object> userDetails=new HashMap<>();
-                        userDetails.put("name",name);
-                        userDetails.put("gender",gender);
-                        userDetails.put("dob",dob);
-                        ref.update(userDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(MyAccActivity.this,"Profile updated",Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        Toast.makeText(MyAccActivity.this,"Email updated.",Toast.LENGTH_SHORT).show();
-                    }
-                });/*.addOnFailureListener(new OnFailureListener() {
+                DocumentReference ref= fStore.collection("USER_DETAILS").document(uid);
+                Map<String,Object> userDetails=new HashMap<>();
+                userDetails.put("name",name);
+                userDetails.put("gender",gender);
+                userDetails.put("dob",dob);
+                ref.update(userDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MyAccActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(MyAccActivity.this,"Profile updated",Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                        finish();
                     }
                 });
             }
-        });*/
+        });
     }
 
     private void loadDetailsFromDB(){
@@ -173,10 +167,11 @@ public class MyAccActivity extends AppCompatActivity {
                 detail_name.setText(name);
                 editTextname.setText(name);
                 String selectedGender = value.getString("gender");
-                int position = g_adapter.getPosition(selectedGender);
-                if (position != -1) {
-                    spinner_gender.setListSelection(position);
-                }
+                //int position = g_adapter.getPosition(selectedGender);
+                //if (position != -1) {
+                    //spinner_gender.setListSelection(position);
+                //}
+                spinner_gender.setText(selectedGender,false);
                 editTextDOB.setText(value.getString("dob"));
             }
         });
@@ -185,6 +180,18 @@ public class MyAccActivity extends AppCompatActivity {
     private void changeProfilePic(Uri profilePicUri){
         profileImageView.setImageURI(profilePicUri);
         profilepic_uri=profilePicUri;
+    }
+
+    private void displayProfilePic(String uid) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference().child("USER_PROFILE_PIC").child(uid).child("Profile Pic.jpg"); // Replace with your image file extension
+        storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            Picasso.get()
+                    .load(uri)
+                    .placeholder(R.drawable.profile_pic) // Replace with a placeholder image while loading
+                    .error(R.drawable.profile_pic) // Replace with an error image if download fails
+                    .into(profileImageView);
+        });
     }
 
     private void uploadProfilePicture(Uri profilePictureUri) {
