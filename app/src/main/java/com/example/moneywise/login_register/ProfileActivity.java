@@ -116,6 +116,22 @@ public class ProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        hs_column.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), HnSActivity.class));
+                finish();
+            }
+        });
+
+        about_column.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),AboutAppActivity.class));
+                finish();
+            }
+        });
     }
 
     private void loadProfilePicFromDB(){
