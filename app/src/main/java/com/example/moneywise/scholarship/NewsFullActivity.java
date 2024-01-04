@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.window.OnBackInvokedDispatcher;
 
 import com.example.moneywise.R;
+import com.example.moneywise.home.HomeActivity;
 
 public class NewsFullActivity extends AppCompatActivity {
 
@@ -38,8 +39,25 @@ public class NewsFullActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NewsFullActivity.this, FindNewsActivity.class);
-                startActivity(intent);
+                // Get the origin activity from the Intent
+                String originActivity = getIntent().getStringExtra("originActivity");
+
+                // Handle the click event, navigate to the appropriate activity
+                Intent intent;
+                if ("FindNewsActivity".equals(originActivity)) {
+                    intent = new Intent(NewsFullActivity.this, FindNewsActivity.class);
+                    startActivity(intent);
+                } else if ("HomeActivity".equals(originActivity)) {
+                    intent = new Intent(NewsFullActivity.this, HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    // Default to FindScholarshipActivity if not specified
+                    intent = new Intent(NewsFullActivity.this, FindNewsActivity.class);
+                }
+
+
             }
         });
     }

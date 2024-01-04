@@ -13,29 +13,32 @@
         android:layout_width="match_parent"
         app:contentInsetStart="0dp"
         style="@style/rectangle_header_blue_grey">
-        <LinearLayout android:id="@+id/header_title"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"
-            android:layout_marginTop="18dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header_title"
             android:layout_width="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
             <ImageView android:id="@+id/imageArrowleft"
                 android:layout_height="30dp"
                 android:layout_width="30dp"
                 android:layout_marginStart="15dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/img_arrowleft"
-                tools:ignore="ContentDescription" />
-            <TextView android:ellipsize="end"
+                tools:ignore="ContentDescription"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <TextView
                 android:id="@+id/txtNews"
-                android:gravity="center"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="140dp"
                 android:layout_width="wrap_content"
                 android:singleLine="true"
-                style="@style/txtDonegalOneregular20_white"
-                android:text="News"/>
-        </LinearLayout>
+                style="@style/txtDonegalOneregular25_white"
+                android:text="News"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 
     <WebView

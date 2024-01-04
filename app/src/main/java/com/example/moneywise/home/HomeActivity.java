@@ -20,7 +20,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.moneywise.Expenses.MainExpensesFragment;
 import com.example.moneywise.R;
+import com.example.moneywise.forum.Firebase_Forum;
 import com.example.moneywise.forum.Forum_MainFragment;
+import com.example.moneywise.login_register.Firebase_User;
+import com.example.moneywise.login_register.ProfileActivity;
+import com.example.moneywise.login_register.User;
 import com.example.moneywise.scholarship.ScholarshipMainFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -34,24 +38,15 @@ public class HomeActivity extends AppCompatActivity {
     NavigationView navigationView;
     FragmentContainerView FCVHome;
     Toolbar toolbar;
-    TextView TVWelcome;
-    FirebaseAuth auth;
-    FirebaseUser user;
-    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
-        //userID = user.getUid();
-        userID = "Zqa2pZRzccPx13bEjxZho9UVlT83";
         drawerLayout = findViewById(R.id.DLHomePage);
         navigationView = findViewById(R.id.nav_side);
         toolbar = findViewById(R.id.myToolBar);
         FCVHome = findViewById(R.id.FCVHome);
-        TVWelcome = findViewById(R.id.TVWelcome);
         bottomNavigationView = findViewById(R.id.bottomHomeNavigationView);
         bottomNavigationView.setBackground(null);
         replaceFragment(new HomeFragment());
@@ -63,7 +58,34 @@ public class HomeActivity extends AppCompatActivity {
         toggle.syncState();
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
 
-        //need set welcome text
+
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemID = item.getItemId();
+                if(itemID== R.id.overflowHome) {
+                    replaceFragment(new HomeFragment());
+                    return true;
+                }else if(itemID== R.id.overflowForum) {
+                    replaceFragment(new Forum_MainFragment());
+                    return true;
+                }else if(itemID== R.id.overflowExpenses) {
+                    replaceFragment(new MainExpensesFragment());
+                    return true;
+                }else if(itemID== R.id.overflowCnq){
+                    //startActivity(new Intent(HomeActivity.this, activity_course_display.class));
+                    return true;
+                }else if(itemID== R.id.overflowSnn) {
+                    replaceFragment(new ScholarshipMainFragment());
+                    return true;
+                }else if(itemID== R.id.overflowProfile) {
+                    startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
+                    return true;
+                }else
+                    return false;
+            }
+        });
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
