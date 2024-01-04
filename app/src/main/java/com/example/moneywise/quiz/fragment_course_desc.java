@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.moneywise.R;
+import com.example.moneywise.login_register.CoursePendingDisplay;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -17,6 +18,7 @@ public class fragment_course_desc extends Fragment {
     FirebaseFirestore db;
     String courseID;
     TextView desc, language, mode, level;
+    String previousClass;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -28,13 +30,38 @@ public class fragment_course_desc extends Fragment {
         mode = view.findViewById(R.id.TVMode);
 
         Bundle bundle = getArguments();
-        if (bundle != null)
+        if (bundle != null) {
             courseID = bundle.getString("courseID");
-        else
-            System.out.println("NULLLLLLLLLLL");
-        displayDesc();
+            previousClass = bundle.getString("previousClass");
+        }
+        if (previousClass.equals(CoursePendingDisplay.class.toString())){
+            displayPending();
+        }
+        else displayDesc();
 
         return view;
+    }
+
+    private void displayPending() {
+        db = FirebaseFirestore.getInstance();
+        db.collection("COURSE_PENDING").document(courseID)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            String descText = document.getString("description");
+                            String leveltext = document.getString("level");
+                            String languageText = document.getString("language");
+                            String modeText = document.getString("mode");
+                            desc.setText(descText);
+                            level.setText(leveltext);
+                            language.setText(languageText);
+                            mode.setText(modeText);
+                            desc.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
+                        }
+                    }
+                });
     }
 
     private void displayDesc() {

@@ -17,6 +17,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.moneywise.R;
+import com.example.moneywise.login_register.ApproveCourse;
+import com.example.moneywise.login_register.CoursePendingDisplay;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -30,6 +32,7 @@ import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -101,6 +104,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, activity_individual_course_page.class);
+                Intent intentAdmin = new Intent(context, ApproveCourse.class);
                 intent.putExtra("courseID", course.getCourseID());
                 intent.putExtra("title", course.getCourseTitle());
                 intent.putExtra("description", course.getCourseDesc());
@@ -108,7 +112,20 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
                 intent.putExtra("language", course.getCourseLanguage());
                 intent.putExtra("level", course.getCourseLevel());
                 intent.putExtra("mode", course.getCourseMode());
-                context.startActivity(intent);
+                if (context.getClass() == CoursePendingDisplay.class) {
+                    intentAdmin.putExtra("courseID", course.getCourseID());
+                    intentAdmin.putExtra("title", course.getCourseTitle());
+                    intentAdmin.putExtra("description", course.getCourseDesc());
+                    intentAdmin.putExtra("advisorID", course.getAdvisorID());
+                    intentAdmin.putExtra("language", course.getCourseLanguage());
+                    intentAdmin.putExtra("level", course.getCourseLevel());
+                    intentAdmin.putExtra("mode", course.getCourseMode());
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+                    String formattedDateTime = course.getDateCreated().format(formatter);
+                    intentAdmin.putExtra("dateCreated",formattedDateTime);
+                    intentAdmin.putExtra("previousClass", CoursePendingDisplay.class.toString());
+                    context.startActivity(intentAdmin);
+                } else context.startActivity(intent);
             }
         });
         if (course.isBookmarked()){

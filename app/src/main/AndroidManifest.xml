@@ -21,6 +21,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".login_register.CoursePendingDisplay"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".login_register.ApproveCourse"
             android:exported="false" />
         <activity
@@ -50,13 +59,7 @@
             android:exported="false" />
         <activity
             android:name=".login_register.LoginActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true"/>
         <activity
             android:name=".scholarship.FindNewsActivity"
             android:exported="false" />
@@ -84,9 +87,6 @@
         <activity
             android:name=".quiz.activity_course_bookmark"
             android:exported="false" />
-        <activity
-            android:name=".quiz.main_page"
-            android:exported="true" />
         <activity
             android:name=".quiz.activity_individual_course_joined"
             android:exported="true" />
@@ -120,7 +120,7 @@
         <activity
             android:name=".home.HomeActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
 
         <receiver android:name=".scholarship.NotificationReceiver" />
 
