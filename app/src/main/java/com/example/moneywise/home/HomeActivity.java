@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -16,11 +17,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.example.moneywise.Expenses.MainExpensesFragment;
 import com.example.moneywise.R;
+import com.example.moneywise.forum.Firebase_Forum;
 import com.example.moneywise.forum.Forum_MainFragment;
+import com.example.moneywise.login_register.Firebase_User;
+import com.example.moneywise.login_register.ProfileActivity;
+import com.example.moneywise.login_register.User;
+import com.example.moneywise.scholarship.ScholarshipMainFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class HomeActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
@@ -41,13 +51,41 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationView.setBackground(null);
         replaceFragment(new HomeFragment());
 
+
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
 
-        //need set welcome text
+
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemID = item.getItemId();
+                if(itemID== R.id.overflowHome) {
+                    replaceFragment(new HomeFragment());
+                    return true;
+                }else if(itemID== R.id.overflowForum) {
+                    replaceFragment(new Forum_MainFragment());
+                    return true;
+                }else if(itemID== R.id.overflowExpenses) {
+                    replaceFragment(new MainExpensesFragment());
+                    return true;
+                }else if(itemID== R.id.overflowCnq){
+                    //startActivity(new Intent(HomeActivity.this, activity_course_display.class));
+                    return true;
+                }else if(itemID== R.id.overflowSnn) {
+                    replaceFragment(new ScholarshipMainFragment());
+                    return true;
+                }else if(itemID== R.id.overflowProfile) {
+                    startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
+                    return true;
+                }else
+                    return false;
+            }
+        });
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -60,10 +98,13 @@ public class HomeActivity extends AppCompatActivity {
                     replaceFragment(new Forum_MainFragment());
                     return true;
                 }else if(itemID== R.id.iconExpenses) {
-                    //startActivity(new Intent(HomeActivity.this, MainActivity.class));
+                    replaceFragment(new MainExpensesFragment());
                     return true;
                 }else if(itemID== R.id.iconCnq){
                     //startActivity(new Intent(HomeActivity.this, activity_course_display.class));
+                    return true;
+                }else if(itemID== R.id.iconSnn) {
+                    replaceFragment(new ScholarshipMainFragment());
                     return true;
                 }else
                     return false;

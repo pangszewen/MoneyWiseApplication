@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/setBudgetCL"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:theme="@style/Base.Theme.Expenses"
+    tools:context=".Expenses.SetBudgetFragment">
+
+
+    <TextView
+        android:id="@+id/MBTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/pt_sans"
+        android:text="Monthly Budget"
+        android:textSize="23dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/bookTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="215dp"
+        android:fontFamily="@font/pt_sans"
+        android:text="AccountBook Budget"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/categoryTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="145dp"
+        android:layout_marginEnd="270dp"
+        android:fontFamily="@font/pt_sans"
+        android:text="Category Budget"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="371dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="73dp"
+        android:background="@drawable/circular_lightblue"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <Button
+            android:id="@+id/buttonBook"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="5dp"
+            android:paddingTop="3dp"
+            android:backgroundTint="@color/transparent"
+            android:drawableTop="@drawable/small_book_closed_svgrepo_com" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/pt_sans"
+            android:text="Default Book"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/tvBudgetDB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="110dp"
+            android:fontFamily="@font/pt_sans"
+            android:text="RM"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/ETBudgetDB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/transparent"
+            android:fontFamily="@font/pt_sans"
+            android:hint="no set"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="371dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/circular_lightblue"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categoryTV">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutMeal"
+            android:layout_width="371dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circular_lightblue"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <Button
+                android:id="@+id/buttonMeal"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="5dp"
+                android:paddingTop="2dp"
+                android:backgroundTint="@color/transparent"
+                android:drawableTop="@drawable/small_hamburger_burger_svgrepo_com" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/pt_sans"
+                android:text="Meal"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/tvBudgetMeal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="RM"
+                android:fontFamily="@font/pt_sans"
+                android:textSize="18dp"
+                android:layout_marginLeft="180dp"/>
+
+            <EditText
+                android:id="@+id/ETBudgetMeal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="no set"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/transparent"
+                android:fontFamily="@font/pt_sans"
+                android:textSize="18dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutDaily"
+            android:layout_width="371dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circular_lightblue"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <Button
+                android:id="@+id/buttonDaily"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="5dp"
+                android:paddingTop="2dp"
+                android:backgroundTint="@color/transparent"
+                android:drawableTop="@drawable/small_groceries_grocery_svgrepo_com" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/pt_sans"
+                android:text="Daily"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/tvBudgetDaily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="RM"
+                android:fontFamily="@font/pt_sans"
+                android:textSize="18dp"
+                android:layout_marginLeft="181dp"/>
+
+            <EditText
+                android:id="@+id/ETBudgetDaily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="no set"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/transparent"
+                android:fontFamily="@font/pt_sans"
+                android:textSize="18dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutTransport"
+            android:layout_width="371dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circular_lightblue"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <Button
+                android:id="@+id/buttonTransport"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="5dp"
+                android:paddingTop="2dp"
+                android:backgroundTint="@color/transparent"
+                android:drawableTop="@drawable/small_bus_svgrepo_com" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/pt_sans"
+                android:text="Transport"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/tvBudgetTransport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="RM"
+                android:fontFamily="@font/pt_sans"
+                android:textSize="18dp"
+                android:layout_marginLeft="142dp"/>
+
+            <EditText
+                android:id="@+id/ETBudgetTransport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="no set"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/transparent"
+                android:fontFamily="@font/pt_sans"
+                android:textSize="18dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutCommunicate"
+            android:layout_width="371dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circular_lightblue"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <Button
+                android:id="@+id/buttonCommunicate"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="5dp"
+                android:paddingTop="2dp"
+                android:backgroundTint="@color/transparent"
+                android:drawableTop="@drawable/small_smartphone_touch_screen_svgrepo_com" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/pt_sans"
+                android:text="Communicate"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/tvBudgetCommunicate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="RM"
+                android:fontFamily="@font/pt_sans"
+                android:textSize="18dp"
+                android:layout_marginLeft="107dp"/>
+
+            <EditText
+                android:id="@+id/ETBudgetCommunicate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="no set"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/transparent"
+                android:fontFamily="@font/pt_sans"
+                android:textSize="18dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutRecreation"
+            android:layout_width="371dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circular_lightblue"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <Button
+                android:id="@+id/buttonRecreation"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="5dp"
+                android:paddingTop="2dp"
+                android:backgroundTint="@color/transparent"
+                android:drawableTop="@drawable/small_cinema_screen_cinema_svgrepo_com" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/pt_sans"
+                android:text="Recreation"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/tvBudgetRecreation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="RM"
+                android:fontFamily="@font/pt_sans"
+                android:textSize="18dp"
+                android:layout_marginLeft="134dp"/>
+
+            <EditText
+                android:id="@+id/ETBudgetRecreation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="no set"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/transparent"
+                android:fontFamily="@font/pt_sans"
+                android:textSize="18dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutMedical"
+            android:layout_width="371dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circular_lightblue"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <Button
+                android:id="@+id/buttonMedical"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="5dp"
+                android:paddingTop="2dp"
+                android:backgroundTint="@color/transparent"
+                android:drawableTop="@drawable/small_medical_kit_svgrepo_com" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/pt_sans"
+                android:text="Medical"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/tvBudgetMedical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="RM"
+                android:fontFamily="@font/pt_sans"
+                android:textSize="18dp"
+                android:layout_marginLeft="157dp"/>
+
+            <EditText
+                android:id="@+id/ETBudgetMedical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="no set"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/transparent"
+                android:fontFamily="@font/pt_sans"
+                android:textSize="18dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutOther"
+            android:layout_width="371dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circular_lightblue"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <Button
+                android:id="@+id/buttonOther"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="5dp"
+                android:paddingTop="2dp"
+                android:backgroundTint="@color/transparent"
+                android:drawableTop="@drawable/small_more_circle_horizontal_svgrepo_com" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/pt_sans"
+                android:text="Others"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/tvBudgetOthers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="RM"
+                android:fontFamily="@font/pt_sans"
+                android:textSize="18dp"
+                android:layout_marginLeft="167dp"/>
+
+            <EditText
+                android:id="@+id/ETBudgetOthers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="no set"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/transparent"
+                android:fontFamily="@font/pt_sans"
+                android:textSize="18dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonDone"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/blue_grey"
+        android:fontFamily="@font/pt_sans"
+        android:text="Done"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

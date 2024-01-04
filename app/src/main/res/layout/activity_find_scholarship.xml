@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".scholarship.FindScholarshipActivity">
+
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:id="@+id/linearFindScholarship"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        style="@style/rectangle_light_grey">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarToolbar"
+            android:layout_height="70dp"
+            android:layout_width="match_parent"
+            app:contentInsetStart="0dp"
+            style="@style/rectangle_header_blue_grey">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+                <ImageView android:id="@+id/imageArrowleft"
+                    android:layout_height="30dp"
+                    android:layout_width="30dp"
+                    android:layout_marginStart="15dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img_arrowleft"
+                    tools:ignore="ContentDescription"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+                <TextView
+                    android:id="@+id/txtScholarship"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:singleLine="true"
+                    style="@style/txtDonegalOneregular25_white"
+                    android:text="Scholarship"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchScho"
+            android:background="@drawable/rectangle_bg_white_radius_20_5"
+            style="@style/txtDonegalregular28"
+            app:queryHint="Search"
+            app:iconifiedByDefault="false"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:singleLine="true"
+            tools:ignore="Autofill"/>
+
+        <LinearLayout android:gravity="center_horizontal"
+            android:id="@+id/linearScholarshipList"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            style="@style/rectangle_white_radius20">
+            <TextView
+                android:gravity="center_horizontal"
+                android:id="@+id/txtScholarshipOffered"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:singleLine="true"
+                android:textAllCaps="true"
+                style="@style/txtPTSansbold20"
+                android:text="Scholarship offered"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_gravity="center"
+                android:id="@+id/recyclerScholarshipList"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/scholarship_item"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="40dp"
+        app:srcCompat="@drawable/img_add_vector"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        app:tint="@android:color/white"
+        app:backgroundTint="@color/sharp_blue"
+        android:contentDescription="fabAdd"/>
+
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

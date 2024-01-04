@@ -2,7 +2,6 @@ package com.example.moneywise.forum;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,38 +12,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.moneywise.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 public class Forum_MainFragment extends Fragment {
 
     RecyclerView RVForum;
     Forum_Adapter forumAdapter;
-    Firebase_Forum firebase = new Firebase_Forum();
+    Firebase_Forum firebaseForum = new Firebase_Forum();
     Button btn_myTopic, btn_mostRecent, btn_featuredTopics, btn_mostLikes, btn_mostComments;
     Button[] filterButtons;
     ImageButton btn_createTopic, btn_searchIcon;
@@ -216,7 +203,7 @@ public class Forum_MainFragment extends Fragment {
     }
 
     public void setSearchBarAdapter(){
-        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
+        firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
             public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
                 adapter = new ForumTopic_SearchAdapter(getActivity(), forumTopics);
@@ -257,7 +244,7 @@ public class Forum_MainFragment extends Fragment {
     }
 
     public void setMostRecentFilter(){
-        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
+        firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
             public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
                 prepareRecyclerView(getActivity(), RVForum, forumTopics);
@@ -267,7 +254,7 @@ public class Forum_MainFragment extends Fragment {
     }
 
     public void setFeaturedTopicsFilter() {
-        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
+        firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
             public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
                 // Sort the forumTopics based on total likes and comments
@@ -287,7 +274,7 @@ public class Forum_MainFragment extends Fragment {
     }
 
     public void setMostLikesFilter() {
-        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
+        firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
             public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
                 // Sort the forumTopics based on total likes
@@ -307,7 +294,7 @@ public class Forum_MainFragment extends Fragment {
     }
 
     public void setMostCommentsFilter() {
-        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
+        firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
             public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
                 // Sort the forumTopics based on total likes and comments
@@ -333,7 +320,7 @@ public class Forum_MainFragment extends Fragment {
     }
 
     public void updateAdapterWithNewTopic(ForumTopic newTopic) {
-        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
+        firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
             public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
                 adapter = new ForumTopic_SearchAdapter(getActivity(), forumTopics);

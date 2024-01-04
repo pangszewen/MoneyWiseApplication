@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
         android:allowBackup="true"
@@ -73,6 +74,22 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".scholarship.FindNewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".scholarship.NewsFullActivity"
+            android:exported="false" />
+        <activity
+            android:name=".scholarship.ApplyScholarship"
+            android:exported="false" />
+        <activity
+            android:name=".scholarship.BookmarkActivity"
+            android:exported="false" />
+        <activity
+            android:name=".scholarship.FindScholarshipActivity"
+            android:exported="false" />
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -81,6 +98,8 @@
             android:name=".home.HomeActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan" />
+
+        <receiver android:name=".scholarship.NotificationReceiver" />
 
         <meta-data
             android:name="preloaded_fonts"

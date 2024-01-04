@@ -5,24 +5,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneywise.R;
+import com.example.moneywise.login_register.Firebase_User;
 import com.example.moneywise.login_register.User;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Discussion_Adapter extends RecyclerView.Adapter<Discussion_Adapter.Discussion_AdapterVH> {
-    Firebase_Forum firebase = new Firebase_Forum();
+    Firebase_Forum firebaseForum = new Firebase_Forum();
+    Firebase_User firebaseUser = new Firebase_User();
     ArrayList<ForumComment> forumComments = new ArrayList<>();
     Context context;
     public Discussion_Adapter(Context context, ArrayList<ForumComment> forumComments){
@@ -47,7 +44,7 @@ public class Discussion_Adapter extends RecyclerView.Adapter<Discussion_Adapter.
 
         holder.commentDatePosted.setText(formattedCommentDate);
         holder.commentContent.setText(content);
-        firebase.getUser(forumComment.getUserID(), new Firebase_Forum.UserCallback() {
+        firebaseUser.getUser(forumComment.getUserID(), new Firebase_Forum.UserCallback() {
             @Override
             public void onUserReceived(User user) {
                 holder.commentUsername.setText(user.getName());

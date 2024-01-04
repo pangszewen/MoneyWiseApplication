@@ -10,11 +10,11 @@
         android:icon="@drawable/outline_expenses_white"/>
     <item
         android:id="@+id/iconCnq"
-        android:title="@string/Cnq"
+        android:title="Learning"
         android:icon="@drawable/outline_cnq_white"/>
     <item
         android:id="@+id/iconSnn"
-        android:title="@string/Snn"
+        android:title="Info"
         android:icon="@drawable/outline_snn_white"/>
     <item
         android:id="@+id/iconForum"

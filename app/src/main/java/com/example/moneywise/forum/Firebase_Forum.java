@@ -47,7 +47,6 @@ public class Firebase_Forum {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     CollectionReference forumTopicRef = db.collection("FORUM_TOPIC");
     CollectionReference forumCommentRef = db.collection("FORUM_COMMENT");
-    CollectionReference userRef = db.collection("USER_DETAILS");
     String storageName = "FORUM_IMAGES/";
 
     public interface ForumTopicInOrderCallback{
@@ -282,17 +281,6 @@ public class Firebase_Forum {
         void onUserReceived(User user);
     }
 
-    public void getUser(String userID, UserCallback callback){
-        DocumentReference userDocRef = userRef.document(userID);
-        userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                User user = convertDocumentToUser(documentSnapshot);
-                callback.onUserReceived(user);
-            }
-        });
-    }
-
     public ForumTopic convertDocumentToForumTopic(QueryDocumentSnapshot dc) {
         ForumTopic topic = new ForumTopic();
         topic.setTopicID(dc.getId());
@@ -322,19 +310,6 @@ public class Firebase_Forum {
         topic.setCommentID ((List<String>) dc.get("commentID"));
 
         return topic;
-    }
-
-    public User convertDocumentToUser(DocumentSnapshot dc){
-        User user = new User();
-        user.setUserID(dc.getId().toString());
-        user.setName(dc.get("name").toString());
-        user.setGender(dc.get("gender").toString());
-        user.setDob(dc.get("dob").toString());
-        if(dc.get("qualification")!=null)
-            user.setQualification(dc.get("qualification").toString());
-        user.setRole(dc.get("role").toString());
-
-        return user;
     }
 
     public ForumComment convertDocumentToForumComment(QueryDocumentSnapshot dc){

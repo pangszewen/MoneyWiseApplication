@@ -1,13 +1,18 @@
 package com.example.moneywise.login_register;
 
+import android.app.Notification;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +28,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -33,6 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
     ImageButton btn_back;
     RelativeLayout myacc_column,theme_column,adm_column,logout_column,hs_column,about_column;
     Switch noti_switch;
+    SharedPreferences sharedPreferences;
     TextView detail_name,detail_role;
     ImageView gender_icon,profile_pic;
 
@@ -52,6 +61,7 @@ public class ProfileActivity extends AppCompatActivity {
         myacc_column=findViewById(R.id.myacc_column);
         theme_column=findViewById(R.id.theme_column);
         noti_switch=findViewById(R.id.noti_switch);
+        sharedPreferences = getSharedPreferences("notification_prefs", MODE_PRIVATE);
         adm_column=findViewById(R.id.adm_column);
         logout_column=findViewById(R.id.logout_column);
         hs_column=findViewById(R.id.hs_column);
@@ -73,6 +83,22 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),MyAccActivity.class));
                 finish();
+            }
+        });
+
+        noti_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                DocumentReference ref= fStore.collection("USER_DETAILS").document(uid);
+                Map<String,Object> userDetails=new HashMap<>();
+                if (isChecked) {
+                    userDetails.put("notification",true);
+                    Toast.makeText(ProfileActivity.this, "Notifications Enabled", Toast.LENGTH_SHORT).show();
+                } else {
+                    userDetails.put("notification",false);
+                    Toast.makeText(ProfileActivity.this, "Notifications Disabled", Toast.LENGTH_SHORT).show();
+                }
+                ref.update(userDetails);
             }
         });
 
@@ -112,6 +138,7 @@ public class ProfileActivity extends AppCompatActivity {
                 if (value.getString("gender").equals("Male")) {
                     gender_icon.setBackgroundResource(R.drawable.baseline_male_24);
                 }
+                noti_switch.setChecked(value.getBoolean("notification"));
             }
         });
     }

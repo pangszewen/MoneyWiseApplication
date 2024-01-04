@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".scholarship.ApplyScholarship">
+
+    <LinearLayout
+        android:id="@+id/linearApplyScholarship"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarToolbar"
+            style="@style/rectangle_header_blue_grey"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:gravity="center_horizontal"
+            app:contentInsetStart="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/header_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imageArrowleft"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/img_arrowleft"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/txtScholarship"
+                    style="@style/txtDonegalOneregular25_white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="Scholarship"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageSave"
+                    android:layout_width="25dp"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="20dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img_bookmark_unchecked"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/linearSchoDetails"
+                style="@style/groupStyle_white_rec"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:id="@+id/frameImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="260dp">
+
+                    <ImageView
+                        android:id="@+id/imageScho"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/img_image186"
+                        tools:ignore="ContentDescription" />
+
+                    <View
+                        android:id="@+id/viewRectangle"
+                        android:layout_width="match_parent"
+                        android:layout_height="23dp"
+                        android:layout_gravity="bottom|start"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rectangle_bg_white_radius_tl_tr_20" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/txtTitle"
+                    style="@style/txtPTSansbold26_black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="15dp"
+                    android:gravity="center"
+                    android:text="About" />
+
+                <TextView
+                    android:id="@+id/headAbout"
+                    style="@style/txtPTSansbold24_black"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="start"
+                    android:lineSpacingExtra="10dp"
+                    android:text="About" />
+
+                <TextView
+                    android:id="@+id/txtAbout"
+                    style="@style/txtPTSansregular20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="start"
+                    android:lineSpacingExtra="10dp"
+                    android:text="About" />
+
+                <TextView
+                    android:id="@+id/headValueOfScho"
+                    style="@style/txtPTSansbold24_black"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="start"
+                    android:lineSpacingExtra="10dp"
+                    android:text="Value of Scholarship" />
+
+                <TextView
+                    android:id="@+id/txtValue"
+                    style="@style/txtPTSansregular20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="start"
+                    android:lineSpacingExtra="10dp"
+                    android:text="RM25000" />
+
+                <TextView
+                    android:id="@+id/headCriteria"
+                    style="@style/txtPTSansbold24_black"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="start"
+                    android:lineSpacingExtra="10dp"
+                    android:text="Selection Criteria" />
+
+                <TextView
+                    android:id="@+id/txtCriteria"
+                    style="@style/txtPTSansregular20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="start"
+                    android:lineSpacingExtra="10dp"
+                    android:text="RM25000" />
+
+                <TextView
+                    android:id="@+id/headWebsite"
+                    style="@style/txtPTSansbold24_black"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="start"
+                    android:lineSpacingExtra="10dp"
+                    android:text="More info" />
+
+                <TextView
+                    android:id="@+id/txtWebsite"
+                    style="@style/txtPTSansregular20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="start"
+                    android:lineSpacingExtra="10dp"
+                    android:paddingBottom="15dp"
+                    android:text="the website" />
+
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/linearApply"
+            style="@style/rectangle_header_blue_grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom|center_horizontal"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnApply"
+                style="@style/txtPTSansregular20_1"
+                android:textFontWeight="700"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="17dp"
+                android:layout_marginBottom="18dp"
+                android:background="@color/transparent"
+                android:gravity="center_horizontal"
+                android:lineSpacingExtra="6dp"
+                android:singleLine="true"
+                android:text="Apply Scholarship"
+                android:textAllCaps="true" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
