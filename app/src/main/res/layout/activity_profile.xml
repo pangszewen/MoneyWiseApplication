@@ -205,7 +205,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_toEndOf="@+id/theme_icon"
                     android:fontFamily="@font/pt_sans"
-                    android:text="Theme"
+                    android:text="@string/theme"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
 
@@ -298,7 +298,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_toEndOf="@+id/adm_icon"
                     android:fontFamily="@font/pt_sans"
-                    android:text="Administrator Mode"
+                    android:text="@string/administrator_mode"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
 
@@ -438,7 +438,7 @@
                     android:layout_toEndOf="@+id/about_icon"
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/pt_sans"
-                    android:text="About App"
+                    android:text="@string/about_app"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
 
