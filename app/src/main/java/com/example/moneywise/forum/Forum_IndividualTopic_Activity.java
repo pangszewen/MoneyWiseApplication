@@ -53,8 +53,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        //userID = user.getUid();
-        userID = "Zqa2pZRzccPx13bEjxZho9UVlT83";
+        userID = user.getUid();
         TVSubject = findViewById(R.id.TVSubject);
         TVAuthor = findViewById(R.id.TVAuthor);
         TVDatePosted = findViewById(R.id.TVDatePosted);

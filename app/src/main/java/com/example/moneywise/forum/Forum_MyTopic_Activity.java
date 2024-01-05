@@ -37,8 +37,7 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_forum_my_topic);
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        //userID = user.getUid();
-        userID = "Zqa2pZRzccPx13bEjxZho9UVlT83";
+        userID = user.getUid();
         RVMyTopics = findViewById(R.id.RVMyTopics);
         backButton_myTopic = findViewById(R.id.backButton_myTopics);
         btn_createTopic = findViewById(R.id.btn_createTopic);

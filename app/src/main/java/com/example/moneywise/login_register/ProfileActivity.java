@@ -93,10 +93,8 @@ public class ProfileActivity extends AppCompatActivity {
                 Map<String,Object> userDetails=new HashMap<>();
                 if (isChecked) {
                     userDetails.put("notification",true);
-                    Toast.makeText(ProfileActivity.this, "Notifications Enabled", Toast.LENGTH_SHORT).show();
                 } else {
                     userDetails.put("notification",false);
-                    Toast.makeText(ProfileActivity.this, "Notifications Disabled", Toast.LENGTH_SHORT).show();
                 }
                 ref.update(userDetails);
             }

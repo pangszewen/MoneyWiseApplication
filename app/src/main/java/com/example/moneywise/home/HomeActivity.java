@@ -23,6 +23,7 @@ import com.example.moneywise.Expenses.MainExpensesFragment;
 import com.example.moneywise.R;
 import com.example.moneywise.forum.Firebase_Forum;
 import com.example.moneywise.forum.Forum_MainFragment;
+import com.example.moneywise.login_register.AboutAppActivity;
 import com.example.moneywise.login_register.Firebase_User;
 import com.example.moneywise.login_register.LoginActivity;
 import com.example.moneywise.login_register.ProfileActivity;
@@ -83,7 +84,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 }else if(itemID== R.id.overflowCnq){
                     replaceFragment(new fragment_MAIN_CnQ());
-
+                    drawerLayout.closeDrawers();
                     return true;
                 } else if (itemID == R.id.overflowSnn) {
                     replaceFragment(new ScholarshipMainFragment());
@@ -94,7 +95,7 @@ public class HomeActivity extends AppCompatActivity {
                     drawerLayout.closeDrawers();
                     return true;
                 } else if (itemID == R.id.overflowAboutApp) {
-                    // Handle the overflowAboutApp item
+                    startActivity(new Intent(HomeActivity.this, AboutAppActivity.class));
                     drawerLayout.closeDrawers();
                     return true;
                 } else if (itemID == R.id.overflowLogout) {
