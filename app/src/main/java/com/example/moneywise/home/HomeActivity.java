@@ -75,10 +75,12 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
                 } else if (itemID == R.id.overflowForum) {
                     replaceFragment(new Forum_MainFragment());
+                    bottomNavigationView.findViewById(R.id.iconForum).performClick();
                     drawerLayout.closeDrawers();
                     return true;
                 } else if (itemID == R.id.overflowExpenses) {
                     replaceFragment(new MainExpensesFragment());
+                    bottomNavigationView.findViewById(R.id.iconExpenses).performClick();
                     drawerLayout.closeDrawers();
                     return true;
 
