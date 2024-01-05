@@ -41,8 +41,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Firebase_Forum {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user = auth.getCurrentUser();
-    //String userID = user.getUid();
-    String userID = "Zqa2pZRzccPx13bEjxZho9UVlT83";
+    String userID = user.getUid();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseStorage storage = FirebaseStorage.getInstance();
     CollectionReference forumTopicRef = db.collection("FORUM_TOPIC");

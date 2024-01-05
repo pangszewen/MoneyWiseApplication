@@ -68,8 +68,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        //userID = user.getUid();
-        userID = "Zqa2pZRzccPx13bEjxZho9UVlT83";
+        userID = user.getUid();
         chooseImageList = new ArrayList<>();
         urlsList = new ArrayList<>();
         previousClass = getIntent().getStringExtra("class");

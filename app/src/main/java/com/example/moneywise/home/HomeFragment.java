@@ -66,8 +66,7 @@ public class HomeFragment extends Fragment {
         View rootview = inflater.inflate(R.layout.fragment_home, container, false);
         auth=FirebaseAuth.getInstance();
         user= auth.getCurrentUser();
-        //userID = user.getUid();
-        userID = "Zqa2pZRzccPx13bEjxZho9UVlT83";
+        userID = user.getUid();
         welcome=rootview.findViewById(R.id.TVWelcome);
         budgetTV = rootview.findViewById(R.id.TVAmountBudget);
         expenseTV = rootview.findViewById(R.id.TVAmountExpenses);

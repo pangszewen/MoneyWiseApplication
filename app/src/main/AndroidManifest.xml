@@ -90,7 +90,9 @@
         <activity
             android:name=".scholarship.FindScholarshipActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".scholarship.AdminAddScholarshipActivity"
+            android:exported="false"/>
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

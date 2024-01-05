@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -22,7 +23,9 @@ import com.example.moneywise.Expenses.MainExpensesFragment;
 import com.example.moneywise.R;
 import com.example.moneywise.forum.Firebase_Forum;
 import com.example.moneywise.forum.Forum_MainFragment;
+import com.example.moneywise.login_register.AboutAppActivity;
 import com.example.moneywise.login_register.Firebase_User;
+import com.example.moneywise.login_register.LoginActivity;
 import com.example.moneywise.login_register.ProfileActivity;
 import com.example.moneywise.login_register.User;
 import com.example.moneywise.quiz.fragment_MAIN_CnQ;
@@ -38,12 +41,14 @@ public class HomeActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     FragmentContainerView FCVHome;
+    FirebaseAuth auth;
     Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        auth = FirebaseAuth.getInstance();
         drawerLayout = findViewById(R.id.DLHomePage);
         navigationView = findViewById(R.id.nav_side);
         toolbar = findViewById(R.id.myToolBar);
@@ -54,37 +59,53 @@ public class HomeActivity extends AppCompatActivity {
 
 
         setSupportActionBar(toolbar);
+        navigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
 
-
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemID = item.getItemId();
-                if(itemID== R.id.overflowHome) {
+                if (itemID == R.id.overflowHome) {
                     replaceFragment(new HomeFragment());
+                    drawerLayout.closeDrawers(); // Close the drawer after selecting an item
                     return true;
-                }else if(itemID== R.id.overflowForum) {
+                } else if (itemID == R.id.overflowForum) {
                     replaceFragment(new Forum_MainFragment());
+                    drawerLayout.closeDrawers();
                     return true;
-                }else if(itemID== R.id.overflowExpenses) {
+                } else if (itemID == R.id.overflowExpenses) {
                     replaceFragment(new MainExpensesFragment());
+                    drawerLayout.closeDrawers();
                     return true;
+
                 }else if(itemID== R.id.overflowCnq){
                     replaceFragment(new fragment_MAIN_CnQ());
+                    drawerLayout.closeDrawers();
                     return true;
-                }else if(itemID== R.id.overflowSnn) {
+                } else if (itemID == R.id.overflowSnn) {
                     replaceFragment(new ScholarshipMainFragment());
+                    drawerLayout.closeDrawers();
                     return true;
-                }else if(itemID== R.id.overflowProfile) {
+                } else if (itemID == R.id.overflowProfile) {
                     startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
+                    drawerLayout.closeDrawers();
                     return true;
-                }else
+                } else if (itemID == R.id.overflowAboutApp) {
+                    startActivity(new Intent(HomeActivity.this, AboutAppActivity.class));
+                    drawerLayout.closeDrawers();
+                    return true;
+                } else if (itemID == R.id.overflowLogout) {
+                    auth.signOut();
+                    startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                    finish();
+                    return true;
+                } else {
                     return false;
+                }
             }
         });
 
