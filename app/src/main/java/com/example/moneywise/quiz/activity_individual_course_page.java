@@ -44,6 +44,7 @@ public class activity_individual_course_page extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
     Button joinCourse;
+    String previousClass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +58,7 @@ public class activity_individual_course_page extends AppCompatActivity {
         course.setCourseMode(getIntent().getStringExtra("mode"));
         course.setCourseLanguage(getIntent().getStringExtra("language"));
         course.setCourseLevel(getIntent().getStringExtra("level"));
-
+        previousClass = getIntent().getStringExtra("previousClass");
         courseID = course.getCourseID();
         Bundle bundle = new Bundle();
         bundle.putString("advisorID", course.getAdvisorID());
@@ -66,6 +67,7 @@ public class activity_individual_course_page extends AppCompatActivity {
         bundle.putString("mode", course.getCourseMode());
         bundle.putString("language", course.getCourseLanguage());
         bundle.putString("courseID", course.getCourseID());
+        bundle.putString("previousClass", previousClass);
 
         courseCoverImage = findViewById(R.id.courseImage);
         title = findViewById(R.id.TVCourseTitle);
@@ -146,6 +148,7 @@ public class activity_individual_course_page extends AppCompatActivity {
                     intent.putExtra("level", course.getCourseLevel());
                     intent.putExtra("language", course.getCourseLanguage());
                     intent.putExtra("advisorID", course.getAdvisorID());
+                    intent.putExtra("previousClass", previousClass);
                     startActivity(intent);
                 })
                 .addOnFailureListener(e -> {

@@ -66,6 +66,7 @@ public class activity_create_lesson extends AppCompatActivity {
         chooseImageList = new ArrayList<>();
         chooseVideoList = new ArrayList<>();
 
+        // fetch data from previous activity
         if (intent != null){
             courseTitle = intent.getStringExtra("title");
             courseDesc = intent.getStringExtra("desc");
@@ -73,6 +74,7 @@ public class activity_create_lesson extends AppCompatActivity {
             courseMode = intent.getStringExtra("mode");
             courseLanguage = intent.getStringExtra("language");
         }
+
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +87,7 @@ public class activity_create_lesson extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!save && !chooseImageList.isEmpty() && !chooseVideoList.isEmpty()) {
+                if (!save && !chooseImageList.isEmpty() && !chooseVideoList.isEmpty()) { // will check if all fields are filled
                     createCourse(courseTitle, courseDesc, courseLevel, courseLanguage, courseMode);
                     Intent intent = new Intent(activity_create_lesson.this, activity_course_display.class);
                     startActivity(intent);
@@ -93,10 +95,10 @@ public class activity_create_lesson extends AppCompatActivity {
                 else if (save) {
                     View rootView = findViewById(android.R.id.content);
                     Snackbar.make(rootView, "Saved!", Snackbar.LENGTH_SHORT).show();
-                } else if (!save && chooseImageList.isEmpty()) {
+                } else if (!save && chooseImageList.isEmpty()) { // no upload cover image
                     View rootView = findViewById(android.R.id.content);
                     Snackbar.make(rootView, "Please select a cover image!", Snackbar.LENGTH_SHORT).show();
-                } else if (!save && chooseVideoList.isEmpty()) {
+                } else if (!save && chooseVideoList.isEmpty()) { // no upload any lessons
                     View rootView = findViewById(android.R.id.content);
                     Snackbar.make(rootView, "Please select videos to upload!", Snackbar.LENGTH_SHORT).show();
                 }
@@ -132,6 +134,7 @@ public class activity_create_lesson extends AppCompatActivity {
         });
     }
 
+    // Select videos for lesson
     private void pickVideosFromGallery() {
         Intent intent = new Intent();
         intent.setType("video/*");
@@ -140,6 +143,7 @@ public class activity_create_lesson extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Videos"), 1);
     }
 
+    // Select image as cover image
     private void pickImageFromGallery() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -166,7 +170,7 @@ public class activity_create_lesson extends AppCompatActivity {
             for (int i = 0; i < itemCount; i++) {
                 videoUri = data.getClipData().getItemAt(i).getUri();
                 chooseVideoList.add(videoUri);
-                LayoutInflater layoutInflater = getLayoutInflater(); // Use the appropriate method to get LayoutInflater
+                LayoutInflater layoutInflater = getLayoutInflater();
                 VideoViewPagerAdapter videoPagerAdapter = new VideoViewPagerAdapter(getSupportFragmentManager(), chooseVideoList);
                 viewPagerVideo.setAdapter(videoPagerAdapter);
             }
@@ -188,6 +192,7 @@ public class activity_create_lesson extends AppCompatActivity {
         viewPagerImage.setAdapter(adapter);
     }
 
+    // check courses saved in database
     private void createCourse(String title, String description, String level, String language, String mode) {
         Log.d("TAG", "CreateCourse");
         CollectionReference collectionReference = db.collection("COURSE");
@@ -212,6 +217,7 @@ public class activity_create_lesson extends AppCompatActivity {
         });
     }
 
+    // upload lesson to storage and name as Lesson.. based on upload sequence under courseID
     private void uploadLessons(String courseID) {
         int i = 1;
         for (Uri videoUri : chooseVideoList) {
@@ -228,6 +234,7 @@ public class activity_create_lesson extends AppCompatActivity {
         }
     }
 
+    // upload cover image to storage and name as Cover Image under courseID
     private void uploadImages(String courseID){
         for(int i =0; i<chooseImageList.size(); i++){
             Uri image = chooseImageList.get(i);
@@ -242,6 +249,7 @@ public class activity_create_lesson extends AppCompatActivity {
         }
     }
 
+    // insert course to database
     private void insertTopicIntoDatabase(Course course) {
         Map<String, Object> map = new HashMap<>();
         map.put("advisorID", course.getAdvisorID());
@@ -282,12 +290,13 @@ public class activity_create_lesson extends AppCompatActivity {
         return course;
     }
 
+    // create course ID C0001000
     private String generateCourseID(ArrayList<Course> courses){
         String newID;
         Random rand = new Random();
         while(true) {
             int randomNum = rand.nextInt(1000000);
-            newID = "C" + String.format("%07d", randomNum); //C0001000
+            newID = "C" + String.format("%07d", randomNum);
             if(checkDuplicatedTopicID(newID, courses))
                 break;
         }
@@ -295,6 +304,7 @@ public class activity_create_lesson extends AppCompatActivity {
         return newID;
     }
 
+    // check for duplication
     private boolean checkDuplicatedTopicID(String newID, ArrayList<Course> courses){
         for(Course topic: courses){
             if(newID.equals(topic.getCourseID()))

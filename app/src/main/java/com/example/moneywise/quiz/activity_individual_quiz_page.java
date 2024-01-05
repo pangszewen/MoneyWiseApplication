@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.moneywise.R;
+import com.example.moneywise.home.HomeActivity;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -137,7 +138,7 @@ public class activity_individual_quiz_page extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                backToPreviousActivity();
             }
         });
     }
@@ -229,5 +230,12 @@ public class activity_individual_quiz_page extends AppCompatActivity {
         else if (options.get(1).equals(correctAns)) B.setBackgroundResource(R.drawable.quiz_button_outline_green);
         else if (options.get(2).equals(correctAns)) C.setBackgroundResource(R.drawable.quiz_button_outline_green);
         else if (options.get(3).equals(correctAns)) D.setBackgroundResource(R.drawable.quiz_button_outline_green);
+    }
+
+    public void backToPreviousActivity(){
+        Intent intent = new Intent(activity_individual_quiz_page.this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        finish();
     }
 }

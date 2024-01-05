@@ -84,6 +84,7 @@ public class activity_create_quiz extends AppCompatActivity {
         listOfQues = new ArrayList<>();
         chooseImageList = new ArrayList<>();
 
+        // add questions to quiz
         addQues.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,7 +132,7 @@ public class activity_create_quiz extends AppCompatActivity {
                 }
             }
         });
-        
+        // add quiz image
         addQuizImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -176,7 +177,8 @@ public class activity_create_quiz extends AppCompatActivity {
             pickImageFromGallery();
         }
     }
-    
+
+    // create quiz
     private void createQuiz(String quizTitle) {
         Log.d("TAG", "CreateQuiz");
         CollectionReference collectionReference = db.collection("QUIZ");
@@ -222,8 +224,9 @@ public class activity_create_quiz extends AppCompatActivity {
             quesID = generateQuesID(listOfQues);
             Question newQues = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
             insertQuesIntoDatabase(collectionReference, newQues);
-            }
+    }
 
+    // create quiz in database
     private void insertQuizIntoDatabase(Quiz quiz) {
         Map<String, Object> map = new HashMap<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
@@ -247,6 +250,8 @@ public class activity_create_quiz extends AppCompatActivity {
             }
         });
     }
+
+    // insert questions to database
     private void insertQuesIntoDatabase(CollectionReference collectionReference, Question ques) {
         Map<String, Object> map = new HashMap<>();
         map.put("quesText", ques.getQuestionText());
@@ -288,6 +293,7 @@ public class activity_create_quiz extends AppCompatActivity {
         return newID;
     }
 
+    // create unique questionID
     private String generateQuesID(ArrayList<Question> ques) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         int length = 10;
@@ -327,3 +333,6 @@ public class activity_create_quiz extends AppCompatActivity {
         return true;
     }
 }
+
+// QUIZ -> QUIZID -> QUES(COLLECTION) -> QUESID -> quesText, correctAns, option1-3
+//                   title, advisorID

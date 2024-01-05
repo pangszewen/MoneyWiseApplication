@@ -17,7 +17,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class fragment_course_lesson_full extends Fragment {
     private RecyclerView recyclerView;
@@ -33,10 +37,10 @@ public class fragment_course_lesson_full extends Fragment {
         db = FirebaseFirestore.getInstance();
         recyclerView = view.findViewById(R.id.RVLessons);
 
+        // Check if receive bundle
         Bundle bundle = getArguments();
         if (bundle != null)
             courseID = bundle.getString("courseID");
-
         setUpRVLesson();
         return view;
     }
@@ -46,31 +50,49 @@ public class fragment_course_lesson_full extends Fragment {
         retrieveVideoUrlsForLessons();
     }
 
-    private void retrieveVideoUrlsForLessons() { // Not in sequence!!!!!!
+    private void retrieveVideoUrlsForLessons() {
         lessonList = new ArrayList<>();
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference("COURSE_LESSONS").child(courseID);
         storageRef.listAll()
                 .addOnSuccessListener(listResult -> {
-                    int lessonNumber = 1; // Initialize lesson number
+                    Map<Integer, Lesson> lessonMap = new HashMap<>(); // Map to store lessons by number
+
                     for (StorageReference item : listResult.getItems()) {
-                        final int currentLessonNumber = lessonNumber; // Store the current lesson number
+                        String itemName = item.getName();
+                        int lessonNumber = extractLessonNumber(itemName); // Extract lesson number from the item name
+
                         item.getDownloadUrl().addOnSuccessListener(uri -> {
-                            Lesson lesson = new Lesson("Lesson " + currentLessonNumber, "", uri.toString());
-                            lessonList.add(lesson);
-                            lessonsAdapter.notifyDataSetChanged();
+                            Lesson lesson = new Lesson("Lesson " + lessonNumber, "", uri.toString());
+                            lessonMap.put(lessonNumber, lesson);
+
+                            if (lessonMap.size() == listResult.getItems().size()) {
+                                updateAdapterFromMap(lessonMap);
+                            }
                         }).addOnFailureListener(exception -> {
-                            Log.d("Lesson URL", "Fail to retrieve");
+                            Log.d("Lesson URL", "Failed to retrieve");
                         });
-                        lessonNumber++; // Increment lesson number for the next iteration
                     }
-                    setAdapter();
                 })
                 .addOnFailureListener(e -> {
-                    Log.d("Lesson URL", "Fail to retrieve");
+                    Log.d("Lesson URL", "Failed to retrieve");
                 });
     }
 
+    // Extract lesson number from item list
+    private int extractLessonNumber(String itemName) {
+        return Integer.parseInt(itemName.replaceAll("[^0-9]", ""));
+    }
+
+    // Updates the adapter with lessons sorted by lesson number
+    private void updateAdapterFromMap(Map<Integer, Lesson> lessonMap) {
+        List<Lesson> sortedLessons = new ArrayList<>(lessonMap.values());
+        Collections.sort(sortedLessons, Comparator.comparingInt(o -> extractLessonNumber(o.getLessonTitle())));
+
+        lessonList.clear();
+        lessonList.addAll(sortedLessons);
+        setAdapter();
+    }
 
     private void setAdapter() {
         Context context = getContext();

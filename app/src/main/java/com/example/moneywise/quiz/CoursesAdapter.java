@@ -112,6 +112,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
                 intent.putExtra("language", course.getCourseLanguage());
                 intent.putExtra("level", course.getCourseLevel());
                 intent.putExtra("mode", course.getCourseMode());
+                intent.putExtra("previousClass", context.toString());
                 if (context.getClass() == CoursePendingDisplay.class) {
                     intentAdmin.putExtra("courseID", course.getCourseID());
                     intentAdmin.putExtra("title", course.getCourseTitle());
