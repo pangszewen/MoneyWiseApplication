@@ -29,7 +29,6 @@ import com.example.moneywise.login_register.User;
 import com.example.moneywise.quiz.Course;
 import com.example.moneywise.quiz.CoursesAdapter;
 import com.example.moneywise.quiz.CoursesCompletedContinueAdapter;
-import com.example.moneywise.quiz.NewCoursesAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -65,7 +64,7 @@ public class HomeFragment extends Fragment {
     String formattedDate = dateFormat.format(currentDate);
     String userID;
     List<Course> courseList;
-    NewCoursesAdapter newCoursesAdapter;
+    CompleteCourseAdapter completeCourseAdapter;
     ArrayList<Article> articleList = new ArrayList<>();
     LatestNewsAdapter adapter;
     RecyclerView RVLatestNews, RVContinueCourse;
@@ -95,6 +94,7 @@ public class HomeFragment extends Fragment {
         RVContinueCourse =rootview.findViewById(R.id.RVContinueCourse);
         setExpensesView();
         setRVLatestNews();
+        setUpRVCourse();
 
         firebaseUser.getUser(userID, new Firebase_Forum.UserCallback() {
             @Override
@@ -195,7 +195,7 @@ public class HomeFragment extends Fragment {
                     Course topic = convertDocumentToListOfCourse(dc);
                     listOfCourse.add(topic);
                 }
-                newCoursesAdapter = new NewCoursesAdapter(getContext(), listOfCourse);
+                completeCourseAdapter = new CompleteCourseAdapter(getContext(), listOfCourse);
                 prepareRecyclerView(getContext(), RVContinueCourse, listOfCourse);
             }
         });
@@ -240,8 +240,8 @@ public class HomeFragment extends Fragment {
     }
 
     public void preAdapter(Context context, RecyclerView RV, List<Course> object){
-        newCoursesAdapter = new NewCoursesAdapter(context, object);
-        RV.setAdapter(newCoursesAdapter);
+        completeCourseAdapter = new CompleteCourseAdapter(context, object);
+        RV.setAdapter(completeCourseAdapter);
     }
 
     public Course convertDocumentToListOfCourse(QueryDocumentSnapshot dc){
@@ -249,10 +249,12 @@ public class HomeFragment extends Fragment {
         course.setCourseID(dc.getId());
         course.setCourseTitle(dc.get("title").toString());
         course.setAdvisorID(dc.get("advisorID").toString());
-        course.setCourseDesc(dc.get("description").toString());
-        course.setCourseLanguage(dc.get("language").toString());
-        course.setCourseLevel(dc.get("level").toString());
-        course.setCourseMode(dc.get("mode").toString());
+//        if (dc.get("description").toString()!=null) {
+//            course.setCourseDesc(dc.get("description").toString());
+//            course.setCourseLanguage(dc.get("language").toString());
+//            course.setCourseLevel(dc.get("level").toString());
+//            course.setCourseMode(dc.get("mode").toString());
+//        }
         return course;
     }
 }
