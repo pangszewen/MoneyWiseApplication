@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -21,6 +21,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".login_register.CoursePendingDisplay"
+            android:exported="true" />
+        <activity
+            android:name=".login_register.ApproveCourse"
             android:name=".login_register.FAQActivity"
             android:exported="false" />
         <activity
@@ -46,10 +50,6 @@
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".forum.Forum_MainActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name=".login_register.MyAccActivity"
             android:exported="false" />
         <activity
@@ -73,7 +73,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".scholarship.FindNewsActivity"
             android:exported="false" />
@@ -94,6 +93,43 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
+        <activity
+            android:name=".quiz.FullScreenVideoActivity"
+            android:exported="false"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".quiz.activity_course_bookmark"
+            android:exported="false" />
+        <activity
+            android:name=".quiz.activity_individual_course_joined"
+            android:exported="true" />
+        <activity
+            android:name=".quiz.activity_complete_continue_course"
+            android:exported="true" />
+        <activity
+            android:name=".quiz.activity_individual_course_page"
+            android:exported="true" />
+        <activity
+            android:name=".quiz.activity_quiz_show_result"
+            android:exported="false" />
+        <activity
+            android:name=".quiz.activity_quiz_display"
+            android:exported="true" />
+        <activity
+            android:name=".quiz.activity_create_lesson"
+            android:exported="false" />
+        <activity
+            android:name=".quiz.activity_course_display"
+            android:exported="true" />
+        <activity
+            android:name=".quiz.activity_individual_quiz_page"
+            android:exported="true" />
+        <activity
+            android:name=".quiz.activity_create_course"
+            android:exported="true" />
+        <activity
+            android:name=".quiz.activity_create_quiz"
+            android:exported="true" />
         <activity
             android:name=".home.HomeActivity"
             android:exported="true"

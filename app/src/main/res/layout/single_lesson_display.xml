@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <VideoView
+        android:id="@+id/VVLesson"
+        android:layout_width="160dp"
+        android:layout_height="90dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        ></VideoView>
+
+    <TextView
+        android:id="@+id/TVLessonTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lesson"
+        app:layout_constraintLeft_toRightOf="@+id/VVLesson"
+        app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="@font/pt_sans"
+        android:textSize="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:textColor="@color/black">
+    </TextView>
+
+    <TextView
+        android:id="@+id/TVLessonDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0:00"
+        app:layout_constraintTop_toBottomOf="@id/TVLessonTitle"
+        app:layout_constraintLeft_toRightOf="@id/VVLesson"
+        android:layout_marginTop="10dp"
+        android:textColor="#928E8E"
+        android:textSize="16dp"
+        android:fontFamily="@font/pt_sans"
+        android:layout_marginLeft="20dp">
+    </TextView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

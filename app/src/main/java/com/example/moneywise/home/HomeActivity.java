@@ -27,6 +27,7 @@ import com.example.moneywise.login_register.Firebase_User;
 import com.example.moneywise.login_register.LoginActivity;
 import com.example.moneywise.login_register.ProfileActivity;
 import com.example.moneywise.login_register.User;
+import com.example.moneywise.quiz.fragment_MAIN_CnQ;
 import com.example.moneywise.scholarship.ScholarshipMainFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -79,9 +80,10 @@ public class HomeActivity extends AppCompatActivity {
                     replaceFragment(new MainExpensesFragment());
                     drawerLayout.closeDrawers();
                     return true;
-                } else if (itemID == R.id.overflowCnq) {
-                    // Handle the overflowCnq item
-                    drawerLayout.closeDrawers();
+
+                }else if(itemID== R.id.overflowCnq){
+                    replaceFragment(new fragment_MAIN_CnQ());
+
                     return true;
                 } else if (itemID == R.id.overflowSnn) {
                     replaceFragment(new ScholarshipMainFragment());
@@ -120,7 +122,7 @@ public class HomeActivity extends AppCompatActivity {
                     replaceFragment(new MainExpensesFragment());
                     return true;
                 }else if(itemID== R.id.iconCnq){
-                    //startActivity(new Intent(HomeActivity.this, activity_course_display.class));
+                    replaceFragment(new fragment_MAIN_CnQ());
                     return true;
                 }else if(itemID== R.id.iconSnn) {
                     replaceFragment(new ScholarshipMainFragment());
