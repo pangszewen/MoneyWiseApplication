@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +18,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.moneywise.R;
+import com.example.moneywise.home.HomeFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -50,6 +54,7 @@ public class fragment_MAIN_CnQ extends Fragment {
     List<Quiz> quizList;
     ImageButton bookmarkButton;
     ConstraintLayout continueCourse;
+    SwipeRefreshLayout swipeRefreshLayout;
     String title, courseID, advisorID, description, level, mode, language;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,19 +74,41 @@ public class fragment_MAIN_CnQ extends Fragment {
         recyclerViewQuiz = view.findViewById(R.id.RVQuiz);
         bookmarkButton = view.findViewById(R.id.bookmarkButton);
         continueCourse = view.findViewById(R.id.CLContinueCourse);
+        swipeRefreshLayout = view.findViewById(R.id.RefreshMainPage);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                displayCompleteCourse();
+                setUpRVCourse();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         continueCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), activity_individual_course_joined.class);
-                intent.putExtra("courseID", courseID);
-                intent.putExtra("title", title);
-                intent.putExtra("description", description);
-                intent.putExtra("advisorID", advisorID);
-                intent.putExtra("language", language);
-                intent.putExtra("level", level);
-                intent.putExtra("mode", mode);
-                startActivity(intent);
+                // Call checkContinue and implement the callback
+                checkContinue(new CourseCheckCallback() {
+                    @Override
+                    public void onCourseCheckResult(boolean coursesExist) {
+                        // Have courses to continue
+                        if (coursesExist) {
+                            Intent intent = new Intent(getContext(), activity_individual_course_joined.class);
+                            intent.putExtra("courseID", courseID);
+                            intent.putExtra("title", title);
+                            intent.putExtra("description", description);
+                            intent.putExtra("advisorID", advisorID);
+                            intent.putExtra("language", language);
+                            intent.putExtra("level", level);
+                            intent.putExtra("mode", mode);
+                            intent.putExtra("previousClass", HomeFragment.class.toString());
+                            startActivity(intent);
+                        } else { // no courses to continue
+                            Toast.makeText(getContext(), "No course to continue!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
         bookmarkButton.setOnClickListener(new View.OnClickListener() {
@@ -124,8 +151,26 @@ public class fragment_MAIN_CnQ extends Fragment {
         displayCompleteCourse();
         setUpRVCourse();
         setUpRVQuiz();
-        
         return view;
+    }
+
+    // check if there are courses to continue
+    public interface CourseCheckCallback {
+        void onCourseCheckResult(boolean coursesExist);
+    }
+    private void checkContinue(final CourseCheckCallback callback) {
+        CollectionReference courseContinueRef = db.collection("USER_DETAILS")
+                .document(userID)
+                .collection("COURSES_JOINED");
+
+        courseContinueRef.limit(1).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                boolean coursesExist = !task.getResult().isEmpty();
+                callback.onCourseCheckResult(coursesExist);
+            } else {
+                callback.onCourseCheckResult(false); // Assume no courses on error
+            }
+        });
     }
 
     private void setUpRVQuiz() {
@@ -146,13 +191,12 @@ public class fragment_MAIN_CnQ extends Fragment {
                     }
                 }
                 quizzesAdapter = new QuizzesAdapter(getContext(), listOfQuiz);
-                quizzesAdapter.loadBookmarkedCourses();
+                quizzesAdapter.loadBookmarkedCourses(); // check is quiz is bookmarked
                 prepareRecyclerViewQuiz(getContext(), recyclerViewQuiz, listOfQuiz);
-                quizzesAdapter.loadBookmarkedCourses();
+                quizzesAdapter.loadBookmarkedCourses(); // check if quiz is bookmarked
             }
         });
     }
-
 
     public void prepareRecyclerViewQuiz(Context context, RecyclerView RV, List<Quiz> object){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
@@ -174,18 +218,21 @@ public class fragment_MAIN_CnQ extends Fragment {
         return quiz;
     }
 
+    // only display courses that are not join nor completed
     private void setUpRVCourse() {
         courseList = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
         CollectionReference coursesRef = db.collection("COURSE");
-        String currentUserID = "UrymMm91GEbdKUsAIQgj15ZMoOy2";
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        userID = user.getUid();
 
         CollectionReference joinedRef = db.collection("USER_DETAILS")
-                .document(currentUserID)
+                .document(userID)
                 .collection("COURSES_JOINED");
 
         CollectionReference completedRef = db.collection("USER_DETAILS")
-                .document(currentUserID)
+                .document(userID)
                 .collection("COURSES_COMPLETED");
 
         coursesRef.get().addOnCompleteListener(coursesTask -> {
@@ -214,7 +261,7 @@ public class fragment_MAIN_CnQ extends Fragment {
                                         }
                                     }
 
-                                    if (!isJoined && !isCompleted) {
+                                    if (!isJoined && !isCompleted) { // add to list of course if it is not join or complete
                                         Course course = convertDocumentToListOfCourse(dc);
                                         listOfCourse.add(course);
                                     }

@@ -84,9 +84,9 @@ public class activity_course_bookmark extends AppCompatActivity {
                                 listOfCourse.add(topic);
                             }
                             coursesAdapter = new CoursesAdapter(activity_course_bookmark.this, listOfCourse);
-                            coursesAdapter.loadBookmarkedCourses();
+                            coursesAdapter.loadBookmarkedCourses(); // check whether course is bookmarked
                             prepareRecyclerViewCourse(activity_course_bookmark.this, recyclerViewCourse, listOfCourse);
-                            coursesAdapter.loadBookmarkedCourses();
+                            coursesAdapter.loadBookmarkedCourses(); // check whether course is bookmarked
                         }
                     }
                 });
@@ -127,9 +127,9 @@ public class activity_course_bookmark extends AppCompatActivity {
                     listOfQuiz.add(topic);
                 }
                 quizzesAdapter = new QuizzesAdapter(activity_course_bookmark.this, listOfQuiz);
-                quizzesAdapter.loadBookmarkedCourses();
+                quizzesAdapter.loadBookmarkedCourses(); // check whether quiz is bookmarked
                 prepareRecyclerView(activity_course_bookmark.this, recyclerViewQuiz, listOfQuiz);
-                quizzesAdapter.loadBookmarkedCourses();
+                quizzesAdapter.loadBookmarkedCourses(); // check whether quiz is bookmarked
             }
         });
     }

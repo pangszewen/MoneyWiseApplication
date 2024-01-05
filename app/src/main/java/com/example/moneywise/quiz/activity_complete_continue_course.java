@@ -32,22 +32,23 @@ public class activity_complete_continue_course extends AppCompatActivity {
         searchView = findViewById(R.id.search);
         back = findViewById(R.id.backButton);
 
+        // One fragment for each tab
         CourseViewpagerAdapter courseViewpagerAdapter = new CourseViewpagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        fragment_course_continue fragCon = new fragment_course_continue();
-        fragment_course_completed fragComp = new fragment_course_completed();
+        fragment_course_continue fragCon = new fragment_course_continue(); // Continue course fragment
+        fragment_course_completed fragComp = new fragment_course_completed(); // Completed Course fragment
         courseViewpagerAdapter.addFragment(fragCon, "Continue");
         courseViewpagerAdapter.addFragment(fragComp, "Completed");
         viewPager.setAdapter(courseViewpagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        previousClass = getIntent().getStringExtra("class");
+        previousClass = getIntent().getStringExtra("previousClass");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            // perform search
             @Override
             public boolean onQueryTextSubmit(String s) {
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String s) {
                 fragCon.onSearch(s);

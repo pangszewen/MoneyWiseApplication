@@ -46,6 +46,7 @@ public class activity_individual_course_joined extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
     Button completeCourse;
+    String previousClass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +60,7 @@ public class activity_individual_course_joined extends AppCompatActivity {
         course.setCourseMode(getIntent().getStringExtra("mode"));
         course.setCourseLanguage(getIntent().getStringExtra("language"));
         course.setCourseLevel(getIntent().getStringExtra("level"));
+        previousClass = getIntent().getStringExtra("previousClass");
 
         courseID = course.getCourseID();
         Bundle bundle = new Bundle();
@@ -68,6 +70,7 @@ public class activity_individual_course_joined extends AppCompatActivity {
         bundle.putString("mode", course.getCourseMode());
         bundle.putString("language", course.getCourseLanguage());
         bundle.putString("courseID", course.getCourseID());
+        bundle.putString("previousClass", previousClass);
 
         courseCoverImage = findViewById(R.id.courseImage);
         title = findViewById(R.id.TVCourseTitle);

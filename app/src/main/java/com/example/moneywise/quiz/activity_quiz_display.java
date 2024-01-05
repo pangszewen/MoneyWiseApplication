@@ -53,9 +53,11 @@ public class activity_quiz_display extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         String userID = user.getUid();
-        isAdvisor(userID, isAdvisor -> { // Need to change
+
+        // Check whether user is advisor or not
+        isAdvisor(userID, isAdvisor -> {
             if (!isAdvisor)
-                createQuiz.setVisibility(View.GONE);
+                createQuiz.setVisibility(View.GONE); // if not advisor, cannot create quiz
         });
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -95,10 +97,7 @@ public class activity_quiz_display extends AppCompatActivity {
         });
     }
 
-    public interface AdvisorCheckCallback {
-        void onRoleChecked(boolean isAdvisor);
-    }
-
+    // Check is advisor or not
     private void isAdvisor(String userID, activity_course_display.AdvisorCheckCallback callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference userRef = db.collection("USER_DETAILS").document(userID);
@@ -106,7 +105,7 @@ public class activity_quiz_display extends AppCompatActivity {
         userRef.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 String role = documentSnapshot.getString("role");
-                if (role != null && role.equals("advisor")) {
+                if (role != null && role.equals("Advisor")) {
                     callback.onRoleChecked(true);
                 } else {
                     callback.onRoleChecked(false);
@@ -131,9 +130,9 @@ public class activity_quiz_display extends AppCompatActivity {
                     listOfQuiz.add(topic);
                 }
                 quizzesAdapter = new QuizzesAdapter(activity_quiz_display.this, listOfQuiz);
-                quizzesAdapter.loadBookmarkedCourses();
+                quizzesAdapter.loadBookmarkedCourses(); // check whether bookmarked
                 prepareRecyclerView(activity_quiz_display.this, recyclerView, listOfQuiz);
-                quizzesAdapter.loadBookmarkedCourses();
+                quizzesAdapter.loadBookmarkedCourses();  // check whether bookmarked
             }
         });
     }

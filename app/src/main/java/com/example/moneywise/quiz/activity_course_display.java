@@ -54,9 +54,9 @@ public class activity_course_display extends AppCompatActivity {
         FirebaseUser user = auth.getCurrentUser();
         String userID = user.getUid();
 
-        isAdvisor(userID, isAdvisor -> {
+        isAdvisor(userID, isAdvisor -> { // check if user is advisor
             if (!isAdvisor)
-                createCourse.setVisibility(View.GONE);
+                createCourse.setVisibility(View.GONE); // if not advisor, cannot create course
         });
         createCourse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,11 +82,11 @@ public class activity_course_display extends AppCompatActivity {
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            // perform search
             @Override
             public boolean onQueryTextSubmit(String s) {
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String s) {
                 coursesAdapter.getFilter().filter(s);
@@ -95,6 +95,7 @@ public class activity_course_display extends AppCompatActivity {
         });
     }
 
+    // Check if user is advisor
     public interface AdvisorCheckCallback {
         void onRoleChecked(boolean isAdvisor);
     }
@@ -106,7 +107,7 @@ public class activity_course_display extends AppCompatActivity {
         userRef.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 String role = documentSnapshot.getString("role");
-                if (role != null && role.equals("advisor")) {
+                if (role != null && role.equals("Advisor")) {
                     callback.onRoleChecked(true);
                 } else {
                     callback.onRoleChecked(false);
@@ -119,7 +120,7 @@ public class activity_course_display extends AppCompatActivity {
         });
     }
 
-
+    // will check if the course is completed/join, if yes, then will not display in course list
     public void setUpRVCourse() {
         courseList = new ArrayList<>();
         CollectionReference coursesRef = db.collection("COURSE");
@@ -127,11 +128,11 @@ public class activity_course_display extends AppCompatActivity {
         FirebaseUser user = auth.getCurrentUser();
         String userID = user.getUid();
 
-        CollectionReference joinedRef = db.collection("USER_DETAILS")
+        CollectionReference joinedRef = db.collection("USER_DETAILS")// refer to course joined
                 .document(userID)
                 .collection("COURSES_JOINED");
 
-        CollectionReference completedRef = db.collection("USER_DETAILS")
+        CollectionReference completedRef = db.collection("USER_DETAILS")// refer to course completed
                 .document(userID)
                 .collection("COURSES_COMPLETED");
 
@@ -161,16 +162,15 @@ public class activity_course_display extends AppCompatActivity {
                                         }
                                     }
 
-                                    if (!isJoined && !isCompleted) {
+                                    if (!isJoined && !isCompleted) { // if course is not joined/complete will add to list of course to display
                                         Course course = convertDocumentToListOfCourse(dc);
                                         listOfCourse.add(course);
                                     }
                                 }
-
                                 coursesAdapter = new CoursesAdapter(activity_course_display.this, listOfCourse);
-                                coursesAdapter.loadBookmarkedCourses();
+                                coursesAdapter.loadBookmarkedCourses(); // check course is bookmarked
                                 prepareRecyclerView(activity_course_display.this, recyclerView, listOfCourse);
-                                coursesAdapter.loadBookmarkedCourses();
+                                coursesAdapter.loadBookmarkedCourses(); // check if course is bookmarked
                             }
                         });
                     }
@@ -178,9 +178,6 @@ public class activity_course_display extends AppCompatActivity {
             }
         });
     }
-
-
-
 
     public void prepareRecyclerView(Context context, RecyclerView RV, List<Course> object){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
