@@ -1,20 +1,20 @@
-package com.example.moneywise.quiz;
+package com.example.moneywise.login_register;
 
 import android.graphics.text.LineBreaker;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-
 import com.example.moneywise.R;
-import com.example.moneywise.login_register.CoursePendingDisplay;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class fragment_course_desc extends Fragment {
+public class FragmentDescription extends Fragment {
     FirebaseFirestore db;
     String courseID;
     TextView desc, language, mode, level;
@@ -22,8 +22,8 @@ public class fragment_course_desc extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_course_desc, container, false);
-        
+        View view =  inflater.inflate(R.layout.fragment_description, container, false);
+
         desc = view.findViewById(R.id.TVDescription);
         level = view.findViewById(R.id.TVLevel);
         language = view.findViewById(R.id.TVLanguage);
@@ -34,7 +34,7 @@ public class fragment_course_desc extends Fragment {
             courseID = bundle.getString("courseID");
             previousClass = bundle.getString("previousClass");
         }
-        displayDesc();
+        displayPending();
 
         return view;
     }
@@ -42,28 +42,6 @@ public class fragment_course_desc extends Fragment {
     private void displayPending() {
         db = FirebaseFirestore.getInstance();
         db.collection("COURSE_PENDING").document(courseID)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            String descText = document.getString("description");
-                            String leveltext = document.getString("level");
-                            String languageText = document.getString("language");
-                            String modeText = document.getString("mode");
-                            desc.setText(descText);
-                            level.setText(leveltext);
-                            language.setText(languageText);
-                            mode.setText(modeText);
-                            desc.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
-                        }
-                    }
-                });
-    }
-
-    private void displayDesc() {
-        db = FirebaseFirestore.getInstance();
-        db.collection("COURSE").document(courseID)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {

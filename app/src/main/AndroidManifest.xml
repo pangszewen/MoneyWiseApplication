@@ -24,8 +24,10 @@
             android:name=".login_register.CoursePendingDisplay"
             android:exported="true" />
         <activity
-            android:name=".login_register.ApproveCourse"
             android:name=".login_register.FAQActivity"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.ApproveCourse"
             android:exported="false" />
         <activity
             android:name=".login_register.ContactUsActivity"
