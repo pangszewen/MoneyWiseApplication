@@ -86,7 +86,7 @@ public class ApproveCourse extends AppCompatActivity {
         reject = findViewById(R.id.rejectButton);
 
         CourseViewpagerAdapter courseViewpagerAdapter = new CourseViewpagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        fragment_course_desc fragDesc = new fragment_course_desc();
+        FragmentDescription fragDesc = new FragmentDescription();
         fragDesc.setArguments(bundle);
         fragment_course_lesson_full fragLessonFull = new fragment_course_lesson_full();
         fragLessonFull.setArguments(bundle);

@@ -16,7 +16,6 @@ import android.widget.SearchView;
 import com.example.moneywise.R;
 import com.example.moneywise.home.HomeActivity;
 import com.example.moneywise.quiz.Course;
-import com.example.moneywise.quiz.CoursesAdapter;
 import com.example.moneywise.quiz.activity_course_display;
 import com.example.moneywise.quiz.activity_create_course;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,7 +35,7 @@ import java.util.List;
 
 public class CoursePendingDisplay extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private CoursesAdapter coursesAdapter;
+    private PendingCourseAdapter coursesAdapter;
     FirebaseFirestore db;
     List<Course> courseList;
     SwipeRefreshLayout RVCourseRefresh;
@@ -79,7 +78,7 @@ public class CoursePendingDisplay extends AppCompatActivity {
                     Course course = convertDocumentToListOfCourse(dc);
                     listOfCourse.add(course);
                 }
-                coursesAdapter = new CoursesAdapter(CoursePendingDisplay.this, listOfCourse);
+                coursesAdapter = new PendingCourseAdapter(CoursePendingDisplay.this, listOfCourse);
                 coursesAdapter.loadBookmarkedCourses();
                 prepareRecyclerView(CoursePendingDisplay.this, recyclerView, listOfCourse);
                 coursesAdapter.loadBookmarkedCourses();
@@ -94,7 +93,7 @@ public class CoursePendingDisplay extends AppCompatActivity {
     }
 
     public void preAdapter(Context context, RecyclerView RV, List<Course> object){
-        coursesAdapter = new CoursesAdapter(context, object);
+        coursesAdapter = new PendingCourseAdapter(context, object);
         RV.setAdapter(coursesAdapter);
     }
 

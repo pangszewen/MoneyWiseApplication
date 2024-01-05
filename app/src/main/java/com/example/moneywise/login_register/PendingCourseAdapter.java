@@ -1,4 +1,4 @@
-package com.example.moneywise.quiz;
+package com.example.moneywise.login_register;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,6 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moneywise.R;
 import com.example.moneywise.login_register.ApproveCourse;
 import com.example.moneywise.login_register.CoursePendingDisplay;
+import com.example.moneywise.quiz.Course;
+import com.example.moneywise.quiz.CoursesAdapter;
+import com.example.moneywise.quiz.activity_individual_course_page;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -38,7 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseViewHolder> implements Filterable {
+public class PendingCourseAdapter extends RecyclerView.Adapter<PendingCourseAdapter.CourseViewHolder> implements Filterable {
     List<Course> courseList;
     List<Course> courseListFull;
     FirebaseFirestore db;
@@ -48,7 +51,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
     FirebaseUser user = auth.getCurrentUser();
     String userID = user.getUid();
 
-    public CoursesAdapter(Context context, List<Course> courseList) {
+    public PendingCourseAdapter(Context context, List<Course> courseList) {
         this.courseList = courseList;
         this.context = context;
         courseListFull = new ArrayList<>(courseList);
@@ -103,17 +106,19 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, activity_individual_course_page.class);
                 Intent intentAdmin = new Intent(context, ApproveCourse.class);
-                intent.putExtra("courseID", course.getCourseID());
-                intent.putExtra("title", course.getCourseTitle());
-                intent.putExtra("description", course.getCourseDesc());
-                intent.putExtra("advisorID", course.getAdvisorID());
-                intent.putExtra("language", course.getCourseLanguage());
-                intent.putExtra("level", course.getCourseLevel());
-                intent.putExtra("mode", course.getCourseMode());
-                intent.putExtra("previousClass", context.toString());
-                 context.startActivity(intent);
+                intentAdmin.putExtra("courseID", course.getCourseID());
+                intentAdmin.putExtra("title", course.getCourseTitle());
+                intentAdmin.putExtra("description", course.getCourseDesc());
+                intentAdmin.putExtra("advisorID", course.getAdvisorID());
+                intentAdmin.putExtra("language", course.getCourseLanguage());
+                intentAdmin.putExtra("level", course.getCourseLevel());
+                intentAdmin.putExtra("mode", course.getCourseMode());
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+                String formattedDateTime = course.getDateCreated().format(formatter);
+                intentAdmin.putExtra("dateCreated",formattedDateTime);
+                intentAdmin.putExtra("previousClass", CoursePendingDisplay.class.toString());
+                context.startActivity(intentAdmin);
             }
         });
         if (course.isBookmarked()){
@@ -245,4 +250,5 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
                 });
     }
 }
+
 
