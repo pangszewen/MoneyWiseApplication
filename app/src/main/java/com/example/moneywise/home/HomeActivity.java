@@ -86,10 +86,12 @@ public class HomeActivity extends AppCompatActivity {
 
                 }else if(itemID== R.id.overflowCnq){
                     replaceFragment(new fragment_MAIN_CnQ());
+                    bottomNavigationView.findViewById(R.id.iconCnq).performClick();
                     drawerLayout.closeDrawers();
                     return true;
                 } else if (itemID == R.id.overflowSnn) {
                     replaceFragment(new ScholarshipMainFragment());
+                    bottomNavigationView.findViewById(R.id.iconSnn).performClick();
                     drawerLayout.closeDrawers();
                     return true;
                 } else if (itemID == R.id.overflowProfile) {
