@@ -44,6 +44,19 @@
     <string name="sign_in_u"><u>Sign in</u></string>
     <string name="help_support"><![CDATA[Help & Support]]></string>
     <string name="my_account">My Account</string>
+    <string-array name="level_array">
+        <item>Beginner</item>
+        <item>Intermediate</item>
+        <item>Advanced</item>
+        <item>Expert</item>
+        <item>All Levels</item>
+    </string-array>
+    <string-array name="language_array">
+        <item>English</item>
+        <item>Mandarin</item>
+        <item>Malay</item>
+        <item>Tamil</item>
+    </string-array>
     <string name="theme">Theme</string>
     <string name="administrator_mode">Administrator Mode</string>
     <string name="about_app">About App</string>
