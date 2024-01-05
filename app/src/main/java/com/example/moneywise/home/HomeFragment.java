@@ -1,5 +1,6 @@
 package com.example.moneywise.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,9 +26,20 @@ import com.example.moneywise.login_register.ProfileActivity;
 
 import com.example.moneywise.login_register.User;
 
+import com.example.moneywise.quiz.Course;
+import com.example.moneywise.quiz.CoursesAdapter;
+import com.example.moneywise.quiz.CoursesCompletedContinueAdapter;
+import com.example.moneywise.quiz.NewCoursesAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.kwabenaberko.newsapilib.NewsApiClient;
 import com.kwabenaberko.newsapilib.models.Article;
 import com.kwabenaberko.newsapilib.models.request.TopHeadlinesRequest;
@@ -35,6 +48,7 @@ import com.kwabenaberko.newsapilib.models.response.ArticleResponse;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class HomeFragment extends Fragment {
@@ -42,17 +56,19 @@ public class HomeFragment extends Fragment {
     TextView welcome, budgetTV, expenseTV, differenceTV, monthTV;
     FirebaseAuth auth;
     FirebaseUser user;
+    FirebaseFirestore db;
     Firebase_Expenses firebaseExpenses = new Firebase_Expenses();
     Firebase_User firebaseUser = new Firebase_User();
     Timestamp timestamp = Timestamp.now();
     Date currentDate = new Date(timestamp.getSeconds() * 1000); // Convert seconds to milliseconds
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMMyyyy", Locale.US);
     String formattedDate = dateFormat.format(currentDate);
-
     String userID;
+    List<Course> courseList;
+    NewCoursesAdapter newCoursesAdapter;
     ArrayList<Article> articleList = new ArrayList<>();
     LatestNewsAdapter adapter;
-    RecyclerView RVLatestNews;
+    RecyclerView RVLatestNews, RVContinueCourse;
     SwipeRefreshLayout RVLatestNewsRefresh;
 
     @Override
@@ -64,6 +80,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.fragment_home, container, false);
+        db = FirebaseFirestore.getInstance();
         auth=FirebaseAuth.getInstance();
         user= auth.getCurrentUser();
         userID = user.getUid();
@@ -75,6 +92,7 @@ public class HomeFragment extends Fragment {
         profile=rootview.findViewById(R.id.IBProfile);
         RVLatestNews = rootview.findViewById(R.id.RVLatestNews);
         RVLatestNewsRefresh = rootview.findViewById(R.id.RVLatestNewsRefresh);
+        RVContinueCourse =rootview.findViewById(R.id.RVContinueCourse);
         setExpensesView();
         setRVLatestNews();
 
@@ -166,6 +184,23 @@ public class HomeFragment extends Fragment {
         getNews(null);
     }
 
+    public void setUpRVCourse(){
+        courseList = new ArrayList<>();
+        CollectionReference collectionReference = db.collection("USER_DETAILS").document(userID).collection("COURSES_JOINED");
+        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<Course> listOfCourse = new ArrayList<>();
+                for(QueryDocumentSnapshot dc : task.getResult()){
+                    Course topic = convertDocumentToListOfCourse(dc);
+                    listOfCourse.add(topic);
+                }
+                newCoursesAdapter = new NewCoursesAdapter(getContext(), listOfCourse);
+                prepareRecyclerView(getContext(), RVContinueCourse, listOfCourse);
+            }
+        });
+    }
+
     public void getNews(String query) {
 
         NewsApiClient newsApiClient = new NewsApiClient("d4c7f8fe18694e589bd30e86e04a908e");
@@ -196,5 +231,28 @@ public class HomeFragment extends Fragment {
                     }
                 }
         );
+    }
+
+    public void prepareRecyclerView(Context context, RecyclerView RV, List<Course> object){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
+        RV.setLayoutManager(linearLayoutManager);
+        preAdapter(context, RV, object);
+    }
+
+    public void preAdapter(Context context, RecyclerView RV, List<Course> object){
+        newCoursesAdapter = new NewCoursesAdapter(context, object);
+        RV.setAdapter(newCoursesAdapter);
+    }
+
+    public Course convertDocumentToListOfCourse(QueryDocumentSnapshot dc){
+        Course course = new Course();
+        course.setCourseID(dc.getId());
+        course.setCourseTitle(dc.get("title").toString());
+        course.setAdvisorID(dc.get("advisorID").toString());
+        course.setCourseDesc(dc.get("description").toString());
+        course.setCourseLanguage(dc.get("language").toString());
+        course.setCourseLevel(dc.get("level").toString());
+        course.setCourseMode(dc.get("mode").toString());
+        return course;
     }
 }
