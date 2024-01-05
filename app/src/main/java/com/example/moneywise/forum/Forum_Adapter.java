@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moneywise.R;
 import com.example.moneywise.login_register.Firebase_User;
 import com.example.moneywise.login_register.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
@@ -27,6 +30,9 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
     ArrayList<ForumTopic> forumTopics = new ArrayList<>();
     Firebase_Forum firebaseForum = new Firebase_Forum();
     Firebase_User firebaseUser = new Firebase_User();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser user = auth.getCurrentUser();
+    String userID = user.getUid();
     Context context;
 
     public Forum_Adapter(Context context, ArrayList<ForumTopic> forumTopics) {
@@ -71,6 +77,18 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
             }
         });
 
+        firebaseForum.getForumTopic(forumTopic.getTopicID(), new Firebase_Forum.ForumTopicCallback() {
+            @Override
+            public void onForumTopicReceived(ForumTopic topic) {
+                List<String> likes = topic.getLikes();
+                if(!likes.contains(userID)){
+                    holder.like_icon.setImageResource(R.drawable.outline_thumb_up_black);
+                }else{
+                    holder.like_icon.setImageResource(R.drawable.baseline_thumb_up_black);
+                }
+            }
+        });
+
         holder.topicSubject.setText(topicSubject);
         holder.topicLikes.setText(String.valueOf(topicLikes.size()));
         holder.topicDate.setText(formattedTopicDate);
@@ -101,7 +119,7 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
 
     public class Forum_AdapterVH extends RecyclerView.ViewHolder{
         TextView topicSubject, topicLikes, topicDate, topicAuthor;
-        ImageView topicImage;
+        ImageView topicImage, like_icon;
 
         public Forum_AdapterVH(@NonNull View itemView) {
             super(itemView);
@@ -110,6 +128,7 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
             topicAuthor = itemView.findViewById(R.id.topic_row_author);
             topicLikes = itemView.findViewById(R.id.topic_row_likes);
             topicDate = itemView.findViewById(R.id.topic_row_date);
+            like_icon = itemView.findViewById(R.id.like_icon);
         }
     }
 }
