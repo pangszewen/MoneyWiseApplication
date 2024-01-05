@@ -57,4 +57,7 @@
         <item>Malay</item>
         <item>Tamil</item>
     </string-array>
+    <string name="theme">Theme</string>
+    <string name="administrator_mode">Administrator Mode</string>
+    <string name="about_app">About App</string>
 </resources>

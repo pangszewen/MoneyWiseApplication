@@ -25,6 +25,19 @@
             android:exported="true" />
         <activity
             android:name=".login_register.ApproveCourse"
+            android:name=".login_register.FAQActivity"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.ContactUsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.UserGuideActivity"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.AboutAppActivity"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.HnSActivity"
             android:exported="false" />
         <activity
             android:name=".forum.Forum_IndividualTopic_Activity"

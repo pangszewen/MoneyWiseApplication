@@ -14,16 +14,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.moneywise.R;
 import com.example.moneywise.home.HomeActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -31,9 +26,8 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
-
+import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,7 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        loadProfilePicFromDB();
+        displayProfilePic(uid);
         loadDetailFromDB();
 
         myacc_column.setOnClickListener(new View.OnClickListener() {
@@ -116,29 +110,20 @@ public class ProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
 
-    private void loadProfilePicFromDB(){
-        StorageReference storageReference = fStorage.getReference("USER_PROFILE_PIC" + uid);
-        storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {
+        hs_column.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onComplete(@NonNull Task<ListResult> task) {
-                if (task.isSuccessful()) {
-                    List<StorageReference> items = task.getResult().getItems();
-                    if (!items.isEmpty()) {
-                        items.get(0).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                profile_pic.setImageURI(uri);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Handle failure if needed
-                            }
-                        });
-                    }
-                }
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), HnSActivity.class));
+                finish();
+            }
+        });
+
+        about_column.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),AboutAppActivity.class));
+                finish();
             }
         });
     }
@@ -151,10 +136,22 @@ public class ProfileActivity extends AppCompatActivity {
                 detail_name.setText(value.getString("name"));
                 detail_role.setText(value.getString("role"));
                 if (value.getString("gender").equals("Male")) {
-                    gender_icon.setImageResource(R.drawable.baseline_male_24);
+                    gender_icon.setBackgroundResource(R.drawable.baseline_male_24);
                 }
                 noti_switch.setChecked(value.getBoolean("notification"));
             }
+        });
+    }
+
+    private void displayProfilePic(String uid) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference().child("USER_PROFILE_PIC").child(uid).child("Profile Pic.jpg"); // Replace with your image file extension
+        storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            Picasso.get()
+                    .load(uri)
+                    .placeholder(R.drawable.profile_pic) // Replace with a placeholder image while loading
+                    .error(R.drawable.profile_pic) // Replace with an error image if download fails
+                    .into(profile_pic);
         });
     }
 }
