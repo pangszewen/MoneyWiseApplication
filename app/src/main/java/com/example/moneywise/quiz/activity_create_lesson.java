@@ -281,7 +281,6 @@ public class activity_create_lesson extends AppCompatActivity {
         Course course = new Course();
         course.setCourseID(dc.getId());
         course.setAdvisorID(dc.get("advisorID").toString());
-        course.setDateCreated(dc.get("dateCreated").toString());
         course.setCourseTitle(dc.get("title").toString());
         course.setCourseDesc(dc.get("description").toString());
         course.setCourseLevel(dc.get("level").toString());

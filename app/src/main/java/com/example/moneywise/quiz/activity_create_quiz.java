@@ -80,9 +80,17 @@ public class activity_create_quiz extends AppCompatActivity {
         Button saveButton = findViewById(R.id.saveButton);
         ImageButton addQuizImage = findViewById(R.id.addQuizImage);
         TextView numOfQues = findViewById(R.id.quesNum);
+        ImageButton cancel = findViewById(R.id.cancelButton);
 
         listOfQues = new ArrayList<>();
         chooseImageList = new ArrayList<>();
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         // add questions to quiz
         addQues.setOnClickListener(new View.OnClickListener() {
@@ -220,7 +228,7 @@ public class activity_create_quiz extends AppCompatActivity {
     }
 
     private void createQues(String quesText, String quesCorrectAns, String quesOption1, String quesOption2, String quesOption3){
-        CollectionReference collectionReference = db.collection("QUIZ").document(quizID).collection("QUESTION");
+        CollectionReference collectionReference = db.collection("QUIZ_PENDING").document(quizID).collection("QUESTION");
             quesID = generateQuesID(listOfQues);
             Question newQues = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
             insertQuesIntoDatabase(collectionReference, newQues);
@@ -235,7 +243,7 @@ public class activity_create_quiz extends AppCompatActivity {
         map.put("advisorID", quiz.getAdvisorID());
         map.put("title", quiz.getQuizTitle());
         map.put("numOfQues", quiz.getNumOfQues());
-        db.collection("QUIZ").document(quiz.getQuizID()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        db.collection("QUIZ_PENDING").document(quiz.getQuizID()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {

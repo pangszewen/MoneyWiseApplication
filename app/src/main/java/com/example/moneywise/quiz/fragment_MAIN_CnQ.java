@@ -105,6 +105,7 @@ public class fragment_MAIN_CnQ extends Fragment {
                             intent.putExtra("previousClass", HomeFragment.class.toString());
                             startActivity(intent);
                         } else { // no courses to continue
+
                             Toast.makeText(getContext(), "No course to continue!", Toast.LENGTH_SHORT).show();
                         }
                     }
