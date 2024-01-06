@@ -3,6 +3,7 @@ package com.example.moneywise.login_register;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,24 @@ public class FAQAdapter extends RecyclerView.Adapter<FAQAdapter.FAQViewHolder> {
         FAQ faq = faqList.get(position);
         holder.setFAQ(faq);
         String faqQuestion= faq.getQuestion();
-        String faqAnswer=faq.getAnswer();
+        String originalString = faq.getAnswer();
+        StringBuilder rebuiltString = new StringBuilder();
+
+        for (int i = 0; i < originalString.length(); i++) {
+            char currentChar = originalString.charAt(i);
+
+            if (currentChar == '\\' && i < originalString.length() - 1 && originalString.charAt(i + 1) == 'n') {
+                rebuiltString.append("\n");
+                i++;
+            } else if(currentChar == '\\' && i < originalString.length() - 1 && originalString.charAt(i + 1) == 't'){
+                rebuiltString.append("\t");
+                i++;
+            }else{
+                rebuiltString.append(currentChar);
+            }
+        }
+
+        String faqAnswer = rebuiltString.toString();
 
         holder.questionTV.setText(faqQuestion);
         holder.answerTV.setText(faqAnswer);
