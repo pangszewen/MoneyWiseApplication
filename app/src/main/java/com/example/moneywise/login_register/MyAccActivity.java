@@ -147,7 +147,9 @@ public class MyAccActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(MyAccActivity.this,"Profile updated",Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                        Intent intent=new Intent(getApplicationContext(),ProfileActivity.class);
+                        intent.putExtra("newProfilePicUri", profilepic_uri.toString());
+                        startActivity(intent);
                         finish();
                     }
                 });

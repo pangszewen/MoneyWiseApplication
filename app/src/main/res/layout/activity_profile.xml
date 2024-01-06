@@ -310,7 +310,7 @@
                     android:layout_toEndOf="@+id/adm_icon"
                     android:fontFamily="@font/pt_sans"
                     android:textColor="#ABABAB"
-                    android:text="Manage forum and courses"
+                    android:text="Manage courses and quizzes"
                     android:textSize="14dp" />
 
                 <ImageView

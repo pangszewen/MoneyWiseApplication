@@ -47,7 +47,7 @@ public class FAQActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent (getApplicationContext(), HnSActivity.class);
+                Intent intent = new Intent(getApplicationContext(), HnSActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -59,33 +59,33 @@ public class FAQActivity extends AppCompatActivity {
         CollectionReference collectionReference = db.collection("FAQ");
 
         collectionReference.get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        List<FAQ> listOfFAQ = new ArrayList<>();
-                        for (QueryDocumentSnapshot dc : task.getResult()) {
-                            FAQ topic = convertDocumentToListOfFAQ(dc);
-                            listOfFAQ.add(topic);
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<FAQ> listOfFAQ = new ArrayList<>();
+                            for (QueryDocumentSnapshot dc : task.getResult()) {
+                                FAQ topic = convertDocumentToListOfFAQ(dc);
+                                listOfFAQ.add(topic);
+                            }
+                            prepareRecyclerView(FAQActivity.this, recyclerView, listOfFAQ);
                         }
-                        prepareRecyclerView(FAQActivity.this, recyclerView, listOfFAQ);
                     }
-                }
-            });
+                });
     }
 
-    public void prepareRecyclerView(Context context, RecyclerView RV, List<FAQ> object){
+    public void prepareRecyclerView(Context context, RecyclerView RV, List<FAQ> object) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         RV.setLayoutManager(linearLayoutManager);
         preAdapter(context, RV, object);
     }
 
-    public void preAdapter(Context context, RecyclerView RV, List<FAQ> object){
+    public void preAdapter(Context context, RecyclerView RV, List<FAQ> object) {
         faqAdapter = new FAQAdapter(context, object);
         RV.setAdapter(faqAdapter);
     }
 
-    public FAQ convertDocumentToListOfFAQ(QueryDocumentSnapshot dc){
+    public FAQ convertDocumentToListOfFAQ(QueryDocumentSnapshot dc) {
         FAQ faq = new FAQ();
         faq.setId(dc.getId().toString());
         faq.setQuestion(dc.get("question").toString());

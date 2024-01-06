@@ -2,30 +2,26 @@ package com.example.moneywise.login_register;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.SearchView;
 
 import com.example.moneywise.R;
-import com.example.moneywise.home.HomeActivity;
 import com.example.moneywise.quiz.Course;
-import com.example.moneywise.quiz.activity_course_display;
-import com.example.moneywise.quiz.activity_create_course;
+import com.example.moneywise.quiz.CoursesCompletedContinueAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -33,23 +29,22 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CoursePendingDisplay extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private PendingCourseAdapter coursesAdapter;
+public class CoursePendingFragment extends Fragment {
     FirebaseFirestore db;
+    String userID;
+    private RecyclerView recyclerView;
+    private PendingCourseAdapter pendingCourseAdapter;
     List<Course> courseList;
     SwipeRefreshLayout RVCourseRefresh;
-    ImageButton backButton;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_pending_display);
-        db = FirebaseFirestore.getInstance();
-        RVCourseRefresh = findViewById(R.id.RVCourseRefresh);
-        recyclerView = findViewById(R.id.course_recycle_view);
-        backButton = findViewById(R.id.backButton);
-        setUpRVCourse();
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_course_pending_display, container, false);
+        db = FirebaseFirestore.getInstance();
+        RVCourseRefresh = view.findViewById(R.id.RVCourseRefresh);
+        recyclerView = view.findViewById(R.id.course_recycle_view);
+        setUpRVCourse();
         RVCourseRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -57,16 +52,10 @@ public class CoursePendingDisplay extends AppCompatActivity {
                 RVCourseRefresh.setRefreshing(false);
             }
         });
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        return view;
     }
 
-    public void setUpRVCourse() {
+    public void setUpRVCourse(){
         courseList = new ArrayList<>();
         CollectionReference coursesRef = db.collection("COURSE_PENDING");
 
@@ -78,10 +67,8 @@ public class CoursePendingDisplay extends AppCompatActivity {
                     Course course = convertDocumentToListOfCourse(dc);
                     listOfCourse.add(course);
                 }
-                coursesAdapter = new PendingCourseAdapter(CoursePendingDisplay.this, listOfCourse);
-                coursesAdapter.loadBookmarkedCourses();
-                prepareRecyclerView(CoursePendingDisplay.this, recyclerView, listOfCourse);
-                coursesAdapter.loadBookmarkedCourses();
+                pendingCourseAdapter = new PendingCourseAdapter(getContext(), listOfCourse);
+                prepareRecyclerView(getContext(), recyclerView, listOfCourse);
             }
         });
     }
@@ -93,8 +80,8 @@ public class CoursePendingDisplay extends AppCompatActivity {
     }
 
     public void preAdapter(Context context, RecyclerView RV, List<Course> object){
-        coursesAdapter = new PendingCourseAdapter(context, object);
-        RV.setAdapter(coursesAdapter);
+        pendingCourseAdapter = new PendingCourseAdapter(context, object);
+        RV.setAdapter(pendingCourseAdapter);
     }
 
     public Course convertDocumentToListOfCourse(QueryDocumentSnapshot dc){

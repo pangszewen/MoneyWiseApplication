@@ -2,11 +2,15 @@ package com.example.moneywise.login_register;
 
 import static android.content.ContentValues.TAG;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,80 +24,61 @@ import android.widget.TextView;
 import com.example.moneywise.R;
 import com.example.moneywise.quiz.Course;
 import com.example.moneywise.quiz.CourseViewpagerAdapter;
+import com.example.moneywise.quiz.Question;
+import com.example.moneywise.quiz.Quiz;
 import com.example.moneywise.quiz.fragment_course_lesson_full;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class ApproveCourse extends AppCompatActivity {
+public class ApproveQuiz extends AppCompatActivity {
+
     FirebaseFirestore db;
-    String courseID, advisorID, userID;
+    String quizID, advisorID, dateCreated;
     TextView title, advisor;
-    ImageView courseCoverImage;
-    Course course = new Course();
+    ImageView quizCoverImage;
+    RecyclerView RVQuiz;
+    ArrayList<Question> quesList = new ArrayList<>();
     ImageButton backButton;
-    TabLayout tabLayout;
-    ViewPager viewPager;
     Button approve, reject;
+    ApproveQuizAdapter AQAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_approve_course);
+        setContentView(R.layout.activity_approve_quiz);
         db = FirebaseFirestore.getInstance();
 
-        course.setAdvisorID(getIntent().getStringExtra("advisorID"));
-        course.setCourseID(getIntent().getStringExtra("courseID"));
-        course.setCourseDesc(getIntent().getStringExtra("description"));
-        course.setCourseTitle(getIntent().getStringExtra("title"));
-        course.setCourseMode(getIntent().getStringExtra("mode"));
-        course.setCourseLanguage(getIntent().getStringExtra("language"));
-        course.setCourseLevel(getIntent().getStringExtra("level"));
-        course.setDateCreated(getIntent().getStringExtra("dateCreated"));
-        String previousClass = getIntent().getStringExtra("previousClass");
+        quizID = getIntent().getStringExtra("quizID");
 
-        courseID = course.getCourseID();
-        Bundle bundle = new Bundle();
-        bundle.putString("advisorID", course.getAdvisorID());
-        bundle.putString("description", course.getCourseDesc());
-        bundle.putString("level", course.getCourseLevel());
-        bundle.putString("mode", course.getCourseMode());
-        bundle.putString("language", course.getCourseLanguage());
-        bundle.putString("courseID", course.getCourseID());
-        bundle.putString("previousClass", previousClass);
-
-        courseCoverImage = findViewById(R.id.courseImage);
-        title = findViewById(R.id.TVCourseTitle);
+        quizCoverImage = findViewById(R.id.quizImage);
+        title = findViewById(R.id.TVQuizTitle);
         advisor = findViewById(R.id.TVAdvisorName);
+        RVQuiz = findViewById(R.id.RVQuiz);
         backButton = findViewById(R.id.backButton);
-        tabLayout = findViewById(R.id.TLCourse);
-        viewPager = findViewById(R.id.VPCourse);
         approve = findViewById(R.id.approveButton);
         reject = findViewById(R.id.rejectButton);
 
-        CourseViewpagerAdapter courseViewpagerAdapter = new CourseViewpagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        FragmentDescription fragDesc = new FragmentDescription();
-        fragDesc.setArguments(bundle);
-        fragment_course_lesson_full fragLessonFull = new fragment_course_lesson_full();
-        fragLessonFull.setArguments(bundle);
-        courseViewpagerAdapter.addFragment(fragDesc, "Description");
-        courseViewpagerAdapter.addFragment(fragLessonFull, "Lessons");
-        viewPager.setAdapter(courseViewpagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
-        userID = user.getUid();
-        displayCourse();
+        loadQuestionFromDatabase();
+        prepareRecyclerView(ApproveQuiz.this, RVQuiz, quesList);
+        displayQuiz();
 
         approve.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,10 +102,21 @@ public class ApproveCourse extends AppCompatActivity {
         });
     }
 
+    public void prepareRecyclerView(Context context, RecyclerView RV, List<Question> object) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
+        RV.setLayoutManager(linearLayoutManager);
+        preAdapter(context, RV, object);
+    }
+
+    public void preAdapter(Context context, RecyclerView RV, List<Question> object) {
+        AQAdapter = new ApproveQuizAdapter(context, object);
+        RV.setAdapter(AQAdapter);
+    }
+
     private void showApproveDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ApproveCourse.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ApproveQuiz.this);
         builder.setTitle("Confirmation");
-        builder.setMessage("Are you sure approve this course?");
+        builder.setMessage("Are you sure approve this quiz?");
         builder.setPositiveButton("Approve", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -138,20 +134,15 @@ public class ApproveCourse extends AppCompatActivity {
     }
 
     private void saveApproveStatusToDatabase() {
-        Map<String, Object> courseData = new HashMap<>();
-        courseData.put("advisorID", course.getAdvisorID());
-        courseData.put("dateCreated", course.getDateCreated());
-        courseData.put("description", course.getCourseDesc());
-        courseData.put("language", course.getCourseLanguage());
-        courseData.put("level", course.getCourseLevel());
-        courseData.put("mode", course.getCourseMode());
-        courseData.put("title", course.getCourseTitle());
+        Map<String, Object> quizData = new HashMap<>();
+        quizData.put("advisorID", advisorID);
+        quizData.put("dateCreated", dateCreated);
 
-        DocumentReference courseRef = FirebaseFirestore.getInstance()
-                .collection("COURSE")
-                .document(course.getCourseID());
+        DocumentReference quizRef = FirebaseFirestore.getInstance()
+                .collection("QUIZ")
+                .document(quizID);
 
-        courseRef.set(courseData)
+        quizRef.set(quizData)
                 .addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "Course fields saved successfully!");
                     saveRejectStatusToDatabase();
@@ -162,9 +153,9 @@ public class ApproveCourse extends AppCompatActivity {
 
 
     private void showRejectDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ApproveCourse.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ApproveQuiz.this);
         builder.setTitle("Confirmation");
-        builder.setMessage("Are you sure you reject this course?");
+        builder.setMessage("Are you sure you reject this quiz?");
         builder.setPositiveButton("Reject", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -181,23 +172,41 @@ public class ApproveCourse extends AppCompatActivity {
         dialog.show();
     }
 
-    private void saveRejectStatusToDatabase() {
-        DocumentReference courseRef = FirebaseFirestore.getInstance()
-                .collection("COURSE_PENDING")
-                .document(course.getCourseID());
+    private void loadQuestionFromDatabase() {
+        CollectionReference quizRef = FirebaseFirestore.getInstance()
+                .collection("QUIZ_PENDING")
+                .document(quizID)
+                .collection("QUESTION");
+        quizRef.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot dc : task.getResult()) {
+                                Question ques = convertDocumentToListOfQues(dc);
+                                quesList.add(ques);
+                            }
+                        }
+                    }
+                });
+    }
 
-        courseRef.delete()
+    private void saveRejectStatusToDatabase() {
+        DocumentReference quizRef = FirebaseFirestore.getInstance()
+                .collection("QUIZ_PENDING")
+                .document(quizID);
+
+        quizRef.delete()
                 .addOnSuccessListener(aVoid -> {
-                    Log.d(TAG, "Document with courseId: " + course.getCourseID() + " deleted successfully!");
-                    Intent intent = new Intent(ApproveCourse.this, AdministratorModeActivity.class);
-                    intent.putExtra("previousClass", ApproveCourse.class.toString());
+                    Log.d(TAG, "Document with quizId: " + quizID + " deleted successfully!");
+                    Intent intent = new Intent(ApproveQuiz.this, AdministratorModeActivity.class);
                     startActivity(intent);
                 });
     }
 
 
-    private void displayCourse() {
-        db.collection("COURSE_PENDING").document(courseID)
+    private void displayQuiz() {
+        db.collection("QUIZ_PENDING").document(quizID)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
@@ -205,6 +214,7 @@ public class ApproveCourse extends AppCompatActivity {
                         if (document.exists()) {
                             String titleText = document.getString("title");
                             advisorID = document.getString("advisorID");
+                            dateCreated=document.getString("dateCreated");
                             title.setText(titleText);
 
                             displayAdvisorName(advisorID);
@@ -230,19 +240,28 @@ public class ApproveCourse extends AppCompatActivity {
 
     private void displayCoverImage() {
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference("COURSE_COVER_IMAGE/" + courseID + "/");
-        storageReference.child("Cover Image").getDownloadUrl().addOnSuccessListener(uri -> { // Need remove jpeg
-            String imageUri = uri.toString();
-            Picasso.get().load(imageUri).into(courseCoverImage);
+        StorageReference storageReference = storage.getReference("QUIZ_COVER_IMAGE/" + quizID + "/");
+        storageReference.child("Cover Image.jpeg").getDownloadUrl().addOnSuccessListener(uri -> { // Need remove jpeg
             Log.d("Cover Image", "Successful");
         }).addOnFailureListener(exception -> {
         });
     }
 
-    public void backToPreviousActivity(){
-        Intent intent = new Intent(ApproveCourse.this, AdministratorModeActivity.class);
+    public void backToPreviousActivity() {
+        Intent intent = new Intent(ApproveQuiz.this, AdministratorModeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         finish();
+    }
+
+    public Question convertDocumentToListOfQues(QueryDocumentSnapshot dc) {
+        Question ques = new Question();
+        ques.setQuesID(dc.getId().toString());
+        ques.setQuestionText(dc.get("quesText").toString());
+        ques.setOption1(dc.get("option1").toString());
+        ques.setOption2(dc.get("option2").toString());
+        ques.setOption3(dc.get("option3").toString());
+        ques.setCorrectAns(dc.get("correctAns").toString());
+        return ques;
     }
 }
