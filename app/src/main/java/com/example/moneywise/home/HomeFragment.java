@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,6 +54,7 @@ import java.util.Locale;
 public class HomeFragment extends Fragment {
     ImageButton profile;
     TextView welcome, budgetTV, expenseTV, differenceTV, monthTV, TVContinueCourse;
+    ConstraintLayout ExpensesView;
     FirebaseAuth auth;
     FirebaseUser user;
     FirebaseFirestore db;
@@ -88,6 +90,7 @@ public class HomeFragment extends Fragment {
         expenseTV = rootview.findViewById(R.id.TVAmountExpenses);
         differenceTV = rootview.findViewById(R.id.TVAmountBalance);
         monthTV = rootview.findViewById(R.id.TVMonth);
+        ExpensesView = rootview.findViewById(R.id.ExpensesView);
         TVContinueCourse = rootview.findViewById(R.id.TVContinueCourse);
         profile=rootview.findViewById(R.id.IBProfile);
         RVLatestNews = rootview.findViewById(R.id.RVLatestNews);
@@ -108,6 +111,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), ProfileActivity.class));
+            }
+        });
+
+        ExpensesView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeActivity)getActivity()).expensesOnClick();
             }
         });
 

@@ -16,6 +16,7 @@ import com.example.moneywise.login_register.User;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Discussion_Adapter extends RecyclerView.Adapter<Discussion_Adapter.Discussion_AdapterVH> {
     Firebase_Forum firebaseForum = new Firebase_Forum();
@@ -38,7 +39,7 @@ public class Discussion_Adapter extends RecyclerView.Adapter<Discussion_Adapter.
     public void onBindViewHolder(@NonNull Discussion_AdapterVH holder, int position) {
         ForumComment forumComment = forumComments.get(position);
         LocalDateTime commentDate = forumComment.getDatePosted();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
         String formattedCommentDate = commentDate.format(formatter);
         String content = forumComment.getContent();
 

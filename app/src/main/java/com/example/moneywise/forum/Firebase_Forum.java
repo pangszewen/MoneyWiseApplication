@@ -192,7 +192,6 @@ public class Firebase_Forum {
 
     public void insertForumComment(ForumComment comment, InsertForumCommentCallback callback){
         Map<String, Object> map = new HashMap<>();
-        map.put("commentID", comment.getCommentID());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         String formattedDateTime = comment.getDatePosted().format(formatter);
         map.put("datePosted", formattedDateTime);

@@ -64,7 +64,6 @@ public class Forum_MainFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         search_box.setThreshold(3);
         setSearchBarAdapter();
-        setMostRecentFilter();
 
         btn_searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +76,7 @@ public class Forum_MainFragment extends Fragment {
             @Override
             public void onClear() {
                 toggleSearch(true);
-                setMostRecentFilter();
+                btn_mostRecent.performClick();
             }
         });
 

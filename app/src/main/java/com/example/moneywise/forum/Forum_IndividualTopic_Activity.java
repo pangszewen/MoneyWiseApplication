@@ -26,6 +26,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     FirebaseFirestore db;
@@ -156,8 +157,8 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     }
 
     public void setTVDatePosted(){
-        DateTimeFormatter formatterString = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedTopicDate = topic.getDatePosted().format(formatterString);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
+        String formattedTopicDate = topic.getDatePosted().format(formatter);
         TVDatePosted.setText(TVDatePosted.getText() + formattedTopicDate);
     }
 

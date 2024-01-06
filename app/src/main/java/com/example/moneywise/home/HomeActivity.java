@@ -139,6 +139,12 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    public void expensesOnClick(){
+        replaceFragment(new MainExpensesFragment());
+        bottomNavigationView.findViewById(R.id.iconExpenses).performClick();
+        navigationView.findViewById(R.id.overflowExpenses).performClick();
+    }
+
     public void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

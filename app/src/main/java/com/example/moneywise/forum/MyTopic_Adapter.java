@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MyTopic_Adapter extends RecyclerView.Adapter<MyTopic_Adapter.MyTopic_AdapterVH>{
     List<ForumTopic> forumTopics = new ArrayList<>();
@@ -46,7 +47,7 @@ public class MyTopic_Adapter extends RecyclerView.Adapter<MyTopic_Adapter.MyTopi
         List<String> topicLikes = forumTopic.getLikes();
         List<String> topicComments = forumTopic.getCommentID();
         LocalDateTime topicDate = forumTopic.getDatePosted();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
         String formattedTopicDate = topicDate.format(formatter);
 
         firebaseForum.getFirstTopicImage(forumTopic.getTopicID(), new Firebase_Forum.FirstTopicImageCallback() {
