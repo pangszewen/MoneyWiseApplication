@@ -419,7 +419,7 @@ public class TrendFragment extends Fragment {
                         }
                         monthExpensesCollection.get().addOnCompleteListener(task2 -> {
                             if (task2.isSuccessful()) {
-                                List<DocumentSnapshot> documents2 = task.getResult().getDocuments();
+                                List<DocumentSnapshot> documents2 = task2.getResult().getDocuments();
                                 if (documents2 != null && !documents2.isEmpty()) {
                                     fbe.calculateMonthExpense(monthExpensesCollection, new Firebase_Expenses.MonthExpenseCallback() {
                                         @Override

@@ -88,7 +88,7 @@ public class FindNewsActivity extends AppCompatActivity {
 
     void getNews(String query) {
 
-        NewsApiClient newsApiClient = new NewsApiClient("d4c7f8fe18694e589bd30e86e04a908e");
+        NewsApiClient newsApiClient = new NewsApiClient("a6f8f5562c4041bca6bd0c1e5f02e7f4");
         newsApiClient.getTopHeadlines(
                 new TopHeadlinesRequest.Builder()
                         .language("en")

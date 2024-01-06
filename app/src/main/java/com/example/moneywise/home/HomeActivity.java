@@ -75,19 +75,23 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
                 } else if (itemID == R.id.overflowForum) {
                     replaceFragment(new Forum_MainFragment());
+                    bottomNavigationView.findViewById(R.id.iconForum).performClick();
                     drawerLayout.closeDrawers();
                     return true;
                 } else if (itemID == R.id.overflowExpenses) {
                     replaceFragment(new MainExpensesFragment());
+                    bottomNavigationView.findViewById(R.id.iconExpenses).performClick();
                     drawerLayout.closeDrawers();
                     return true;
 
                 }else if(itemID== R.id.overflowCnq){
                     replaceFragment(new fragment_MAIN_CnQ());
+                    bottomNavigationView.findViewById(R.id.iconCnq).performClick();
                     drawerLayout.closeDrawers();
                     return true;
                 } else if (itemID == R.id.overflowSnn) {
                     replaceFragment(new ScholarshipMainFragment());
+                    bottomNavigationView.findViewById(R.id.iconSnn).performClick();
                     drawerLayout.closeDrawers();
                     return true;
                 } else if (itemID == R.id.overflowProfile) {

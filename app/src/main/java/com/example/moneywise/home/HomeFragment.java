@@ -52,7 +52,7 @@ import java.util.Locale;
 
 public class HomeFragment extends Fragment {
     ImageButton profile;
-    TextView welcome, budgetTV, expenseTV, differenceTV, monthTV;
+    TextView welcome, budgetTV, expenseTV, differenceTV, monthTV, TVContinueCourse;
     FirebaseAuth auth;
     FirebaseUser user;
     FirebaseFirestore db;
@@ -88,6 +88,7 @@ public class HomeFragment extends Fragment {
         expenseTV = rootview.findViewById(R.id.TVAmountExpenses);
         differenceTV = rootview.findViewById(R.id.TVAmountBalance);
         monthTV = rootview.findViewById(R.id.TVMonth);
+        TVContinueCourse = rootview.findViewById(R.id.TVContinueCourse);
         profile=rootview.findViewById(R.id.IBProfile);
         RVLatestNews = rootview.findViewById(R.id.RVLatestNews);
         RVLatestNewsRefresh = rootview.findViewById(R.id.RVLatestNewsRefresh);
@@ -195,6 +196,13 @@ public class HomeFragment extends Fragment {
                     Course topic = convertDocumentToListOfCourse(dc);
                     listOfCourse.add(topic);
                 }
+                if(listOfCourse.isEmpty()){
+                    TVContinueCourse.setVisibility(View.GONE);
+                    RVContinueCourse.setVisibility(View.GONE);
+                }else{
+                    TVContinueCourse.setVisibility(View.VISIBLE);
+                    RVContinueCourse.setVisibility(View.VISIBLE);
+                }
                 completeCourseAdapter = new CompleteCourseAdapter(getContext(), listOfCourse);
                 prepareRecyclerView(getContext(), RVContinueCourse, listOfCourse);
             }
@@ -203,7 +211,7 @@ public class HomeFragment extends Fragment {
 
     public void getNews(String query) {
 
-        NewsApiClient newsApiClient = new NewsApiClient("d4c7f8fe18694e589bd30e86e04a908e");
+        NewsApiClient newsApiClient = new NewsApiClient("a6f8f5562c4041bca6bd0c1e5f02e7f4");
         newsApiClient.getTopHeadlines(
                 new TopHeadlinesRequest.Builder()
                         .language("en")

@@ -313,6 +313,7 @@ public class fragment_MAIN_CnQ extends Fragment {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
+                        continueCourse.setVisibility(View.VISIBLE);
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         title = documentSnapshot.getString("title");
                         courseID = documentSnapshot.getId();
@@ -324,6 +325,8 @@ public class fragment_MAIN_CnQ extends Fragment {
                         displayAdvisorName(advisorID);
                         displayCoverImage(courseID);
                         courseTitle.setText(title);
+                    }else{
+                        continueCourse.setVisibility(View.GONE);
                     }
                 });
     }
