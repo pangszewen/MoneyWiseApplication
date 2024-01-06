@@ -80,9 +80,17 @@ public class activity_create_quiz extends AppCompatActivity {
         Button saveButton = findViewById(R.id.saveButton);
         ImageButton addQuizImage = findViewById(R.id.addQuizImage);
         TextView numOfQues = findViewById(R.id.quesNum);
+        ImageButton cancel = findViewById(R.id.cancelButton);
 
         listOfQues = new ArrayList<>();
         chooseImageList = new ArrayList<>();
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         // add questions to quiz
         addQues.setOnClickListener(new View.OnClickListener() {
@@ -94,18 +102,21 @@ public class activity_create_quiz extends AppCompatActivity {
                 quesOption2 = option2.getText().toString();
                 quesOption3 = option3.getText().toString();
 
-                quesID = generateQuesID(listOfQues);
-                Question newQues = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
-                listOfQues.add(newQues);
+                if (!quesCorrectAns.isEmpty() && !quesOption1.isEmpty() && !quesOption2.isEmpty() && !quesOption3.isEmpty()) {
+                    quesID = generateQuesID(listOfQues);
+                    Question newQues = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
+                    listOfQues.add(newQues);
 
-                QuesquesText.getText().clear();
-                correctAns.getText().clear();
-                option1.getText().clear();
-                option2.getText().clear();
-                option3.getText().clear();
+                    QuesquesText.getText().clear();
+                    correctAns.getText().clear();
+                    option1.getText().clear();
+                    option2.getText().clear();
+                    option3.getText().clear();
 
-                quesNum++;
-                numOfQues.setText(quesNum+" Question(s)");
+                    quesNum++;
+                    numOfQues.setText(quesNum + " Question(s)");
+                } else
+                    Toast.makeText(activity_create_quiz.this, "Please fill in all fields!", Toast.LENGTH_SHORT).show();
             }
         });
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -220,7 +231,7 @@ public class activity_create_quiz extends AppCompatActivity {
     }
 
     private void createQues(String quesText, String quesCorrectAns, String quesOption1, String quesOption2, String quesOption3){
-        CollectionReference collectionReference = db.collection("QUIZ").document(quizID).collection("QUESTION");
+        CollectionReference collectionReference = db.collection("QUIZ_PENDING").document(quizID).collection("QUESTION");
             quesID = generateQuesID(listOfQues);
             Question newQues = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
             insertQuesIntoDatabase(collectionReference, newQues);
@@ -235,12 +246,11 @@ public class activity_create_quiz extends AppCompatActivity {
         map.put("advisorID", quiz.getAdvisorID());
         map.put("title", quiz.getQuizTitle());
         map.put("numOfQues", quiz.getNumOfQues());
-        db.collection("QUIZ").document(quiz.getQuizID()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        db.collection("QUIZ_PENDING").document(quiz.getQuizID()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
-                    View rootView = findViewById(android.R.id.content);
-                    Snackbar.make(rootView, "Quiz Created!", Snackbar.LENGTH_SHORT).show();
+                    Toast.makeText(activity_create_quiz.this, "Quiz Created!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(activity_create_quiz.this, activity_quiz_display.class);
                     startActivity(intent);
                 } else {
