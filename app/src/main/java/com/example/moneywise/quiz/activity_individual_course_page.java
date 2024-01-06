@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -138,8 +139,8 @@ public class activity_individual_course_page extends AppCompatActivity {
         DocumentReference userRef = db.collection("USER_DETAILS").document(userID);
         userRef.collection("COURSES_JOINED").document(courseID).set(courseData)
                 .addOnSuccessListener(documentReference -> {
-                    View rootView = findViewById(android.R.id.content);
-                    Snackbar.make(rootView, "Successfully enrolled in course!", Snackbar.LENGTH_SHORT).show();
+                    deleteBookmark();
+                    Toast.makeText(activity_individual_course_page.this, "Successfully enrolled in course!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(activity_individual_course_page.this, activity_individual_course_joined.class);
                     intent.putExtra("title", course.getCourseTitle());
                     intent.putExtra("courseID", course.getCourseID());
@@ -155,6 +156,18 @@ public class activity_individual_course_page extends AppCompatActivity {
                     Log.w(TAG, "Error adding course ID to collection", e);
                 });
     }
+
+    private void deleteBookmark() {
+        // Get a reference to the COURSES_BOOKMARK document for the specified user and course
+        DocumentReference bookmarkRef = FirebaseFirestore.getInstance()
+                .collection("USER_DETAILS")
+                .document(userID)
+                .collection("COURSES_BOOKMARK")
+                .document(courseID);
+        // Delete the document
+        bookmarkRef.delete();
+    }
+
 
     private void displayCourse() {
         db.collection("COURSE").document(courseID)

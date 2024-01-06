@@ -102,18 +102,21 @@ public class activity_create_quiz extends AppCompatActivity {
                 quesOption2 = option2.getText().toString();
                 quesOption3 = option3.getText().toString();
 
-                quesID = generateQuesID(listOfQues);
-                Question newQues = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
-                listOfQues.add(newQues);
+                if (!quesCorrectAns.isEmpty() && !quesOption1.isEmpty() && !quesOption2.isEmpty() && !quesOption3.isEmpty()) {
+                    quesID = generateQuesID(listOfQues);
+                    Question newQues = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
+                    listOfQues.add(newQues);
 
-                QuesquesText.getText().clear();
-                correctAns.getText().clear();
-                option1.getText().clear();
-                option2.getText().clear();
-                option3.getText().clear();
+                    QuesquesText.getText().clear();
+                    correctAns.getText().clear();
+                    option1.getText().clear();
+                    option2.getText().clear();
+                    option3.getText().clear();
 
-                quesNum++;
-                numOfQues.setText(quesNum+" Question(s)");
+                    quesNum++;
+                    numOfQues.setText(quesNum + " Question(s)");
+                } else
+                    Toast.makeText(activity_create_quiz.this, "Please fill in all fields!", Toast.LENGTH_SHORT).show();
             }
         });
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -247,8 +250,7 @@ public class activity_create_quiz extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
-                    View rootView = findViewById(android.R.id.content);
-                    Snackbar.make(rootView, "Quiz Created!", Snackbar.LENGTH_SHORT).show();
+                    Toast.makeText(activity_create_quiz.this, "Quiz Created!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(activity_create_quiz.this, activity_quiz_display.class);
                     startActivity(intent);
                 } else {
