@@ -55,10 +55,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/TBQuizPage"
+        android:layout_height="0dp"
+        android:layout_marginBottom="65dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/TBQuizPage"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -67,26 +69,27 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/title"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="32dp"
                 android:hint="Title"
-                app:expandedHintEnabled="false"
                 app:counterEnabled="true"
                 app:counterMaxLength="50"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                app:expandedHintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/titleInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="eg. Financial Literacy Challenge"/>
+                    android:hint="eg. Financial Literacy Challenge" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/questionText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -94,18 +97,18 @@
                 android:layout_marginEnd="32dp"
                 android:hint="Question Text"
                 app:expandedHintEnabled="false"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:layout_constraintTop_toBottomOf="@id/title">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/questionTextInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter the question"/>
+                    android:hint="Enter the question" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/correctAns"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -113,18 +116,18 @@
                 android:layout_marginEnd="32dp"
                 android:hint="Correct Answer"
                 app:expandedHintEnabled="false"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:layout_constraintTop_toBottomOf="@id/questionText">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/correctAnsInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter the correct answer"/>
+                    android:hint="Enter the correct answer" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/option1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -132,18 +135,18 @@
                 android:layout_marginEnd="32dp"
                 android:hint="Option 1"
                 app:expandedHintEnabled="false"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:layout_constraintTop_toBottomOf="@id/correctAns">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/option1Input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Option 1"/>
+                    android:hint="Option 1" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/option2"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -151,18 +154,18 @@
                 android:layout_marginEnd="32dp"
                 android:hint="Option 2"
                 app:expandedHintEnabled="false"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:layout_constraintTop_toBottomOf="@id/option1">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/option2Input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Option 2"/>
+                    android:hint="Option 2" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/option3"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -170,14 +173,13 @@
                 android:layout_marginEnd="32dp"
                 android:hint="Option 3"
                 app:expandedHintEnabled="false"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:layout_constraintTop_toBottomOf="@id/option2">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/option3Input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Option 3"/>
+                    android:hint="Option 3" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView

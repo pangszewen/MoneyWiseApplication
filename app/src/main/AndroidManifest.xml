@@ -130,10 +130,12 @@
             android:exported="true" />
         <activity
             android:name=".quiz.activity_create_course"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".quiz.activity_create_quiz"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".home.HomeActivity"
             android:exported="true"
