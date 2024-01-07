@@ -35,7 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
     FirebaseStorage fStorage;
     String uid,role;
     ImageButton btn_back;
-    RelativeLayout myacc_column,theme_column,adm_column,logout_column,hs_column,about_column;
+    RelativeLayout myacc_column,adm_column,logout_column,hs_column,about_column;
     Switch noti_switch;
     SharedPreferences sharedPreferences;
     TextView detail_name,detail_role;
@@ -55,7 +55,6 @@ public class ProfileActivity extends AppCompatActivity {
         gender_icon=(ImageView) findViewById(R.id.gender_icon);
         profile_pic=findViewById(R.id.IV_profilepic);
         myacc_column=findViewById(R.id.myacc_column);
-        theme_column=findViewById(R.id.theme_column);
         noti_switch=findViewById(R.id.noti_switch);
         sharedPreferences = getSharedPreferences("notification_prefs", MODE_PRIVATE);
         adm_column=findViewById(R.id.adm_column);
@@ -93,14 +92,6 @@ public class ProfileActivity extends AppCompatActivity {
                     userDetails.put("notification",false);
                 }
                 ref.update(userDetails);
-            }
-        });
-
-        theme_column.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ThemeActivity.class));
-                finish();
             }
         });
 

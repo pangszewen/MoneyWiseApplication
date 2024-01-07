@@ -8,6 +8,16 @@
         <item name="android:windowTranslucentStatus">false</item>
     </style>
 
+    <style name="SCREEN">
+        <item name="android:background">@color/white</item>
+    </style>
+    <style name="TEXT">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="CONTAINER">
+        <item name="android:background">@color/white</item>
+    </style>
+
     <style name="Theme.MoneyWise6" parent="Base.Theme.MoneyWise6" />
 
     <style name="Theme" parent="Theme.AppCompat.Light.NoActionBar"/>
