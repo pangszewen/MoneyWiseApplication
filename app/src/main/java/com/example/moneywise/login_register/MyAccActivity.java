@@ -17,12 +17,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.moneywise.R;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -137,20 +139,25 @@ public class MyAccActivity extends AppCompatActivity {
                     return;
                 }
 
-                uploadProfilePicture(profilepic_uri);
-                DocumentReference ref= fStore.collection("USER_DETAILS").document(uid);
-                Map<String,Object> userDetails=new HashMap<>();
-                userDetails.put("name",name);
-                userDetails.put("gender",gender);
-                userDetails.put("dob",dob);
-                ref.update(userDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
+                uploadProfilePicture(profilepic_uri, new UploadProfilePicture() {
                     @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(MyAccActivity.this,"Profile updated",Toast.LENGTH_SHORT).show();
-                        Intent intent=new Intent(getApplicationContext(),ProfileActivity.class);
-                        intent.putExtra("newProfilePicUri", profilepic_uri.toString());
-                        startActivity(intent);
-                        finish();
+                    public void onUploadProfilePicture(boolean status) {
+                        if(status){
+                            DocumentReference ref= fStore.collection("USER_DETAILS").document(uid);
+                            Map<String,Object> userDetails=new HashMap<>();
+                            userDetails.put("name",name);
+                            userDetails.put("gender",gender);
+                            userDetails.put("dob",dob);
+                            ref.update(userDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(MyAccActivity.this,"Profile updated",Toast.LENGTH_SHORT).show();
+                                    Intent intent=new Intent(getApplicationContext(),ProfileActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+                        }
                     }
                 });
             }
@@ -196,14 +203,23 @@ public class MyAccActivity extends AppCompatActivity {
         });
     }
 
-    private void uploadProfilePicture(Uri profilePictureUri) {
+    public interface UploadProfilePicture{
+        void onUploadProfilePicture(boolean status);
+    }
+
+    private void uploadProfilePicture(Uri profilePictureUri, UploadProfilePicture callback) {
         if(profilePictureUri!=null) {
             StorageReference reference = fStorage.getReference().child("USER_PROFILE_PIC").child(uid);
             StorageReference imageName = reference.child("Profile Pic" + ".jpg");
             imageName.putFile(profilePictureUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Log.d("TAG", "Profile picture uploaded");
+                    callback.onUploadProfilePicture(true);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    callback.onUploadProfilePicture(false);
                 }
             });
         }
