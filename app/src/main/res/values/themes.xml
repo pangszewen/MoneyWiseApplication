@@ -1,14 +1,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.MoneyWise6" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.BlueTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <style name="Theme.MoneyWise6" parent="Base.Theme.BlueTheme" />
+        <item name="colorPrimary">@color/high_class_blue</item>
+        <item name="colorOnPrimary">@color/blue</item>
+        <item name="colorSecondary">@color/blue_grey</item>
+        <item name="colorOnSecondary">@color/sky_blue</item>
+        <item name="colorTertiary">@color/blue_grey</item>
+        <item name="colorOnTertiary">@color/high_class_blue</item>
+        <item name="colorAccent">@color/high_class_blue</item>
 
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:windowTranslucentStatus">false</item>
     </style>
 
-    <style name="Theme.MoneyWise6" parent="Base.Theme.MoneyWise6" />
+
 
     <style name="Theme" parent="Theme.AppCompat.Light.NoActionBar"/>
 
@@ -24,6 +30,18 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="BlueTheme" parent="Base.AppTheme.BlueTheme"/>
+    <style name="Base.AppTheme.BlueTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+    </style>
+
+    <style name="PinkTheme" parent="Base.AppTheme.BlueTheme"/>
+    <style name="Base.AppTheme.PinkTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/high_class_blue</item>
+        <item name="colorSecondary">@color/blue</item>
+        <item name="colorTertiary">@color/light_blue_grey</item>
     </style>
 
 </resources>

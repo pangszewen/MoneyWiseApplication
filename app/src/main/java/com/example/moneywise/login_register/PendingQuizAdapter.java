@@ -7,16 +7,15 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.moneywise.R;
-import com.example.moneywise.quiz.Course;
+import com.example.moneywise.quiz.Quiz;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -30,13 +29,11 @@ import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PendingCourseAdapter extends RecyclerView.Adapter<PendingCourseAdapter.CourseViewHolder> {
-    List<Course> courseList;
-    List<Course> courseListFull;
+public class PendingQuizAdapter extends RecyclerView.Adapter<PendingQuizAdapter.QuizViewHolder> {
+    List<Quiz> quizList;
     FirebaseFirestore db;
     FirebaseStorage storage;
     Context context;
@@ -44,26 +41,25 @@ public class PendingCourseAdapter extends RecyclerView.Adapter<PendingCourseAdap
     FirebaseUser user = auth.getCurrentUser();
     String userID = user.getUid();
 
-    public PendingCourseAdapter(Context context, List<Course> courseList) {
-        this.courseList = courseList;
+    public PendingQuizAdapter(Context context, List<Quiz> quizList) {
+        this.quizList = quizList;
         this.context = context;
-        courseListFull = new ArrayList<>(courseList);
     }
 
     @NonNull
     @Override
-    public CourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public QuizViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.single_course_display, parent, false);
-        return new CourseViewHolder(view);
+        View view = LayoutInflater.from(context).inflate(R.layout.single_quiz_display, parent, false);
+        return new QuizViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CourseViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        Course course = courseList.get(position);
-        holder.setCourse(course);
-        String courseTitle = course.getCourseTitle();
-        String advisorID = course.getAdvisorID();
+    public void onBindViewHolder(@NonNull QuizViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        Quiz quiz = quizList.get(position);
+        holder.setQuiz(quiz);
+        String courseTitle = quiz.getQuizTitle();
+        String advisorID = quiz.getAdvisorID();
 
         db = FirebaseFirestore.getInstance();
         DocumentReference ref = db.collection("USER_DETAILS").document(advisorID); // Need change
@@ -73,9 +69,9 @@ public class PendingCourseAdapter extends RecyclerView.Adapter<PendingCourseAdap
                 holder.textViewAuthorName.setText(documentSnapshot.getString("name"));
             }
         });
-        holder.imageViewCourseCover.setImageResource(R.drawable.outline_image_grey);
+        holder.imageViewQuizCover.setImageResource(R.drawable.outline_image_grey);
         storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference("COURSE_COVER_IMAGE/" + course.getCourseID() + "/");
+        StorageReference storageReference = storage.getReference("QUIZ_COVER_IMAGE/" + quiz.getQuizID()+"/");
         storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {
             @Override
             public void onComplete(@NonNull Task<ListResult> task) {
@@ -87,7 +83,7 @@ public class PendingCourseAdapter extends RecyclerView.Adapter<PendingCourseAdap
                             public void onSuccess(Uri uri) {
                                 String firstImageUri = uri.toString();
                                 if (position == holder.getAdapterPosition()) {
-                                    Picasso.get().load(firstImageUri).into(holder.imageViewCourseCover);
+                                    Picasso.get().load(firstImageUri).into(holder.imageViewQuizCover);
                                 }
                             }
                         });
@@ -95,50 +91,44 @@ public class PendingCourseAdapter extends RecyclerView.Adapter<PendingCourseAdap
                 }
             }
         });
-        holder.textViewCourseTitle.setText(courseTitle);
+        holder.textViewQuizTitle.setText(courseTitle);
+        holder.numOfQues.setText(quiz.getNumOfQues()+" Questions");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentAdmin = new Intent(context, ApproveCourse.class);
-                intentAdmin.putExtra("courseID", course.getCourseID());
-                intentAdmin.putExtra("title", course.getCourseTitle());
-                intentAdmin.putExtra("description", course.getCourseDesc());
-                intentAdmin.putExtra("advisorID", course.getAdvisorID());
-                intentAdmin.putExtra("language", course.getCourseLanguage());
-                intentAdmin.putExtra("level", course.getCourseLevel());
-                intentAdmin.putExtra("mode", course.getCourseMode());
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-                String formattedDateTime = course.getDateCreated().format(formatter);
-                intentAdmin.putExtra("dateCreated",formattedDateTime);
-                intentAdmin.putExtra("previousClass", CoursePendingFragment.class.toString());
+                Intent intentAdmin = new Intent(context, ApproveQuiz.class);
+                intentAdmin.putExtra("quizID", quiz.getQuizID());
                 context.startActivity(intentAdmin);
             }
         });
-        holder.bookmark.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public int getItemCount() {
-        return courseList.size();
+        return quizList.size();
     }
 
-    public class CourseViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageViewCourseCover;
-        TextView textViewCourseTitle;
+    public class QuizViewHolder extends RecyclerView.ViewHolder {
+        ImageView imageViewQuizCover;
+        TextView textViewQuizTitle;
         TextView textViewAuthorName;
+        TextView numOfQues;
         ImageButton bookmark;
-        Course course;
-        public void setCourse(Course course) {
-            this.course = course;
+        Quiz quiz;
+
+        public void setQuiz(Quiz quiz) {
+            this.quiz = quiz;
         }
-        public CourseViewHolder(@NonNull View itemView) {
+
+        public QuizViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageViewCourseCover = itemView.findViewById(R.id.image_quiz_cover);
-            textViewCourseTitle = itemView.findViewById(R.id.text_course_title);
+            imageViewQuizCover = itemView.findViewById(R.id.image_quiz_cover);
+            textViewQuizTitle = itemView.findViewById(R.id.text_quiz_title);
             textViewAuthorName = itemView.findViewById(R.id.text_author_name);
-            bookmark = itemView.findViewById(R.id.button_bookmark);
+            numOfQues = itemView.findViewById(R.id.numOfQues);
+            bookmark = itemView.findViewById(R.id.bookmark);
+
+            bookmark.setVisibility(View.INVISIBLE);
         }
     }
 }
-
-

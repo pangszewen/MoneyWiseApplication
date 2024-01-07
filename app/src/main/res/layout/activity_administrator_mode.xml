@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login_register.CoursePendingDisplay">
-
+    tools:context=".login_register.AdministratorModeActivity">
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/TBCourses"
+        android:id="@+id/TBAdm"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@color/high_class_blue"
@@ -40,25 +39,34 @@
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/RVCourseRefresh"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/TLAdm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/TBCourses">
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@id/TBAdm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/CustomTabLayout">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/course_recycle_view"
-            android:layout_width="match_parent"
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:padding="8dp"
-            android:scrollbars="vertical"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/searchField" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:text="Course" />
 
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quiz" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/VPAdm"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        app:layout_constraintTop_toBottomOf="@id/TLAdm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

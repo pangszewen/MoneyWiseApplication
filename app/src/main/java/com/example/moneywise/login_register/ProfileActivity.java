@@ -1,9 +1,7 @@
 package com.example.moneywise.login_register;
 
-import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -12,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +26,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -37,7 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     FirebaseStorage fStorage;
-    String uid;
+    String uid,role;
     ImageButton btn_back;
     RelativeLayout myacc_column,theme_column,adm_column,logout_column,hs_column,about_column;
     Switch noti_switch;
@@ -67,6 +63,9 @@ public class ProfileActivity extends AppCompatActivity {
         hs_column=findViewById(R.id.hs_column);
         about_column=findViewById(R.id.about_column);
 
+        displayProfilePic(uid);
+        loadDetailFromDB();
+
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,9 +73,6 @@ public class ProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        displayProfilePic(uid);
-        loadDetailFromDB();
 
         myacc_column.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +93,22 @@ public class ProfileActivity extends AppCompatActivity {
                     userDetails.put("notification",false);
                 }
                 ref.update(userDetails);
+            }
+        });
+
+        theme_column.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ThemeActivity.class));
+                finish();
+            }
+        });
+
+        adm_column.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), AdministratorModeActivity.class));
+                finish();
             }
         });
 
@@ -126,13 +138,32 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Check for new profile picture URI
+        if (getIntent().hasExtra("newProfilePicUri")) {
+            String newProfilePicUri = getIntent().getStringExtra("newProfilePicUri");
+            // Update profile picture in ImageView
+            Picasso.get()
+                    .load(newProfilePicUri)
+                    .placeholder(R.drawable.profile_pic)
+                    .error(R.drawable.profile_pic)
+                    .into(profile_pic);
+        }
+    }
+
     private void loadDetailFromDB(){
         DocumentReference documentReference=fStore.collection("USER_DETAILS").document(uid);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                role=value.getString("role");
                 detail_name.setText(value.getString("name"));
-                detail_role.setText(value.getString("role"));
+                if(!role.equals("Admin")){
+                    adm_column.setVisibility(View.GONE);
+                }
+                detail_role.setText(role);
                 if (value.getString("gender").equals("Male")) {
                     gender_icon.setBackgroundResource(R.drawable.baseline_male_24);
                 }
@@ -148,7 +179,6 @@ public class ProfileActivity extends AppCompatActivity {
             Picasso.get()
                     .load(uri)
                     .placeholder(R.drawable.profile_pic) // Replace with a placeholder image while loading
-                    .error(R.drawable.profile_pic) // Replace with an error image if download fails
                     .into(profile_pic);
         });
     }

@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     //shapes
-
     <style name="groupStyle_white_rec">
         <item name="android:background">@drawable/rectangle_bg_white</item>
     </style>

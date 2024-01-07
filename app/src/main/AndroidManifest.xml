@@ -21,7 +21,19 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".login_register.CoursePendingDisplay"
+            android:name=".login_register.ThemeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.AdministratorModeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.ApproveQuiz"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.QuizPendingFragment"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.CoursePendingFragment"
             android:exported="true" />
         <activity
             android:name=".login_register.FAQActivity"
@@ -90,9 +102,7 @@
         <activity
             android:name=".scholarship.FindScholarshipActivity"
             android:exported="false" />
-        <activity
-            android:name=".scholarship.AdminAddScholarshipActivity"
-            android:exported="false"/>
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
