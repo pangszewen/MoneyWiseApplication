@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,7 +58,6 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationView.setBackground(null);
         replaceFragment(new HomeFragment());
 
-
         setSupportActionBar(toolbar);
         navigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -65,84 +65,46 @@ public class HomeActivity extends AppCompatActivity {
         toggle.syncState();
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemID = item.getItemId();
-                if (itemID == R.id.overflowHome) {
-                    replaceFragment(new HomeFragment());
-                    drawerLayout.closeDrawers(); // Close the drawer after selecting an item
-                    return true;
-                } else if (itemID == R.id.overflowForum) {
-                    replaceFragment(new Forum_MainFragment());
-                    bottomNavigationView.findViewById(R.id.iconForum).performClick();
-                    drawerLayout.closeDrawers();
-                    return true;
-                } else if (itemID == R.id.overflowExpenses) {
-                    replaceFragment(new MainExpensesFragment());
-                    bottomNavigationView.findViewById(R.id.iconExpenses).performClick();
-                    drawerLayout.closeDrawers();
-                    return true;
-
-                }else if(itemID== R.id.overflowCnq){
-                    replaceFragment(new fragment_MAIN_CnQ());
-                    bottomNavigationView.findViewById(R.id.iconCnq).performClick();
-                    drawerLayout.closeDrawers();
-                    return true;
-                } else if (itemID == R.id.overflowSnn) {
-                    replaceFragment(new ScholarshipMainFragment());
-                    bottomNavigationView.findViewById(R.id.iconSnn).performClick();
-                    drawerLayout.closeDrawers();
-                    return true;
-                } else if (itemID == R.id.overflowProfile) {
-                    startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
-                    drawerLayout.closeDrawers();
-                    return true;
-                } else if (itemID == R.id.overflowAboutApp) {
-                    startActivity(new Intent(HomeActivity.this, AboutAppActivity.class));
-                    drawerLayout.closeDrawers();
-                    return true;
-                } else if (itemID == R.id.overflowLogout) {
-                    auth.signOut();
-                    startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-                    finish();
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+        navigationView.setNavigationItemSelectedListener(item -> {
+            handleMenuItemSelection(item);
+            bottomNavigationView.setSelectedItemId(item.getItemId());
+            return true;
         });
 
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemID = item.getItemId();
-                if(itemID== R.id.iconHome) {
-                    replaceFragment(new HomeFragment());
-                    return true;
-                }else if(itemID== R.id.iconForum) {
-                    replaceFragment(new Forum_MainFragment());
-                    return true;
-                }else if(itemID== R.id.iconExpenses) {
-                    replaceFragment(new MainExpensesFragment());
-                    return true;
-                }else if(itemID== R.id.iconCnq){
-                    replaceFragment(new fragment_MAIN_CnQ());
-                    return true;
-                }else if(itemID== R.id.iconSnn) {
-                    replaceFragment(new ScholarshipMainFragment());
-                    return true;
-                }else
-                    return false;
-            }
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            handleMenuItemSelection(item);
+            navigationView.setCheckedItem(item.getItemId());
+            return true;
         });
 
+
+    }
+
+    private void handleMenuItemSelection(MenuItem item) {
+        int itemID = item.getItemId();
+        if (itemID == R.id.iconHome)
+            replaceFragment(new HomeFragment());
+        else if(itemID == R.id.iconExpenses)
+            replaceFragment(new MainExpensesFragment());
+        else if(itemID == R.id.iconCnq)
+            replaceFragment(new fragment_MAIN_CnQ());
+        else if(itemID == R.id.iconSnn)
+            replaceFragment(new ScholarshipMainFragment());
+        else if(itemID == R.id.iconForum)
+            replaceFragment(new Forum_MainFragment());
+        else if(itemID == R.id.iconAboutApp)
+            startActivity(new Intent(HomeActivity.this, AboutAppActivity.class));
+        else if(itemID == R.id.iconLogout) {
+            auth.signOut();
+            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+        }
+        drawerLayout.closeDrawers();
     }
 
     public void expensesOnClick(){
         replaceFragment(new MainExpensesFragment());
         bottomNavigationView.findViewById(R.id.iconExpenses).performClick();
-        navigationView.findViewById(R.id.overflowExpenses).performClick();
+        navigationView.findViewById(R.id.iconExpenses).performClick();
     }
 
     public void replaceFragment(Fragment fragment){

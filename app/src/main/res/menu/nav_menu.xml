@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/iconHome"
-        android:title="Home"
-        android:icon="@drawable/outline_home_white"/>
-    <item
-        android:id="@+id/iconExpenses"
-        android:title="Expenses"
-        android:icon="@drawable/outline_expenses_white"/>
-    <item
-        android:id="@+id/iconCnq"
-        android:title="Learning"
-        android:icon="@drawable/outline_cnq_white"/>
-    <item
-        android:id="@+id/iconSnn"
-        android:title="Info"
-        android:icon="@drawable/outline_snn_white"/>
-    <item
-        android:id="@+id/iconForum"
-        android:title="Forum"
-        android:icon="@drawable/outline_forum_white"/>
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/iconHome"
+            android:title="Home"
+            android:icon="@drawable/outline_home_white"/>
+        <item
+            android:id="@+id/iconExpenses"
+            android:title="Expenses"
+            android:icon="@drawable/outline_expenses_white"/>
+        <item
+            android:id="@+id/iconCnq"
+            android:title="@string/Cnq"
+            android:icon="@drawable/outline_cnq_white"/>
+        <item
+            android:id="@+id/iconSnn"
+            android:title="@string/Snn"
+            android:icon="@drawable/outline_snn_white"/>
+        <item
+            android:id="@+id/iconForum"
+            android:title="Forum"
+            android:icon="@drawable/outline_forum_white"/>
+    </group>
+
 </menu>
