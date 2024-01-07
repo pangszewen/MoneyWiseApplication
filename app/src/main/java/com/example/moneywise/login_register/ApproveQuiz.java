@@ -20,12 +20,15 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.moneywise.R;
 import com.example.moneywise.quiz.Course;
 import com.example.moneywise.quiz.CourseViewpagerAdapter;
 import com.example.moneywise.quiz.Question;
 import com.example.moneywise.quiz.Quiz;
+import com.example.moneywise.quiz.activity_create_quiz;
+import com.example.moneywise.quiz.activity_quiz_display;
 import com.example.moneywise.quiz.fragment_course_lesson_full;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -43,6 +46,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +55,7 @@ import java.util.Map;
 public class ApproveQuiz extends AppCompatActivity {
 
     FirebaseFirestore db;
-    String quizID, advisorID, dateCreated;
+    String titleText,quizID, advisorID, dateCreated;
     TextView title, advisor;
     ImageView quizCoverImage;
     RecyclerView RVQuiz;
@@ -134,23 +138,30 @@ public class ApproveQuiz extends AppCompatActivity {
     }
 
     private void saveApproveStatusToDatabase() {
-        Map<String, Object> quizData = new HashMap<>();
-        quizData.put("advisorID", advisorID);
-        quizData.put("dateCreated", dateCreated);
-
-        DocumentReference quizRef = FirebaseFirestore.getInstance()
-                .collection("QUIZ")
-                .document(quizID);
-
-        quizRef.set(quizData)
-                .addOnSuccessListener(aVoid -> {
+        Map<String, Object> map = new HashMap<>();
+        map.put("dateCreated", dateCreated);
+        map.put("advisorID", advisorID);
+        map.put("title", titleText);
+        map.put("numOfQues", quesList.size());
+        DocumentReference ref=db.collection("QUIZ").document(quizID);
+        ref.set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+                    for (Question q:quesList){
+                        insertQuesIntoDatabase(ref.collection("QUESTION"),q);
+                    }
                     Log.d(TAG, "Course fields saved successfully!");
                     saveRejectStatusToDatabase();
                     View rootView = findViewById(android.R.id.content);
                     Snackbar.make(rootView, "Approved!", Snackbar.LENGTH_SHORT).show();
-                });
+                } else {
+                    View rootView = findViewById(android.R.id.content);
+                    Snackbar.make(rootView, "Fail to Create Quiz", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
-
 
     private void showRejectDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ApproveQuiz.this);
@@ -191,6 +202,27 @@ public class ApproveQuiz extends AppCompatActivity {
                 });
     }
 
+    // insert questions to database
+    private void insertQuesIntoDatabase(CollectionReference collectionReference, Question ques) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("quesText", ques.getQuestionText());
+        map.put("correctAns", ques.getCorrectAns());
+        map.put("option1", ques.getOption1());
+        map.put("option2", ques.getOption2());
+        map.put("option3", ques.getOption3());
+        collectionReference.document(ques.getQuesID()).set(map)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("TAG", "Question uploaded");
+                        } else {
+                            Log.d("TAG", "Failed");
+                        }
+                    }
+                });
+    }
+
     private void saveRejectStatusToDatabase() {
         DocumentReference quizRef = FirebaseFirestore.getInstance()
                 .collection("QUIZ_PENDING")
@@ -212,7 +244,7 @@ public class ApproveQuiz extends AppCompatActivity {
                     if (task.isSuccessful() && task.getResult() != null) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            String titleText = document.getString("title");
+                            titleText = document.getString("title");
                             advisorID = document.getString("advisorID");
                             dateCreated=document.getString("dateCreated");
                             title.setText(titleText);
