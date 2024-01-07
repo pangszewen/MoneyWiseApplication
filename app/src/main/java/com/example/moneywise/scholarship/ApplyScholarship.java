@@ -387,7 +387,7 @@ public class ApplyScholarship extends AppCompatActivity {
             alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
             // Schedule the alarm
-            alarmManager.set(
+            alarmManager.setExact(
                     AlarmManager.RTC_WAKEUP,
                     notificationTimeMillis,
                     pendingIntent

@@ -155,7 +155,7 @@ public class FindScholarshipActivity extends AppCompatActivity {
                             return;
                         }
 
-                        sortedScholarships.clear(); // Clear the sorted list
+//                        sortedScholarships.clear(); // Clear the sorted list
 
                         for (DocumentChange dc : value.getDocumentChanges()) {
                             if (dc.getType() == DocumentChange.Type.ADDED) {
