@@ -55,6 +55,8 @@ public class HomeActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.myToolBar);
         FCVHome = findViewById(R.id.FCVHome);
         bottomNavigationView = findViewById(R.id.bottomHomeNavigationView);
+        bottomNavigationView.getMenu().getItem(2).setTitle("Learning");
+        bottomNavigationView.getMenu().getItem(3).setTitle("Info");
         bottomNavigationView.setBackground(null);
         replaceFragment(new HomeFragment());
 
