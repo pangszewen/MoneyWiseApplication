@@ -53,7 +53,8 @@ public class ContactUsActivity extends AppCompatActivity {
                 Intent emailIntent=new Intent(Intent.ACTION_SENDTO);
                 emailIntent.setData(Uri.parse("mailto:"));
                 emailIntent.setType("text/plain");
-                emailIntent.putExtra(Intent.EXTRA_EMAIL,"mwadmin@gmail.com");
+                String[] recipientEmails = {"mwadmin@gmail.com"};
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, recipientEmails);
                 try {
                     startActivity(Intent.createChooser(emailIntent,"Choose an Email Client"));
                 }
