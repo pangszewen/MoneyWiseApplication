@@ -102,13 +102,8 @@ public class Forum_MainFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.d("TAG", "keyword: " + s);
                 adapter.getFilter().filter(s);
                 ArrayList<ForumTopic> filteredList = adapter.getFilteredList();
-                Log.d("TAG", "filtered:");
-                for(ForumTopic topic: filteredList) {
-                    Log.d("TAG",  topic.getSubject());
-                }
                 setRVForumBasedOnSearchResult(filteredList);
             }
 
@@ -196,11 +191,12 @@ public class Forum_MainFragment extends Fragment {
         return rootview;
     }
 
-
+    // Method to set up recyclerview of topics that match the search keyword
     public void setRVForumBasedOnSearchResult(ArrayList<ForumTopic> selectedTopic){
         prepareRecyclerView(getActivity(), RVForum, selectedTopic);
     }
 
+    // Method to set up search bar adapter
     public void setSearchBarAdapter(){
         firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
@@ -222,6 +218,7 @@ public class Forum_MainFragment extends Fragment {
         RV.setAdapter(forumAdapter);
     }
 
+    // Method triggered when search icon is clicked or cancel button of search bar is clicked
     protected void toggleSearch(boolean reset) {
         if (reset) {
             // hide search box and show search icon
@@ -242,6 +239,7 @@ public class Forum_MainFragment extends Fragment {
         }
     }
 
+    // Method to display the forum topics in descending order based on their date posted (newest to oldest)
     public void setMostRecentFilter(){
         firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
@@ -252,6 +250,7 @@ public class Forum_MainFragment extends Fragment {
         });
     }
 
+    // Method to display the forum topics in descending order based on their total number of likes and comments
     public void setFeaturedTopicsFilter() {
         firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
@@ -272,6 +271,7 @@ public class Forum_MainFragment extends Fragment {
         });
     }
 
+    // Method to display the forum topics in descending order based on their total number of likes
     public void setMostLikesFilter() {
         firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
@@ -292,6 +292,7 @@ public class Forum_MainFragment extends Fragment {
         });
     }
 
+    // Method to display the forum topics in descending order based on their total number of comments
     public void setMostCommentsFilter() {
         firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
@@ -312,20 +313,10 @@ public class Forum_MainFragment extends Fragment {
         });
     }
 
+    // Method to set the textColor of all buttons to white
     public void resetButtonTextColor(){
         for(Button button : filterButtons){
             button.setTextColor(getResources().getColor(R.color.white));
         }
     }
-
-    public void updateAdapterWithNewTopic(ForumTopic newTopic) {
-        firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
-            @Override
-            public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
-                adapter = new ForumTopic_SearchAdapter(getActivity(), forumTopics);
-                search_box.setAdapter(adapter);
-            }
-        });
-    }
-
 }

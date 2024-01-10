@@ -140,7 +140,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     }
 
     public void setTVAuthor(){
-        firebaseUser.getUser(topic.getUserID(), new Firebase_Forum.UserCallback() {
+        firebaseUser.getUser(topic.getUserID(), new Firebase_User.UserCallback() {
             @Override
             public void onUserReceived(User user) {
                 TVAuthor.setText(user.getName());
@@ -173,6 +173,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         TVNumberOfDiscussion.setText("(" + String.valueOf(comments) + ")");
     }
 
+    // Method to set up the discussion section of a topic
     public void setRVIndividualTopicDiscussion(){
         firebaseForum.getForumTopic(topic.getTopicID(), new Firebase_Forum.ForumTopicCallback() {
             @Override
@@ -183,6 +184,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         });
     }
 
+    // Method to get all the comments that belong to the specific topic
     public void filterForumComments(List<String> commentID){
         firebaseForum.getForumComments(new Firebase_Forum.ForumCommentsCallback() {
             @Override
@@ -197,6 +199,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         });
     }
 
+    // Method to set up the recyclerview of images of a topic
     public void setRVTopicImage(){
         firebaseForum.getTopicImages(topic.getTopicID(), new Firebase_Forum.TopicImagesCallback() {
             @Override
@@ -206,8 +209,10 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         });
     }
 
+    // Method that shows the delete button if the user is the creator or an admin
+    // else, hide the delete button
     public void setVisibilityOfDeleteButton(){
-        firebaseUser.getUser(userID, new Firebase_Forum.UserCallback() {
+        firebaseUser.getUser(userID, new Firebase_User.UserCallback() {
             @Override
             public void onUserReceived(User user) {
                 if (topic.getUserID().equals(user.getUserID()) || user.getRole().equals("Admin"))
@@ -218,7 +223,8 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         });
     }
 
-    // Comment topic
+    // Method called when the comment button is clicked
+    // To upload the comment and update the discussion of topic
     protected void toggleComment() {
             String comment = comment_box.getText().toString();
             if(!TextUtils.isEmpty(comment)){
@@ -232,7 +238,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
             }
     }
 
-    // Like topic methods
+    // Method called when like button is clicked
     public void pressedLikeButton(){
         firebaseForum.getForumTopic(topic.getTopicID(), new Firebase_Forum.ForumTopicCallback() {
             @Override
@@ -244,6 +250,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         });
     }
 
+    // Method to update the number of likes and change the like icon
     public void changeLikesOfTopic(){
         firebaseForum.getForumTopic(topic.getTopicID(), new Firebase_Forum.ForumTopicCallback() {
             @Override
@@ -254,6 +261,8 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         });
     }
 
+    // Method to update the list of likes of topic
+    // If the original list of likes contains the userID, indicating the user has liked the topic before, meaning that the user intent to unlike the topic, vice versa
     public void updateLikeInDatabase(List<String> likes){
         if(likes.contains(userID)){
             firebaseForum.deleteLike(topic.getTopicID());
@@ -262,6 +271,8 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         }
     }
 
+    // Method that change the like button to hollow is the list of likes does not contain the userID
+    // else change the like button to filled
     public void setLikeButtonDrawable(ForumTopic topic){
         List<String> likes = topic.getLikes();
         if(!likes.contains(userID)){
@@ -271,6 +282,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         }
     }
 
+    // Method to navigate back to the previous activity
     public void backToPreviousActivity(){
         Intent intent = new Intent(Forum_IndividualTopic_Activity.this, HomeActivity.class);
         if(previousClass.equals(Forum_MyTopic_Activity.class.toString())){
@@ -283,7 +295,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         finish();
     }
 
-    // Prepare RV methods
+    // Methods to prepare recyclerview of discussion
     public void prepareRVDiscussion(Context context, RecyclerView RV, ArrayList<ForumComment> object){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         RV.setLayoutManager(linearLayoutManager);
@@ -295,6 +307,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         RV.setAdapter(discussionAdapter);
     }
 
+    // Methods to prepare recyclerview of topic images
     public void prepareRVImage(Context context, RecyclerView RV, String[] object){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
         RV.setLayoutManager(linearLayoutManager);

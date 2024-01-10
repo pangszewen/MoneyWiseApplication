@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+// Class that stores all methods related to forum and firebase
 public class Firebase_Forum {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user = auth.getCurrentUser();
@@ -52,6 +53,7 @@ public class Firebase_Forum {
         void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics);
     }
 
+    // Method to get all the forum topics based on date posted in descending order from firestore
     public void getForumTopicsInOrder(ForumTopicInOrderCallback callback){
         forumTopicRef.orderBy("datePosted", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -70,6 +72,7 @@ public class Firebase_Forum {
         void onForumTopicReceived(ForumTopic topic);
     }
 
+    // Method to get specific topic from firestore
     public void getForumTopic(String topicID, ForumTopicCallback callback){
         DocumentReference ref = forumTopicRef.document(topicID);
         ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -86,6 +89,7 @@ public class Firebase_Forum {
         void onForumComments(ArrayList<ForumComment> forumComments);
     }
 
+    // Method to get all the forum comments based on date posted in descending order from firestore
     public void getForumComments(ForumCommentsCallback callback){
         forumCommentRef.orderBy("datePosted", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -104,6 +108,7 @@ public class Firebase_Forum {
         void onTopicImagesReceived(String[] images);
     }
 
+    // Method to get the images of a specific topic from firebase storage
     public void getTopicImages(String topicID, TopicImagesCallback callback){
         StorageReference storageReference = storage.getReference(storageName + topicID);
         storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {
@@ -120,9 +125,10 @@ public class Firebase_Forum {
                             @Override
                             public void onSuccess(Uri uri) {
                                 String imageUri = uri.toString();
-                                images[index] = imageUri;
-                                int completedCount = count.incrementAndGet();
+                                images[index] = imageUri;       // insert the images into the correct index of array
+                                int completedCount = count.incrementAndGet();   // track the number of images inserted into array
 
+                                // if all the images has inserted into the array, pass the array of images into callback method
                                 if (completedCount == items.size()) {
                                     // All download URLs have been fetched
                                     callback.onTopicImagesReceived(images);
@@ -139,6 +145,7 @@ public class Firebase_Forum {
         void onFirstTopicImageReceived(Uri uri);
     }
 
+    // Method to get the first image of a specific topic
     public void getFirstTopicImage(String topicID, FirstTopicImageCallback callback){
         StorageReference storageReference = storage.getReference(storageName + topicID);
         storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {
@@ -164,6 +171,7 @@ public class Firebase_Forum {
         void onCreateTopic(boolean status);
     }
 
+    // Method to insert new created topic into firestore
     public void createTopic(ForumTopic topic, CreateTopicCallback callback){
         Map<String, Object> map = new HashMap<>();
         map.put("userID", topic.getUserID());
@@ -190,6 +198,7 @@ public class Firebase_Forum {
         void onInsertForumComment(boolean status);
     }
 
+    // Method to insert new comment into firestore
     public void insertForumComment(ForumComment comment, InsertForumCommentCallback callback){
         Map<String, Object> map = new HashMap<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
@@ -209,6 +218,7 @@ public class Firebase_Forum {
         });
     }
 
+    // Method to insert the images of a topic when a new topic is created
     public void insertForumImages(ArrayList<Uri> imageList, String topicID){
         for(int i =0; i<imageList.size(); i++){
             Uri image = imageList.get(i);
@@ -225,12 +235,12 @@ public class Firebase_Forum {
         }
     }
 
+    // Method to update the arraylist of commentID of a specific topic
     public void updateCommentInTopic(ForumComment comment, String topicID){
         DocumentReference ref = forumTopicRef.document(topicID);
         ref.update("commentID", FieldValue.arrayUnion(comment.getCommentID())).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onSuccess(Void unused) {
-            }
+            public void onSuccess(Void unused) {}
         });
     }
 
@@ -238,6 +248,7 @@ public class Firebase_Forum {
         void onDeleteTopic(boolean status);
     }
 
+    // Method to deletea topic from firestore
     public void deleteTopic(String topicID, DeleteTopicCallback callback){
         DocumentReference docRef = forumTopicRef.document(topicID);
         docRef.delete()
@@ -256,6 +267,7 @@ public class Firebase_Forum {
                 });
     }
 
+    // Method to add a userID into the arraylist of likes of a specific topic
     public void addLike(String topicID){
         DocumentReference ref = db.collection("FORUM_TOPIC").document(topicID);
         ref.update("likes", FieldValue.arrayUnion(userID)).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -266,6 +278,7 @@ public class Firebase_Forum {
         });
     }
 
+    // Method to delete a userID from the arraylist of likes of a specific topic
     public void deleteLike(String topicID){
         DocumentReference ref = db.collection("FORUM_TOPIC").document(topicID);
         ref.update("likes", FieldValue.arrayRemove(userID)).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -275,10 +288,7 @@ public class Firebase_Forum {
         });
     }
 
-    public interface UserCallback{
-        void onUserReceived(User user);
-    }
-
+    // Method to convert query document snapshots from FORUM_TOPIC in firestore to ForumTopic object
     public ForumTopic convertDocumentToForumTopic(QueryDocumentSnapshot dc) {
         ForumTopic topic = new ForumTopic();
         topic.setTopicID(dc.getId());
@@ -293,6 +303,7 @@ public class Firebase_Forum {
         return topic;
     }
 
+    // Method to convert document snapshots from FORUM_TOPIC in firestore to ForumTopic object
     public ForumTopic convertDocumentToForumTopic(DocumentSnapshot dc){
         ForumTopic topic = new ForumTopic();
         topic.setTopicID(dc.getId());
@@ -310,6 +321,7 @@ public class Firebase_Forum {
         return topic;
     }
 
+    // Method to convert query document snapshots from FORUM_COMMENT in firestore to ForumComment object
     public ForumComment convertDocumentToForumComment(QueryDocumentSnapshot dc){
         ForumComment comment = new ForumComment();
         comment.setCommentID(dc.getId());

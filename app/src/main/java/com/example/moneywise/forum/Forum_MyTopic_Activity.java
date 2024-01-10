@@ -75,6 +75,7 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
         });
     }
 
+    // Method to set up recyclerview of topics that created by the user
     public void setUpRVMyTopics(){
         firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
@@ -91,6 +92,7 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
         });
     }
 
+    // Method to prepare the recyclerview of My Topics
     public void prepareRecyclerView(Context context, RecyclerView RV, List<ForumTopic> object){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         RV.setLayoutManager(linearLayoutManager);

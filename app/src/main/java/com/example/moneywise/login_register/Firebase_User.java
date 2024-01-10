@@ -13,7 +13,11 @@ public class Firebase_User {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference userRef = db.collection("USER_DETAILS");
 
-    public void getUser(String userID, Firebase_Forum.UserCallback callback){
+    public interface UserCallback{
+        void onUserReceived(User user);
+    }
+
+    public void getUser(String userID, UserCallback callback){
         DocumentReference userDocRef = userRef.document(userID);
         userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
