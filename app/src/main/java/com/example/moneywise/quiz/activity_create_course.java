@@ -58,7 +58,7 @@ public class activity_create_course extends AppCompatActivity {
                 courseLevel = levelSpinner.getText().toString(); // Updated here
                 courseLanguage = languageSpinner.getText().toString(); // Updated here
 
-                if (!courseTitle.isEmpty() && !courseDesc.isEmpty() && !courseLevel.equals("Please select") && !courseLanguage.equals("Please select")) {
+                if (!courseTitle.isEmpty() && !courseDesc.isEmpty() && !courseLevel.equals("Please select") && !courseLanguage.equals("Please select")) { // check if all fields are filled
                     Intent intent = new Intent(activity_create_course.this, activity_create_lesson.class);
                     intent.putExtra("title", courseTitle);
                     intent.putExtra("desc", courseDesc);
@@ -67,7 +67,7 @@ public class activity_create_course extends AppCompatActivity {
                     intent.putExtra("mode", "Online");
                     startActivity(intent);
                 }
-                else {
+                else { // Incomplete info
                     View rootView = findViewById(android.R.id.content);
                     Snackbar.make(rootView, "Please fill in all fields", Snackbar.LENGTH_SHORT).show();
                 }
