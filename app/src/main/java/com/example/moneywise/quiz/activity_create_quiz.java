@@ -102,26 +102,28 @@ public class activity_create_quiz extends AppCompatActivity {
                 quesOption2 = option2.getText().toString();
                 quesOption3 = option3.getText().toString();
 
-                if (!quesCorrectAns.isEmpty() && !quesOption1.isEmpty() && !quesOption2.isEmpty() && !quesOption3.isEmpty()) {
+                if (!quesCorrectAns.isEmpty() && !quesOption1.isEmpty() && !quesOption2.isEmpty() && !quesOption3.isEmpty()) { // Check if all fields are filled
                     quesID = generateQuesID(listOfQues);
                     Question newQues = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
                     listOfQues.add(newQues);
 
+                    // clear the previous input
                     QuesquesText.getText().clear();
                     correctAns.getText().clear();
                     option1.getText().clear();
                     option2.getText().clear();
                     option3.getText().clear();
 
-                    quesNum++;
+                    quesNum++; // update question count
                     numOfQues.setText(quesNum + " Question(s)");
-                } else
+                } else // Incomplete info
                     Toast.makeText(activity_create_quiz.this, "Please fill in all fields!", Toast.LENGTH_SHORT).show();
             }
         });
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // save the last question
                 quesText = QuesquesText.getText().toString();
                 quesCorrectAns = correctAns.getText().toString();
                 quesOption1 = option1.getText().toString();
@@ -132,12 +134,12 @@ public class activity_create_quiz extends AppCompatActivity {
                 Question newQues = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
                 listOfQues.add(newQues);
 
-                if (!listOfQues.isEmpty() && pickImage) {
+                if (!listOfQues.isEmpty() && pickImage) { // check if image is choosen and there is at least 1 question
                     quizTitle = title.getText().toString();
                     createQuiz(quizTitle);
                 }
 
-                if (!pickImage){
+                if (!pickImage){ // image is not  chosen
                     View rootView = findViewById(android.R.id.content);
                     Snackbar.make(rootView, "Please select a Cover Image!", Snackbar.LENGTH_SHORT).show();
                 }

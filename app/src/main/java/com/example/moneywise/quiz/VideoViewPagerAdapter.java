@@ -28,3 +28,4 @@ public class VideoViewPagerAdapter extends FragmentPagerAdapter {
         return videoUris.size();
     }
 }
+// used in activity_create_lesson

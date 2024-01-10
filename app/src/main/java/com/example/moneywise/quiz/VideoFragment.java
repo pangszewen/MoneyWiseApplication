@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import com.example.moneywise.R;
 public class VideoFragment extends Fragment {
     private static final String ARG_VIDEO_URI = "videoUri";
-
     private VideoView videoView;
     private Uri videoUri;
 
@@ -38,7 +37,8 @@ public class VideoFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_video, container, false);
         videoView = rootView.findViewById(R.id.videoView);
         videoView.setVideoURI(videoUri);
-        videoView.start();
+        videoView.start(); // play video
         return rootView;
     }
 }
+// used in activity_create_lesson

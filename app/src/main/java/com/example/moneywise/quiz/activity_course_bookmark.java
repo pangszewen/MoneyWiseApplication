@@ -48,6 +48,7 @@ public class activity_course_bookmark extends AppCompatActivity {
         recyclerViewQuiz = findViewById(R.id.RVQuiz);
         refreshLayout = findViewById(R.id.SRLBookmark);
 
+        // get the userID
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         userID = user.getUid();
@@ -71,8 +72,8 @@ public class activity_course_bookmark extends AppCompatActivity {
 
     public void setUpRVCourse() {
         courseList = new ArrayList<>();
+        // refer from USER_DETAILS -> COURSES_BOOKMARK
         CollectionReference collectionReference = db.collection("USER_DETAILS").document(userID).collection("COURSES_BOOKMARK");
-
         collectionReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -117,6 +118,7 @@ public class activity_course_bookmark extends AppCompatActivity {
 
     private void setUpRVQuiz() {
         quizList = new ArrayList<>();
+        // refer from USER_DETAILS -> QUIZZES_BOOKMARK
         CollectionReference collectionReference = db.collection("USER_DETAILS").document(userID).collection("QUIZZES_BOOKMARK");
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -154,6 +156,7 @@ public class activity_course_bookmark extends AppCompatActivity {
         return quiz;
     }
 
+    // get back to previous class users accessed
     public void backToPreviousActivity(){
         Intent intent = new Intent(activity_course_bookmark.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
