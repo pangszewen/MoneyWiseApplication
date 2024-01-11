@@ -78,6 +78,7 @@ public class AdminAddScholarshipActivity extends AppCompatActivity {
 
         save = findViewById(R.id.btnSave);
 
+        //Save the new created scholarship into Firestore SCHOLARSHIP collection
         save.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -112,6 +113,7 @@ public class AdminAddScholarshipActivity extends AppCompatActivity {
 
                 insertScholarshipIntoDatabase(newScho);
 
+                // Set all Edit Text back to empty after adding the new scholarship into Firestore
                 ETTitle.setText("");
                 ETInsititution.setText("");
                 ETAbout.setText("");
@@ -124,10 +126,11 @@ public class AdminAddScholarshipActivity extends AppCompatActivity {
             }
         });
 
-        selectedDate = Calendar.getInstance();
-        updateDeadlineText();
+//        selectedDate = Calendar.getInstance();
+//        updateDeadlineText();
 
     }
+    // Method to open date picker and call method to open time picker
     private void openDateDialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -143,6 +146,7 @@ public class AdminAddScholarshipActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    //Method to open time picker
     private void openTimeDialog() {
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -159,6 +163,7 @@ public class AdminAddScholarshipActivity extends AppCompatActivity {
         timePickerDialog.show();
     }
 
+    // Method called for admin to set deadline, which is open date picker
     private void openDialog() {
         openDateDialog();
     }
@@ -172,6 +177,7 @@ public class AdminAddScholarshipActivity extends AppCompatActivity {
         txtDeadline.setText(String.format("%02d / %02d / %04d", dayOfMonth, month + 1, year));
     }
 
+    //Method to get the scholarships list from Firestore collection
     private void getAllScholarship() {
         db.collection("SCHOLARSHIP")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -202,13 +208,13 @@ public class AdminAddScholarshipActivity extends AppCompatActivity {
                 });
     }
 
+    // Method to insert new scholarship to Firestore collection
     private void insertScholarshipIntoDatabase(Scholarship newScho){
         db.collection("SCHOLARSHIP")
                 .document(scholarshipID)
                 .set(newScho)
                 .addOnSuccessListener(aVoid -> {
                     // Document added successfully
-                    // You can add any additional actions here
                     Toast.makeText(AdminAddScholarshipActivity.this, "Scholarship added successfully", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
@@ -218,6 +224,7 @@ public class AdminAddScholarshipActivity extends AppCompatActivity {
     }
 
 
+    // Method to generate a new, unique scholarship ID with the format SXXXXXXX
     private String generateScholarshipID(ArrayList<Scholarship> scholarshipArrayList){
         String newID = null;
         while(true) {
@@ -229,6 +236,7 @@ public class AdminAddScholarshipActivity extends AppCompatActivity {
         return newID;
     }
 
+    // Check if the new scholarship ID is duplicated with the existing scholarship list
     private boolean checkDuplicatedTopicID(String newID, ArrayList<Scholarship> scholarshipArrayList) {
         for (Scholarship scholarship : scholarshipArrayList) {
             if (newID.equals(scholarship.getScholarshipID()))

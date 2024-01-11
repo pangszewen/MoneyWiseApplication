@@ -79,6 +79,7 @@ public class FindScholarshipActivity extends AppCompatActivity {
         // get Role of user + set visibility of the Add button
         getRole(userID);
 
+        // Set click listener for the Add button to navigate to AdminAddScholarshipActivity
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,8 +88,8 @@ public class FindScholarshipActivity extends AppCompatActivity {
             }
         });
 
+        // Set up back arrow click listener to navigate to HomeActivity
         ImageView back = findViewById(R.id.imageArrowleft);
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +100,7 @@ public class FindScholarshipActivity extends AppCompatActivity {
             }
         });
 
-
+        // Set up SearchView and RecyclerView
         searchView = findViewById(R.id.searchScho);
         searchView.clearFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -125,9 +126,11 @@ public class FindScholarshipActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(scholarshipAdapter);
 
+        // Set up Firestore event listener for scholarship changes
         EventChangeListener();
     }
 
+    // Filter scholarship list based on the search query
     private void filterList(String text) {
         ArrayList<Scholarship> filteredList = new ArrayList<>();
         for(Scholarship scholarship : scholarshipArrayList){
@@ -145,6 +148,7 @@ public class FindScholarshipActivity extends AppCompatActivity {
         }
     }
 
+    // Firestore event listener for scholarship changes
     private void EventChangeListener() {
         db.collection("SCHOLARSHIP")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -154,8 +158,6 @@ public class FindScholarshipActivity extends AppCompatActivity {
                             Log.e("Firestore error", error.getMessage());
                             return;
                         }
-
-//                        sortedScholarships.clear(); // Clear the sorted list
 
                         for (DocumentChange dc : value.getDocumentChanges()) {
                             if (dc.getType() == DocumentChange.Type.ADDED) {
@@ -198,7 +200,7 @@ public class FindScholarshipActivity extends AppCompatActivity {
                 });
     }
 
-
+    // Check if the scholarship is saved by the user
     private void checkIfScholarshipIsSaved(final Scholarship scholarship) {
 
         db.collection("USER_DETAILS")
@@ -230,6 +232,7 @@ public class FindScholarshipActivity extends AppCompatActivity {
                 });
     }
 
+    // Get the role of the user and update UI based on the role
     private void getRole(String userID){
 
         db.collection("USER_DETAILS")
@@ -245,6 +248,7 @@ public class FindScholarshipActivity extends AppCompatActivity {
 
                                 User user = new User();
 
+                                // Update UI based on the user's role
                                 updateUIBasedOnRole(role);
 
                             } else {
@@ -258,6 +262,7 @@ public class FindScholarshipActivity extends AppCompatActivity {
                 });
     }
 
+    // Update UI based on the user's role, set visibility of the Add button
     private void updateUIBasedOnRole(String role) {
 
         if ("Admin".equals(role)) {

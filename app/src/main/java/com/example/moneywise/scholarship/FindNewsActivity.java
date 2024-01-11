@@ -47,6 +47,7 @@ public class FindNewsActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                // Trigger news retrieval when the user submits the search query
                 getNews(query);
                 return false;
             }
@@ -59,14 +60,15 @@ public class FindNewsActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerNewsList);
 
+        // Set up RecyclerView
         setUpRecyclerView();
+        // Retrieve news articles
         getNews(null);
 
 
 
-
+        // Set up the back arrow click listener to navigate to the HomeActivity
         ImageView back = findViewById(R.id.imageArrowleft);
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +80,7 @@ public class FindNewsActivity extends AppCompatActivity {
         });
     }
 
+    // Set up RecyclerView with LinearLayoutManager and NewsRecyclerAdapter
     void setUpRecyclerView(){
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new NewsRecyclerAdapter(articleList);
@@ -85,7 +88,7 @@ public class FindNewsActivity extends AppCompatActivity {
     }
 
 
-
+    // Retrieve news articles using the NewsApiClient
     void getNews(String query) {
 
         NewsApiClient newsApiClient = new NewsApiClient("d4c7f8fe18694e589bd30e86e04a908e");
@@ -98,7 +101,7 @@ public class FindNewsActivity extends AppCompatActivity {
                 new NewsApiClient.ArticlesResponseCallback() {
                     @Override
                     public void onSuccess(ArticleResponse response) {
-
+                        // Update the UI with the retrieved articles on the main thread
                        runOnUiThread(()->{
                            articleList = (ArrayList<Article>) response.getArticles();
                            adapter.updateData(articleList);
@@ -107,6 +110,7 @@ public class FindNewsActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onFailure(Throwable throwable) {
+                        // Handle failure (log error message)
                         Log.i("GOT FAILURE", throwable.getMessage());
                     }
                 }

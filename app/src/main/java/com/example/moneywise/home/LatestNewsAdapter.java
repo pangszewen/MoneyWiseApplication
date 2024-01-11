@@ -37,13 +37,18 @@ public class LatestNewsAdapter extends RecyclerView.Adapter<LatestNewsAdapter.Ne
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
         Article article = articleList.get(position);
+
+        // Setting title and author of the news item
         holder.news_row_title.setText(article.getTitle());
         holder.news_row_author.setText(article.getAuthor());
+
+        // Loading the image using Picasso library
         Picasso.get().load(article.getUrlToImage())
                 .error(R.drawable.no_image_icon)
                 .placeholder(R.drawable.no_image_icon)
                 .into(holder.imageView);
 
+        // Setting up a click listener for the news item to open the full news article
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), NewsFullActivity.class);
             intent.putExtra("url", article.getUrl());
@@ -54,7 +59,7 @@ public class LatestNewsAdapter extends RecyclerView.Adapter<LatestNewsAdapter.Ne
     }
 
 
-
+    // Updating the data in the adapter
     void updateData(List<Article> data){
         articleList.clear();
         articleList = new ArrayList<>(data); // Directly update the existing list
@@ -66,11 +71,13 @@ public class LatestNewsAdapter extends RecyclerView.Adapter<LatestNewsAdapter.Ne
         return articleList.size();
     }
 
+    // View holder class for the news items
     class NewsViewHolder extends RecyclerView.ViewHolder{
 
         TextView news_row_title, news_row_author;
         ImageView imageView;
 
+        // Constructor to initialize the view holder
         public NewsViewHolder(@NonNull View itemView){
             super(itemView);
             news_row_title = itemView.findViewById(R.id.news_row_title);

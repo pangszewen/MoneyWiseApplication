@@ -26,7 +26,10 @@ public class NewsFullActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_full);
 
+        // Get the URL of the news article from the Intent
         String url = getIntent().getStringExtra("url");
+
+        // Initialize WebView and load the URL
         webView = findViewById(R.id.web_view);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -34,8 +37,8 @@ public class NewsFullActivity extends AppCompatActivity {
         webView.loadUrl(url);
 
 
+        // Set click listener for the back arrow button
         back = findViewById(R.id.imageArrowleft);
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,14 +59,13 @@ public class NewsFullActivity extends AppCompatActivity {
                     // Default to FindScholarshipActivity if not specified
                     intent = new Intent(NewsFullActivity.this, FindNewsActivity.class);
                 }
-
-
             }
         });
     }
 
     @Override
     public void onBackPressed() {
+        // Override onBackPressed to handle navigation within the WebView
         if(webView.canGoBack())
             webView.goBack();
         else

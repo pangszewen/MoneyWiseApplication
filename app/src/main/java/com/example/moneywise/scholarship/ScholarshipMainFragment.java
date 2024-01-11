@@ -26,22 +26,20 @@ public class ScholarshipMainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootview =  inflater.inflate(R.layout.fragment_scholarship_main, container, false);
 
-        // To FindScholarship
+        // Setting up click listener for the "Find More" button to navigate to FindScholarshipActivity
         AppCompatButton btnFindMore = rootview.findViewById(R.id.btnFindMore);
-
         btnFindMore.setOnClickListener(view -> {
             startActivity(new Intent(getActivity(), FindScholarshipActivity.class));
 
         });
 
-        // To FindNews
+        // Setting up click listener for the "See More" button to navigate to FindNewsActivity
         AppCompatButton btnSeeMore = rootview.findViewById(R.id.btnSeeMore);
-
         btnSeeMore.setOnClickListener(view -> {
             startActivity(new Intent(getActivity(), FindNewsActivity.class));
         });
 
-        // To Bookmark
+        // Setting up click listener for the bookmark image to navigate to BookmarkActivity
         ImageView scholarshipMain = rootview.findViewById(R.id.imageSave);
         scholarshipMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,8 +48,8 @@ public class ScholarshipMainFragment extends Fragment {
             }
         });
 
+        // Setting up click listener for the "Bookmark" button to navigate to BookmarkActivity
         AppCompatButton btnBookMark = rootview.findViewById(R.id.btnBookMark);
-
         btnBookMark.setOnClickListener(view -> {
             startActivity(new Intent(getActivity(), BookmarkActivity.class));
         });

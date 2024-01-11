@@ -130,7 +130,7 @@ public class BookFragment extends Fragment {
         expenseTV = rootView.findViewById(R.id.TVAmountExpenses);
         differenceTV = rootView.findViewById(R.id.TVAmountBalance);
         monthTV = rootView.findViewById(R.id.TVMonth);
-        setExpensesView();
+//        setExpensesView();
         //final double[] budget = {0};
         setUpRVExpense();
 
