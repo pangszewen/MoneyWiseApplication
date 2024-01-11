@@ -60,24 +60,26 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
         String formattedTopicDate = topicDate.format(formatter);
 
-        firebaseUser.getUser(forumTopic.getUserID(), new Firebase_Forum.UserCallback() {
+        firebaseUser.getUser(forumTopic.getUserID(), new Firebase_User.UserCallback() {
             @Override
             public void onUserReceived(User user) {
                 holder.topicAuthor.setText("by " + user.getName());
             }
         });
 
-        holder.topicImage.setImageResource(R.drawable.outline_image_grey);
+        holder.topicImage.setImageResource(R.drawable.outline_image_grey);  // default image of topicImage
         firebaseForum.getFirstTopicImage(forumTopic.getTopicID(), new Firebase_Forum.FirstTopicImageCallback() {
             @Override
             public void onFirstTopicImageReceived(Uri uri) {
                 String firstImageUri = uri.toString();
                 if (position == holder.getAdapterPosition()) {
-                    Picasso.get().load(firstImageUri).into(holder.topicImage);
+                    Picasso.get().load(firstImageUri).into(holder.topicImage);  // topicImage will be replaced with the image obtain
                 }
             }
         });
 
+        // if user has liked the topic, it will display a filled like icon
+        // else, a hollow like icon is displayed
         firebaseForum.getForumTopic(forumTopic.getTopicID(), new Firebase_Forum.ForumTopicCallback() {
             @Override
             public void onForumTopicReceived(ForumTopic topic) {
@@ -98,7 +100,7 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Forum_IndividualTopic_Activity.class);
-                // pass data from this activity to another activity
+                // pass data from current activity to next activity
                 // must be String
                 intent.putExtra("topicID", forumTopic.getTopicID());
                 intent.putExtra("userID", forumTopic.getUserID());

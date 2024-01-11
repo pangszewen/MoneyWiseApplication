@@ -41,6 +41,7 @@ public class activity_complete_continue_course extends AppCompatActivity {
         viewPager.setAdapter(courseViewpagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
+        // get the previous class users accessed
         previousClass = getIntent().getStringExtra("previousClass");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -51,8 +52,8 @@ public class activity_complete_continue_course extends AppCompatActivity {
             }
             @Override
             public boolean onQueryTextChange(String s) {
-                fragCon.onSearch(s);
-                fragComp.onSearch(s);
+                fragCon.onSearch(s); // search in continue tab
+                fragComp.onSearch(s); // search in completed tab
                 return false;
             }
         });
@@ -65,6 +66,7 @@ public class activity_complete_continue_course extends AppCompatActivity {
         });
 
     }
+    // when back button is pressed
     public void backToPreviousActivity(){
         Intent intent = new Intent(activity_complete_continue_course.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

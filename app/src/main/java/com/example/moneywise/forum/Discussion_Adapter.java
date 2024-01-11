@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
 
+// Adapter for recyclerview to display the comments of a topic
 public class Discussion_Adapter extends RecyclerView.Adapter<Discussion_Adapter.Discussion_AdapterVH> {
     Firebase_Forum firebaseForum = new Firebase_Forum();
     Firebase_User firebaseUser = new Firebase_User();
@@ -45,7 +46,7 @@ public class Discussion_Adapter extends RecyclerView.Adapter<Discussion_Adapter.
 
         holder.commentDatePosted.setText(formattedCommentDate);
         holder.commentContent.setText(content);
-        firebaseUser.getUser(forumComment.getUserID(), new Firebase_Forum.UserCallback() {
+        firebaseUser.getUser(forumComment.getUserID(), new Firebase_User.UserCallback() {
             @Override
             public void onUserReceived(User user) {
                 holder.commentUsername.setText(user.getName());

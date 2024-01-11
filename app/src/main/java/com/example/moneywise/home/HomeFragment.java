@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment {
         setRVLatestNews();
         setUpRVCourse();
 
-        firebaseUser.getUser(userID, new Firebase_Forum.UserCallback() {
+        firebaseUser.getUser(userID, new Firebase_User.UserCallback() {
             @Override
             public void onUserReceived(User user) {
                 welcome.setText("Welcome, " + user.getName());

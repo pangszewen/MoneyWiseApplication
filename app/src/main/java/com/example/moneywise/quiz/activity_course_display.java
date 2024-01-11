@@ -102,8 +102,8 @@ public class activity_course_display extends AppCompatActivity {
 
     private void isAdvisor(String userID, AdvisorCheckCallback callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // refer USER_DETAILS -> role
         DocumentReference userRef = db.collection("USER_DETAILS").document(userID);
-
         userRef.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 String role = documentSnapshot.getString("role");
@@ -127,11 +127,11 @@ public class activity_course_display extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         String userID = user.getUid();
-
+        // refer USER_DETAILS -> COURSES_JOINED
         CollectionReference joinedRef = db.collection("USER_DETAILS")// refer to course joined
                 .document(userID)
                 .collection("COURSES_JOINED");
-
+        // refer USER_DETAILS -> COURSES_COMPLETED
         CollectionReference completedRef = db.collection("USER_DETAILS")// refer to course completed
                 .document(userID)
                 .collection("COURSES_COMPLETED");
@@ -150,14 +150,14 @@ public class activity_course_display extends AppCompatActivity {
 
                                     for (DocumentSnapshot joinedSnapshot : joinedTask.getResult()) {
                                         if (joinedSnapshot.getId().equals(courseId)) {
-                                            isJoined = true;
+                                            isJoined = true; // course is joined
                                             break;
                                         }
                                     }
 
                                     for (DocumentSnapshot completedSnapshot : completedTask.getResult()) {
                                         if (completedSnapshot.getId().equals(courseId)) {
-                                            isCompleted = true;
+                                            isCompleted = true; // course is completed
                                             break;
                                         }
                                     }
@@ -204,6 +204,7 @@ public class activity_course_display extends AppCompatActivity {
         return course;
     }
 
+    // back to previous activity users accessed
     public void backToPreviousActivity(){
         Intent intent = new Intent(activity_course_display.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

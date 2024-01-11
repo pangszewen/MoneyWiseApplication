@@ -1,5 +1,6 @@
 package com.example.moneywise.forum;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -41,7 +42,7 @@ public class MyTopic_Adapter extends RecyclerView.Adapter<MyTopic_Adapter.MyTopi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyTopic_Adapter.MyTopic_AdapterVH holder, int position) {
+    public void onBindViewHolder(@NonNull MyTopic_Adapter.MyTopic_AdapterVH holder, @SuppressLint("RecyclerView") int position) {
         ForumTopic forumTopic = forumTopics.get(position);
         String topicSubject = forumTopic.getSubject();
         List<String> topicLikes = forumTopic.getLikes();
@@ -54,7 +55,7 @@ public class MyTopic_Adapter extends RecyclerView.Adapter<MyTopic_Adapter.MyTopi
             @Override
             public void onFirstTopicImageReceived(Uri uri) {
                 String firstImageUri = uri.toString();
-                if (position == holder.getAdapterPosition()) {
+                if (position == holder.getAdapterPosition()) {      // this condition is to ensure that the images retrieved from storage is loaded into the correct item position
                     Picasso.get().load(firstImageUri).into(holder.topicImage);
                 }
             }
@@ -66,7 +67,7 @@ public class MyTopic_Adapter extends RecyclerView.Adapter<MyTopic_Adapter.MyTopi
         holder.topicDate.setText(formattedTopicDate);
 
         Intent intent = new Intent(context, Forum_IndividualTopic_Activity.class);
-        // pass data from this activity to another activity
+        // pass data from current activity to next activity
         // must be String
         intent.putExtra("topicID", forumTopic.getTopicID());
         intent.putExtra("userID", forumTopic.getUserID());

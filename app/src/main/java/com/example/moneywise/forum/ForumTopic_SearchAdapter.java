@@ -59,7 +59,7 @@ public class ForumTopic_SearchAdapter extends ArrayAdapter<ForumTopic> {
                     String filterPattern = constraint.toString().toLowerCase().trim();
 
                     for (ForumTopic topic : originalList) {
-                        if (topic.getSubject().toLowerCase().contains(filterPattern)) {
+                        if (topic.getSubject().toLowerCase().contains(filterPattern)) {         // compare the search keywords with topic subject title
                             filtered.add(topic);
                         }
                     }
@@ -72,7 +72,7 @@ public class ForumTopic_SearchAdapter extends ArrayAdapter<ForumTopic> {
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                clear();
+                clear();        // clear the previous results
                 addAll((ArrayList<ForumTopic>) results.values);
                 notifyDataSetChanged();
                 filteredList.clear();

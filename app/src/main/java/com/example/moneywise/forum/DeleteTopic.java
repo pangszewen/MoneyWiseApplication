@@ -8,9 +8,12 @@ import android.widget.Toast;
 public class DeleteTopic {
     Firebase_Forum firebaseForum = new Firebase_Forum();
 
+    // Callback interface to get the status of deletion
     public interface ConfirmationDialogCallback{
         void onConfirmation(boolean status);
     }
+
+    // Method to display confirmation dialog on topic deletion
     public void showDeleteConfirmationDialog(Context context, ForumTopic topicToDelete, ConfirmationDialogCallback callback) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Confirm Deletion")
@@ -29,7 +32,7 @@ public class DeleteTopic {
                 .show();
     }
 
-
+    // Method to delete topic from firebase
     public void deleteTopic(Context context, ForumTopic deleteTopic) {
         firebaseForum.deleteTopic(deleteTopic.getTopicID(), new Firebase_Forum.DeleteTopicCallback() {
             @Override
