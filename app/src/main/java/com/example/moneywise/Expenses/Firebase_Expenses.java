@@ -31,10 +31,12 @@ public class Firebase_Expenses {
     DocumentReference monthDocRef = expensesCollection.document("EXPENSE_MONTH");
     CollectionReference monthExpensesCollection = monthDocRef.collection(formattedDate);
 
+    // Callback interface for retrieving budget
     public interface BudgetCallback {
         void onBudgetRetrieved(double budget);
     }
 
+    // Method to get budget for a category
     public void getBudget(int categoryID, BudgetCallback callback) {
         AtomicReference<Double> budget = new AtomicReference<>((double) 0);
         monthBudgetCollection.get().addOnCompleteListener(task -> {
@@ -64,11 +66,13 @@ public class Firebase_Expenses {
         });
     }
 
+    // Callback interface for calculating total expense
     public interface TotalExpenseCallback {
         void onTotalExpenseCalculated(double totalExpense);
         void onError(Exception exception);
     }
 
+    // Method to calculate total expense
     public void calculateTotalExpense(TotalExpenseCallback callback) {
         double[] totalExpense = {0}; // Using an array to make it effectively final
 
@@ -94,11 +98,13 @@ public class Firebase_Expenses {
         });
     }
 
+    // Callback interface for calculating category expense
     public interface CategoryExpenseCallback {
         void onCategoryExpenseCalculated(double categoryExpense);
         void onError(Exception exception);
     }
 
+    // Method to calculate category expense
     public void calculateCategoryExpense(int categoryID, CategoryExpenseCallback callback) {
         double[] categoryExpense = {0}; // Using an array to make it effectively final
 
@@ -125,11 +131,13 @@ public class Firebase_Expenses {
         });
     }
 
+    // Callback interface for calculating month expense
     public interface MonthExpenseCallback {
         void onMonthExpenseCalculated(double monthExpense);
         void onError(Exception exception);
     }
 
+    // Method to calculate month expense
     public void calculateMonthExpense(CollectionReference collectionReference, MonthExpenseCallback callback) {
         double[] monthExpense = {0}; // Using an array to make it effectively final
 
@@ -155,11 +163,13 @@ public class Firebase_Expenses {
         });
     }
 
+    // Callback interface for retrieving month budget
     public interface MonthBudgetCallback {
         void onMonthBudgetRetrieved(double budget);
         void onError(Exception exception);
     }
 
+    // Method to get month budget
     public void getMonthBudget(CollectionReference collectionReference, int categoryID, MonthBudgetCallback callback) {
         AtomicReference<Double> budget = new AtomicReference<>((double) 0);
         collectionReference.get().addOnCompleteListener(task -> {
@@ -187,4 +197,5 @@ public class Firebase_Expenses {
             }
         });
     }
+
 }
