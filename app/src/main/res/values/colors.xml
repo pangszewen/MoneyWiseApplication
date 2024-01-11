@@ -27,4 +27,11 @@
     <color name="pink">#FFEBF3</color>
     <color name="medium_grey">#928E8E</color>
     <color name="lightest_blue">#D2E1E6</color>
+    <color name="header_blue_grey">#485d74</color>
+    <color name="mid_dark_grey">#4c000000</color>
+    <color name="dark_grey_2">#7f000000</color>
+    <color name="dark_blue_grey">#b227437b</color>
+    <color name="sharp_blue">#003CB4</color>
+    <color name="light_grey">#66d9d9d9</color>
+    <color name="high_class_blue">#485F73</color>
 </resources>

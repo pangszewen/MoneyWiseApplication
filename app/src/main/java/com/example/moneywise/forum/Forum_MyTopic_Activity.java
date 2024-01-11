@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,16 +14,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.moneywise.R;
 import com.example.moneywise.home.HomeActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +24,7 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
     MyTopic_Adapter myTopicAdapter;
     FirebaseAuth auth;
     FirebaseUser user;
-    Firebase_Forum firebase = new Firebase_Forum();
+    Firebase_Forum firebaseForum = new Firebase_Forum();
     String userID;
     RecyclerView RVMyTopics;
     ImageButton backButton_myTopic, btn_createTopic;
@@ -46,8 +37,7 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_forum_my_topic);
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        //userID = user.getUid();
-        userID = "Zqa2pZRzccPx13bEjxZho9UVlT83";
+        userID = user.getUid();
         RVMyTopics = findViewById(R.id.RVMyTopics);
         backButton_myTopic = findViewById(R.id.backButton_myTopics);
         btn_createTopic = findViewById(R.id.btn_createTopic);
@@ -85,8 +75,9 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
         });
     }
 
+    // Method to set up recyclerview of topics that created by the user
     public void setUpRVMyTopics(){
-        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
+        firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
             public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
                 ArrayList<ForumTopic> myTopicList = new ArrayList<>();
@@ -101,6 +92,7 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
         });
     }
 
+    // Method to prepare the recyclerview of My Topics
     public void prepareRecyclerView(Context context, RecyclerView RV, List<ForumTopic> object){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         RV.setLayoutManager(linearLayoutManager);

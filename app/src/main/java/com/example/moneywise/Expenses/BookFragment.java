@@ -63,6 +63,8 @@ public class BookFragment extends Fragment {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user = auth.getCurrentUser();
     String userID = user.getUid();
+    TextView budgetTV, expenseTV, differenceTV, monthTV;
+    ProgressBar progressBar;
     Timestamp timestamp = Timestamp.now();
     Date currentDate = new Date(timestamp.getSeconds() * 1000); // Convert seconds to milliseconds
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMMyyyy", Locale.US);
@@ -124,16 +126,17 @@ public class BookFragment extends Fragment {
 
         recyclerView = rootView.findViewById(R.id.scrollView2);
         RVRefreshExpense = rootView.findViewById(R.id.swipeRefreshLayout);
-        TextView budgetTV = rootView.findViewById(R.id.TVAmountBudget);
-        TextView expenseTV = rootView.findViewById(R.id.TVAmountExpenses);
-        TextView differenceTV = rootView.findViewById(R.id.TVAmountBalance);
-        TextView monthTV = rootView.findViewById(R.id.TVMonth);
-        monthTV.setText(formattedDate);
+        budgetTV = rootView.findViewById(R.id.TVAmountBudget);
+        expenseTV = rootView.findViewById(R.id.TVAmountExpenses);
+        differenceTV = rootView.findViewById(R.id.TVAmountBalance);
+        monthTV = rootView.findViewById(R.id.TVMonth);
+        setExpensesView();
         //final double[] budget = {0};
         setUpRVExpense();
+
         ProgressBar progressBar = rootView.findViewById(R.id.progressBar);
 
-        // Retrieve and display budget, total expenses, and calculate balance
+        
         fbe.getBudget(0, new Firebase_Expenses.BudgetCallback() {
             @Override
             public void onBudgetRetrieved(double budget) {
@@ -268,6 +271,7 @@ public class BookFragment extends Fragment {
 
         return rootView;
     }
+
 
     // Helper method to replace the current fragment with a new one
     private void replaceFragment(Fragment fragment) {

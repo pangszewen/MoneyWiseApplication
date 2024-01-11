@@ -17,12 +17,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.moneywise.R;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -35,6 +37,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,6 +73,7 @@ public class MyAccActivity extends AppCompatActivity {
         editLayoutDOB=findViewById(R.id.EditLayoutDOB);
         editTextDOB=findViewById(R.id.editTextDOB);
         fStore=FirebaseFirestore.getInstance();
+        fStorage=FirebaseStorage.getInstance();
         uid=mAuth.getCurrentUser().getUid();
 
         btn_back.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +84,7 @@ public class MyAccActivity extends AppCompatActivity {
             }
         });
 
+        displayProfilePic(uid);
         loadDetailsFromDB();
 
         spinner_gender=findViewById(R.id.gender_spinner);
@@ -134,31 +139,29 @@ public class MyAccActivity extends AppCompatActivity {
                     return;
                 }
 
-                uploadProfilePicture(profilepic_uri);
-                //mAuth.getCurrentUser().updateEmail("user@example.com").addOnSuccessListener(new OnSuccessListener<Void>() {
-                    //@Override
-                    //public void onSuccess(Void unused) {
-                        DocumentReference ref= fStore.collection("USER_DETAILS").document(uid);
-                        Map<String,Object> userDetails=new HashMap<>();
-                        userDetails.put("name",name);
-                        userDetails.put("gender",gender);
-                        userDetails.put("dob",dob);
-                        ref.update(userDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(MyAccActivity.this,"Profile updated",Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        Toast.makeText(MyAccActivity.this,"Email updated.",Toast.LENGTH_SHORT).show();
-                    }
-                });/*.addOnFailureListener(new OnFailureListener() {
+                uploadProfilePicture(profilepic_uri, new UploadProfilePicture() {
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MyAccActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                    public void onUploadProfilePicture(boolean status) {
+                        if(status){
+                            DocumentReference ref= fStore.collection("USER_DETAILS").document(uid);
+                            Map<String,Object> userDetails=new HashMap<>();
+                            userDetails.put("name",name);
+                            userDetails.put("gender",gender);
+                            userDetails.put("dob",dob);
+                            ref.update(userDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(MyAccActivity.this,"Profile updated",Toast.LENGTH_SHORT).show();
+                                    Intent intent=new Intent(getApplicationContext(),ProfileActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+                        }
                     }
                 });
             }
-        });*/
+        });
     }
 
     private void loadDetailsFromDB(){
@@ -173,10 +176,11 @@ public class MyAccActivity extends AppCompatActivity {
                 detail_name.setText(name);
                 editTextname.setText(name);
                 String selectedGender = value.getString("gender");
-                int position = g_adapter.getPosition(selectedGender);
-                if (position != -1) {
-                    spinner_gender.setListSelection(position);
-                }
+                //int position = g_adapter.getPosition(selectedGender);
+                //if (position != -1) {
+                    //spinner_gender.setListSelection(position);
+                //}
+                spinner_gender.setText(selectedGender,false);
                 editTextDOB.setText(value.getString("dob"));
             }
         });
@@ -187,14 +191,35 @@ public class MyAccActivity extends AppCompatActivity {
         profilepic_uri=profilePicUri;
     }
 
-    private void uploadProfilePicture(Uri profilePictureUri) {
+    private void displayProfilePic(String uid) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference().child("USER_PROFILE_PIC").child(uid).child("Profile Pic.jpg"); // Replace with your image file extension
+        storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            Picasso.get()
+                    .load(uri)
+                    .placeholder(R.drawable.profile_pic) // Replace with a placeholder image while loading
+                    .error(R.drawable.profile_pic) // Replace with an error image if download fails
+                    .into(profileImageView);
+        });
+    }
+
+    public interface UploadProfilePicture{
+        void onUploadProfilePicture(boolean status);
+    }
+
+    private void uploadProfilePicture(Uri profilePictureUri, UploadProfilePicture callback) {
         if(profilePictureUri!=null) {
             StorageReference reference = fStorage.getReference().child("USER_PROFILE_PIC").child(uid);
             StorageReference imageName = reference.child("Profile Pic" + ".jpg");
             imageName.putFile(profilePictureUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Log.d("TAG", "Profile picture uploaded");
+                    callback.onUploadProfilePicture(true);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    callback.onUploadProfilePicture(false);
                 }
             });
         }

@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -18,8 +21,40 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyWise6"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31" >
-
+        tools:targetApi="31">
+        <activity
+            android:name=".login_register.ThemeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.AdministratorModeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.ApproveQuiz"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.QuizPendingFragment"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.CoursePendingFragment"
+            android:exported="true" />
+        <activity
+            android:name=".login_register.FAQActivity"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.ApproveCourse"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.ContactUsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.UserGuideActivity"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.AboutAppActivity"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.HnSActivity"
+            android:exported="false" />
         <activity
             android:name=".forum.Forum_IndividualTopic_Activity"
             android:exported="false" />
@@ -29,10 +64,6 @@
         <activity
             android:name=".forum.Forum_CreateTopic_Activity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".forum.Forum_MainActivity"
-            android:exported="true"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".login_register.MyAccActivity"
@@ -58,16 +89,74 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".scholarship.FindNewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".scholarship.NewsFullActivity"
+            android:exported="false" />
+        <activity
+            android:name=".scholarship.ApplyScholarship"
+            android:exported="false" />
+        <activity
+            android:name=".scholarship.BookmarkActivity"
+            android:exported="false" />
+        <activity
+            android:name=".scholarship.FindScholarshipActivity"
+            android:exported="false" />
+        <activity
+            android:name=".scholarship.AdminAddScholarshipActivity"
+            android:exported="false"/>
 
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
         <activity
+            android:name=".quiz.FullScreenVideoActivity"
+            android:exported="false"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".quiz.activity_course_bookmark"
+            android:exported="false" />
+        <activity
+            android:name=".quiz.activity_individual_course_joined"
+            android:exported="true" />
+        <activity
+            android:name=".quiz.activity_complete_continue_course"
+            android:exported="true" />
+        <activity
+            android:name=".quiz.activity_individual_course_page"
+            android:exported="true" />
+        <activity
+            android:name=".quiz.activity_quiz_show_result"
+            android:exported="false" />
+        <activity
+            android:name=".quiz.activity_quiz_display"
+            android:exported="true" />
+        <activity
+            android:name=".quiz.activity_create_lesson"
+            android:exported="false" />
+        <activity
+            android:name=".quiz.activity_course_display"
+            android:exported="true" />
+        <activity
+            android:name=".quiz.activity_individual_quiz_page"
+            android:exported="true" />
+        <activity
+            android:name=".quiz.activity_create_course"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".quiz.activity_create_quiz"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
             android:name=".home.HomeActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="true">
-        </activity>
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
+
+        <receiver android:name=".scholarship.NotificationReceiver" />
 
         <meta-data
             android:name="preloaded_fonts"

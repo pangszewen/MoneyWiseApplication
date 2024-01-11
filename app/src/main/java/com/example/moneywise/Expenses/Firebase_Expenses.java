@@ -18,7 +18,6 @@ public class Firebase_Expenses {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user = auth.getCurrentUser();
     String userID = user.getUid();
-
     DocumentReference userDocRef = db.collection("USER_DETAILS").document(userID);
     CollectionReference expensesCollection = userDocRef.collection("EXPENSE");
     DocumentReference budgetMonthDocRef = expensesCollection.document("EXPENSE_BUDGET_MONTH");
@@ -198,6 +197,5 @@ public class Firebase_Expenses {
             }
         });
     }
-
 
 }

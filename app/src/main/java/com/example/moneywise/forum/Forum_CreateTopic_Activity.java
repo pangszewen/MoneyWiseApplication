@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -28,28 +27,15 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.moneywise.R;
 import com.example.moneywise.home.HomeActivity;
+import com.example.moneywise.login_register.Firebase_User;
 import com.example.moneywise.login_register.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class Forum_CreateTopic_Activity extends AppCompatActivity {
@@ -68,7 +54,8 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
     ArrayList<String> urlsList;
     FirebaseAuth auth;
     FirebaseUser user;
-    Firebase_Forum firebase = new Firebase_Forum();
+    Firebase_Forum firebaseForum = new Firebase_Forum();
+    Firebase_User firebaseUser = new Firebase_User();
     String userID, previousClass;
     FirebaseStorage storage;
 
@@ -81,8 +68,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        //userID = user.getUid();
-        userID = "Zqa2pZRzccPx13bEjxZho9UVlT83";
+        userID = user.getUid();
         chooseImageList = new ArrayList<>();
         urlsList = new ArrayList<>();
         previousClass = getIntent().getStringExtra("class");
@@ -96,7 +82,6 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         pickImageButton = findViewById(R.id.RLChooseImage);
         viewPager = findViewById(R.id.viewPager);
         createTopicRefresh = findViewById(R.id.createTopicRefresh);
-
         setTVAccount();
 
         createTopicRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -154,6 +139,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         });
     }
 
+    // Method that return true if topic subject and description is not null
     public boolean checkTopicCredentials(String subject, String description){
         if(TextUtils.isEmpty(subject)){
             Toast.makeText(Forum_CreateTopic_Activity.this, "Topic subject is required", Toast.LENGTH_SHORT).show();
@@ -167,7 +153,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
     }
 
     public void setTVAccount(){
-        firebase.getUser(userID, new Firebase_Forum.UserCallback() {
+        firebaseUser.getUser(userID, new Firebase_User.UserCallback() {
             @Override
             public void onUserReceived(User user) {
                 TVAccount.setText(user.getName());
@@ -175,6 +161,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         });
     }
 
+    // This method initiates the process of picking an image or multiple images from the device's gallery
     private void pickImageFromGallery() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -202,8 +189,9 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
     }
 
 
+    // Method to create new topic
     private void createTopic(String TopicSubject, String TopicDescription){
-        firebase.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
+        firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
             public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {
                 String topicID = generateTopicID(forumTopics);
@@ -214,12 +202,14 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         });
     }
 
+    // Method to upload images of a new topic
     private void uploadImages(String topicID){
-        firebase.insertForumImages(chooseImageList, topicID);
+        firebaseForum.insertForumImages(chooseImageList, topicID);
     }
 
+    // Method to pass the new topic object into firebase
     private void insertTopicIntoDatabase(ForumTopic topic){
-        firebase.createTopic(topic, new Firebase_Forum.CreateTopicCallback() {
+        firebaseForum.createTopic(topic, new Firebase_Forum.CreateTopicCallback() {
             @Override
             public void onCreateTopic(boolean status) {
                 if(status) {
@@ -232,6 +222,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         });
     }
 
+    // Method to generate a unique topicID from the listing of existing forum topics
     private String generateTopicID(List<ForumTopic> topics){
         String newID = null;
         while(true) {
@@ -243,6 +234,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         return newID;
     }
 
+    // Method that return true if the generated topicID is unique
     private boolean checkDuplicatedTopicID(String newID, List<ForumTopic> topics){
         for(ForumTopic topic: topics){
             if(newID.equals(topic.getTopicID()))
@@ -251,6 +243,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         return true;
     }
 
+    // This method is responsible for verifying and requesting permission to access the device's external storage for reading images from the gallery
     private void checkPermission(){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
             int check = ContextCompat.checkSelfPermission(Forum_CreateTopic_Activity.this, Manifest.permission.READ_EXTERNAL_STORAGE);

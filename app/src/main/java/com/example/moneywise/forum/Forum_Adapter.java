@@ -4,41 +4,36 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneywise.R;
+import com.example.moneywise.login_register.Firebase_User;
 import com.example.moneywise.login_register.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.Firebase;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
-import com.google.firebase.storage.StorageReference;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Locale;
 
 public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_AdapterVH> {
     ArrayList<ForumTopic> forumTopics = new ArrayList<>();
-    Firebase_Forum firebase = new Firebase_Forum();
+    Firebase_Forum firebaseForum = new Firebase_Forum();
+    Firebase_User firebaseUser = new Firebase_User();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser user = auth.getCurrentUser();
+    String userID = user.getUid();
     Context context;
 
     public Forum_Adapter(Context context, ArrayList<ForumTopic> forumTopics) {
@@ -62,23 +57,37 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
         String topicSubject = forumTopic.getSubject();
         List<String> topicLikes = forumTopic.getLikes();
         LocalDateTime topicDate = forumTopic.getDatePosted();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
         String formattedTopicDate = topicDate.format(formatter);
 
-        firebase.getUser(forumTopic.getUserID(), new Firebase_Forum.UserCallback() {
+        firebaseUser.getUser(forumTopic.getUserID(), new Firebase_User.UserCallback() {
             @Override
             public void onUserReceived(User user) {
                 holder.topicAuthor.setText("by " + user.getName());
             }
         });
 
-        holder.topicImage.setImageResource(R.drawable.outline_image_grey);
-        firebase.getFirstTopicImage(forumTopic.getTopicID(), new Firebase_Forum.FirstTopicImageCallback() {
+        holder.topicImage.setImageResource(R.drawable.outline_image_grey);  // default image of topicImage
+        firebaseForum.getFirstTopicImage(forumTopic.getTopicID(), new Firebase_Forum.FirstTopicImageCallback() {
             @Override
             public void onFirstTopicImageReceived(Uri uri) {
                 String firstImageUri = uri.toString();
                 if (position == holder.getAdapterPosition()) {
-                    Picasso.get().load(firstImageUri).into(holder.topicImage);
+                    Picasso.get().load(firstImageUri).into(holder.topicImage);  // topicImage will be replaced with the image obtain
+                }
+            }
+        });
+
+        // if user has liked the topic, it will display a filled like icon
+        // else, a hollow like icon is displayed
+        firebaseForum.getForumTopic(forumTopic.getTopicID(), new Firebase_Forum.ForumTopicCallback() {
+            @Override
+            public void onForumTopicReceived(ForumTopic topic) {
+                List<String> likes = topic.getLikes();
+                if(!likes.contains(userID)){
+                    holder.like_icon.setImageResource(R.drawable.outline_thumb_up_black);
+                }else{
+                    holder.like_icon.setImageResource(R.drawable.baseline_thumb_up_black);
                 }
             }
         });
@@ -91,7 +100,7 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Forum_IndividualTopic_Activity.class);
-                // pass data from this activity to another activity
+                // pass data from current activity to next activity
                 // must be String
                 intent.putExtra("topicID", forumTopic.getTopicID());
                 intent.putExtra("userID", forumTopic.getUserID());
@@ -113,7 +122,7 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
 
     public class Forum_AdapterVH extends RecyclerView.ViewHolder{
         TextView topicSubject, topicLikes, topicDate, topicAuthor;
-        ImageView topicImage;
+        ImageView topicImage, like_icon;
 
         public Forum_AdapterVH(@NonNull View itemView) {
             super(itemView);
@@ -122,6 +131,7 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
             topicAuthor = itemView.findViewById(R.id.topic_row_author);
             topicLikes = itemView.findViewById(R.id.topic_row_likes);
             topicDate = itemView.findViewById(R.id.topic_row_date);
+            like_icon = itemView.findViewById(R.id.like_icon);
         }
     }
 }
