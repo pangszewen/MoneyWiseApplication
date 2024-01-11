@@ -133,6 +133,7 @@ public class BookFragment extends Fragment {
         setUpRVExpense();
         ProgressBar progressBar = rootView.findViewById(R.id.progressBar);
 
+        // Retrieve and display budget, total expenses, and calculate balance
         fbe.getBudget(0, new Firebase_Expenses.BudgetCallback() {
             @Override
             public void onBudgetRetrieved(double budget) {
@@ -152,6 +153,7 @@ public class BookFragment extends Fragment {
                     newBudget = budget;
                     budgetTV.setText("RM" + Double.toString(newBudget));
                 }
+                // Calculate total expenses and update UI elements
                 fbe.calculateTotalExpense(new Firebase_Expenses.TotalExpenseCallback() {
                     double newExpense;
                     @Override
@@ -175,6 +177,7 @@ public class BookFragment extends Fragment {
                         } else {
                             differenceTV.setText("RM" + Double.toString(difference));
                         }
+                        // Calculate and update progress bar based on expenses and budget
                         try {
                             int progress = (int) ((newExpense / newBudget) * 100);
                             progressBar.setProgress(progress);
@@ -193,11 +196,12 @@ public class BookFragment extends Fragment {
             }
         });
 
-
+        // Set up SwipeRefreshLayout for refreshing expenses
         RVRefreshExpense.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 setUpRVExpense();
+                // Refresh budget and total expenses
                 fbe.getBudget(0, new Firebase_Expenses.BudgetCallback() {
                     @Override
                     public void onBudgetRetrieved(double budget) {
@@ -265,6 +269,7 @@ public class BookFragment extends Fragment {
         return rootView;
     }
 
+    // Helper method to replace the current fragment with a new one
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -289,6 +294,7 @@ public class BookFragment extends Fragment {
         });
     }
 
+    // Method to retrieve expenses from Firestore and update the RecyclerView
     private void retrieveExpenses() {
         // Clear existing list to avoid duplicates
         expenseList.clear();
@@ -317,6 +323,7 @@ public class BookFragment extends Fragment {
         });
     }
 
+    // Method to set up RecyclerView for displaying expenses
     public void setUpRVExpense(){
         retrieveExpenses();
         adapter = new ExpenseAdapter(expenseList);

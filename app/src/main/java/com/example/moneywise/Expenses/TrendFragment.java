@@ -187,14 +187,17 @@ public class TrendFragment extends Fragment {
             // Example: Fetching documents from the current month
             int finalMonth = month;
 
+            // Fetching month-wise budget data from Firestore
             monthBudgetCollection.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     List<DocumentSnapshot> documents = task.getResult().getDocuments();
+                    // If budget documents exist, fetch month budget data
                     if (documents != null && !documents.isEmpty()) {
                         fbe.getMonthBudget(monthBudgetCollection, 0, new Firebase_Expenses.MonthBudgetCallback() {
 
                             @Override
                             public void onMonthBudgetRetrieved(double monthBudget) {
+                                // Handle case when month budget is not set
                                 if (monthBudget==0) {
                                     if (finalMonth == Calendar.JANUARY){
                                         tvB1.setText("Not Set");
@@ -248,10 +251,12 @@ public class TrendFragment extends Fragment {
                                         setText(tvB12, monthBudget);
                                     }
                                 }
+                                // Fetch month-wise expense data
                                 monthExpensesCollection.get().addOnCompleteListener(task2 -> {
                                     if (task2.isSuccessful()) {
                                         List<DocumentSnapshot> documents2 = task2.getResult().getDocuments();
                                         if (documents2 != null && !documents2.isEmpty()) {
+                                            // Calculate and display month expense data
                                             fbe.calculateMonthExpense(monthExpensesCollection, new Firebase_Expenses.MonthExpenseCallback() {
                                                 @Override
                                                 public void onMonthExpenseCalculated(double totalExpense) {
@@ -280,9 +285,11 @@ public class TrendFragment extends Fragment {
                                                     } else {
                                                         setText(tvE12, totalExpense);
                                                     }
+                                                    // Update line graph data points and UI
                                                     dataPoints.add(totalExpense);
                                                     lineGraph.setData(dataPoints);
                                                     if (monthBudget>0 || totalExpense>0){
+                                                        // Calculate and display the budget difference
                                                         double difference = monthBudget - totalExpense;
                                                         if (finalMonth == Calendar.JANUARY){
                                                             setText(tvL1, difference);
@@ -392,6 +399,7 @@ public class TrendFragment extends Fragment {
                             }
                         });
                     } else {
+                        // Handle case when no month budget documents exist
                         if (finalMonth == Calendar.JANUARY){
                             setText(tvB1, 0);
                         } else if (finalMonth == Calendar.FEBRUARY) {
@@ -582,6 +590,7 @@ public class TrendFragment extends Fragment {
         return rootView;
     }
 
+    // Update UI with formatted text
     public void setText (TextView tv, double value){
         if (value%1==0){
             tv.setText("RM"+Integer.toString((int)value));
@@ -591,6 +600,7 @@ public class TrendFragment extends Fragment {
         }
     }
 
+    //Handle visibility based on the selected month
     public void setVisibility (int m){
         if (m<Calendar.FEBRUARY)
             cl2.setVisibility(View.GONE);
