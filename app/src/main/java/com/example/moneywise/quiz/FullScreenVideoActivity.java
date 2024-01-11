@@ -10,11 +10,12 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.moneywise.R;
 import com.google.android.material.snackbar.Snackbar;
 
 public class FullScreenVideoActivity extends AppCompatActivity {
-    ImageButton back;
+    private ImageButton back;
     private VideoView videoView;
 
     @Override
@@ -22,13 +23,17 @@ public class FullScreenVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_screen_video);
 
+        // Find the VideoView and Back button in the layout
         videoView = findViewById(R.id.fullScreenVideoView);
         back = findViewById(R.id.backButton);
 
+        // Check if the intent contains a video URI
         if (getIntent() != null && getIntent().hasExtra("videoUri")) {
+            // Get the video URI from the intent
             String videoUriString = getIntent().getStringExtra("videoUri");
             Uri videoUri = Uri.parse(videoUriString);
 
+            // Set the video URI to the VideoView
             videoView.setVideoURI(videoUri);
 
             // Set up media controller for full-screen video
@@ -37,10 +42,11 @@ public class FullScreenVideoActivity extends AppCompatActivity {
             videoView.setMediaController(mediaController);
         }
 
+        // Set a click listener for the back button
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                onBackPressed(); // Go back to the previous screen
             }
         });
     }

@@ -37,6 +37,7 @@ public class activity_course_bookmark extends AppCompatActivity {
     private CoursesAdapter coursesAdapter;
     private QuizzesAdapter quizzesAdapter;
     SwipeRefreshLayout refreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +53,7 @@ public class activity_course_bookmark extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         userID = user.getUid();
+
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -60,51 +62,56 @@ public class activity_course_bookmark extends AppCompatActivity {
                 refreshLayout.setRefreshing(false);
             }
         });
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 backToPreviousActivity();
             }
         });
+
         setUpRVCourse();
         setUpRVQuiz();
     }
 
+    // Set up the RecyclerView for bookmarked courses
     public void setUpRVCourse() {
         courseList = new ArrayList<>();
-        // refer from USER_DETAILS -> COURSES_BOOKMARK
+        // Refer from USER_DETAILS -> COURSES_BOOKMARK
         CollectionReference collectionReference = db.collection("USER_DETAILS").document(userID).collection("COURSES_BOOKMARK");
-        collectionReference.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<Course> listOfCourse = new ArrayList<>();
-                            for (QueryDocumentSnapshot dc : task.getResult()) {
-                                Course topic = convertDocumentToListOfCourse(dc);
-                                listOfCourse.add(topic);
-                            }
-                            coursesAdapter = new CoursesAdapter(activity_course_bookmark.this, listOfCourse);
-                            coursesAdapter.loadBookmarkedCourses(); // check whether course is bookmarked
-                            prepareRecyclerViewCourse(activity_course_bookmark.this, recyclerViewCourse, listOfCourse);
-                            coursesAdapter.loadBookmarkedCourses(); // check whether course is bookmarked
-                        }
+        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<Course> listOfCourse = new ArrayList<>();
+                    for (QueryDocumentSnapshot dc : task.getResult()) {
+                        Course topic = convertDocumentToListOfCourse(dc);
+                        listOfCourse.add(topic);
                     }
-                });
+                    coursesAdapter = new CoursesAdapter(activity_course_bookmark.this, listOfCourse);
+                    coursesAdapter.loadBookmarkedCourses(); // Check whether the course is bookmarked
+                    prepareRecyclerViewCourse(activity_course_bookmark.this, recyclerViewCourse, listOfCourse);
+                    coursesAdapter.loadBookmarkedCourses(); // Check whether the course is bookmarked
+                }
+            }
+        });
     }
 
-    public void prepareRecyclerViewCourse(Context context, RecyclerView RV, List<Course> object){
+    // Prepare the RecyclerView for courses
+    public void prepareRecyclerViewCourse(Context context, RecyclerView RV, List<Course> object) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         RV.setLayoutManager(linearLayoutManager);
         preAdapterCourse(context, RV, object);
     }
 
-    public void preAdapterCourse(Context context, RecyclerView RV, List<Course> object){
+    // Prepare the adapter for courses
+    public void preAdapterCourse(Context context, RecyclerView RV, List<Course> object) {
         coursesAdapter = new CoursesAdapter(context, object);
         RV.setAdapter(coursesAdapter);
     }
 
-    public Course convertDocumentToListOfCourse(QueryDocumentSnapshot dc){
+    // Convert Firestore document to a list of Course objects
+    public Course convertDocumentToListOfCourse(QueryDocumentSnapshot dc) {
         Course course = new Course();
         course.setCourseID(dc.getId());
         course.setCourseTitle(dc.get("title").toString());
@@ -116,38 +123,42 @@ public class activity_course_bookmark extends AppCompatActivity {
         return course;
     }
 
+    // Set up the RecyclerView for bookmarked quizzes
     private void setUpRVQuiz() {
         quizList = new ArrayList<>();
-        // refer from USER_DETAILS -> QUIZZES_BOOKMARK
+        // Refer from USER_DETAILS -> QUIZZES_BOOKMARK
         CollectionReference collectionReference = db.collection("USER_DETAILS").document(userID).collection("QUIZZES_BOOKMARK");
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 List<Quiz> listOfQuiz = new ArrayList<>();
-                for(QueryDocumentSnapshot dc : task.getResult()){
+                for (QueryDocumentSnapshot dc : task.getResult()) {
                     Quiz topic = convertDocumentToListOfQuiz(dc);
                     listOfQuiz.add(topic);
                 }
                 quizzesAdapter = new QuizzesAdapter(activity_course_bookmark.this, listOfQuiz);
-                quizzesAdapter.loadBookmarkedCourses(); // check whether quiz is bookmarked
+                quizzesAdapter.loadBookmarkedCourses(); // Check whether the quiz is bookmarked
                 prepareRecyclerView(activity_course_bookmark.this, recyclerViewQuiz, listOfQuiz);
-                quizzesAdapter.loadBookmarkedCourses(); // check whether quiz is bookmarked
+                quizzesAdapter.loadBookmarkedCourses(); // Check whether the quiz is bookmarked
             }
         });
     }
 
-    public void prepareRecyclerView(Context context, RecyclerView RV, List<Quiz> object){
+    // Prepare the RecyclerView for quizzes
+    public void prepareRecyclerView(Context context, RecyclerView RV, List<Quiz> object) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         RV.setLayoutManager(linearLayoutManager);
         preAdapter(context, RV, object);
     }
 
-    public void preAdapter(Context context, RecyclerView RV, List<Quiz> object){
+    // Prepare the adapter for quizzes
+    public void preAdapter(Context context, RecyclerView RV, List<Quiz> object) {
         quizzesAdapter = new QuizzesAdapter(context, object);
         RV.setAdapter(quizzesAdapter);
     }
 
-    public Quiz convertDocumentToListOfQuiz(QueryDocumentSnapshot dc){
+    // Convert Firestore document to a list of Quiz objects
+    public Quiz convertDocumentToListOfQuiz(QueryDocumentSnapshot dc) {
         Quiz quiz = new Quiz();
         quiz.setQuizID(dc.getId());
         quiz.setQuizTitle(dc.get("title").toString());
@@ -156,8 +167,8 @@ public class activity_course_bookmark extends AppCompatActivity {
         return quiz;
     }
 
-    // get back to previous class users accessed
-    public void backToPreviousActivity(){
+    // Get back to the previous class users accessed
+    public void backToPreviousActivity() {
         Intent intent = new Intent(activity_course_bookmark.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);

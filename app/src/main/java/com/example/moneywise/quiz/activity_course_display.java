@@ -11,8 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 import com.example.moneywise.R;
 import com.example.moneywise.home.HomeActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -54,10 +53,13 @@ public class activity_course_display extends AppCompatActivity {
         FirebaseUser user = auth.getCurrentUser();
         String userID = user.getUid();
 
-        isAdvisor(userID, isAdvisor -> { // check if user is advisor
+        // Check if the user is an advisor to show or hide the createCourse button
+        isAdvisor(userID, isAdvisor -> {
             if (!isAdvisor)
-                createCourse.setVisibility(View.GONE); // if not advisor, cannot create course
+                createCourse.setVisibility(View.GONE); // If not an advisor, cannot create a course
         });
+
+        // Open the activity_create_course when the createCourse button is clicked
         createCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,6 +68,7 @@ public class activity_course_display extends AppCompatActivity {
             }
         });
 
+        // Refresh the course list on swipe
         RVCourseRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -74,6 +77,7 @@ public class activity_course_display extends AppCompatActivity {
             }
         });
 
+        // Navigate back to the previous activity on back button click
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,12 +85,13 @@ public class activity_course_display extends AppCompatActivity {
             }
         });
 
+        // Search for courses on query text change
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            // perform search
             @Override
             public boolean onQueryTextSubmit(String s) {
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String s) {
                 coursesAdapter.getFilter().filter(s);
@@ -95,14 +100,14 @@ public class activity_course_display extends AppCompatActivity {
         });
     }
 
-    // Check if user is advisor
+    // Check if the user is an advisor
     public interface AdvisorCheckCallback {
         void onRoleChecked(boolean isAdvisor);
     }
 
     private void isAdvisor(String userID, AdvisorCheckCallback callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        // refer USER_DETAILS -> role
+        // Refer USER_DETAILS -> role
         DocumentReference userRef = db.collection("USER_DETAILS").document(userID);
         userRef.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -120,19 +125,19 @@ public class activity_course_display extends AppCompatActivity {
         });
     }
 
-    // will check if the course is completed/join, if yes, then will not display in course list
+    // Check if the course is completed/joined; if yes, then it will not be displayed in the course list
     public void setUpRVCourse() {
         courseList = new ArrayList<>();
         CollectionReference coursesRef = db.collection("COURSE");
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         String userID = user.getUid();
-        // refer USER_DETAILS -> COURSES_JOINED
-        CollectionReference joinedRef = db.collection("USER_DETAILS")// refer to course joined
+        // Refer USER_DETAILS -> COURSES_JOINED
+        CollectionReference joinedRef = db.collection("USER_DETAILS")
                 .document(userID)
                 .collection("COURSES_JOINED");
-        // refer USER_DETAILS -> COURSES_COMPLETED
-        CollectionReference completedRef = db.collection("USER_DETAILS")// refer to course completed
+        // Refer USER_DETAILS -> COURSES_COMPLETED
+        CollectionReference completedRef = db.collection("USER_DETAILS")
                 .document(userID)
                 .collection("COURSES_COMPLETED");
 
@@ -150,27 +155,28 @@ public class activity_course_display extends AppCompatActivity {
 
                                     for (DocumentSnapshot joinedSnapshot : joinedTask.getResult()) {
                                         if (joinedSnapshot.getId().equals(courseId)) {
-                                            isJoined = true; // course is joined
+                                            isJoined = true; // Course is joined
                                             break;
                                         }
                                     }
 
                                     for (DocumentSnapshot completedSnapshot : completedTask.getResult()) {
                                         if (completedSnapshot.getId().equals(courseId)) {
-                                            isCompleted = true; // course is completed
+                                            isCompleted = true; // Course is completed
                                             break;
                                         }
                                     }
 
-                                    if (!isJoined && !isCompleted) { // if course is not joined/complete will add to list of course to display
+                                    if (!isJoined && !isCompleted) {
+                                        // If the course is not joined/completed, add it to the list of courses to display
                                         Course course = convertDocumentToListOfCourse(dc);
                                         listOfCourse.add(course);
                                     }
                                 }
                                 coursesAdapter = new CoursesAdapter(activity_course_display.this, listOfCourse);
-                                coursesAdapter.loadBookmarkedCourses(); // check course is bookmarked
+                                coursesAdapter.loadBookmarkedCourses(); // Check if the course is bookmarked
                                 prepareRecyclerView(activity_course_display.this, recyclerView, listOfCourse);
-                                coursesAdapter.loadBookmarkedCourses(); // check if course is bookmarked
+                                coursesAdapter.loadBookmarkedCourses(); // Check if the course is bookmarked
                             }
                         });
                     }
@@ -204,7 +210,7 @@ public class activity_course_display extends AppCompatActivity {
         return course;
     }
 
-    // back to previous activity users accessed
+    // Navigate back to the previous activity users accessed
     public void backToPreviousActivity(){
         Intent intent = new Intent(activity_course_display.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

@@ -10,10 +10,10 @@ public class Quiz {
     private String numOfQues;
     private boolean isBookmarked;
     public Quiz(){}
-    public Quiz(String quizID, String quizTitle,String adivisorID, String numOfQues) {
+    public Quiz(String quizID, String quizTitle,String advisorID, String numOfQues) {
         this.quizID = quizID;
         this.quizTitle = quizTitle;
-        this.advisorID = adivisorID;
+        this.advisorID = advisorID;
         this.numOfQues = numOfQues;
         this.dateCreated = LocalDateTime.now();
     }

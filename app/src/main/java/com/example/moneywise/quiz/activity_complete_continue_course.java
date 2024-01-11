@@ -22,6 +22,7 @@ public class activity_complete_continue_course extends AppCompatActivity {
     SearchView searchView;
     ImageButton back;
     String previousClass;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +51,7 @@ public class activity_complete_continue_course extends AppCompatActivity {
             public boolean onQueryTextSubmit(String s) {
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String s) {
                 fragCon.onSearch(s); // search in continue tab
@@ -64,10 +66,10 @@ public class activity_complete_continue_course extends AppCompatActivity {
                 backToPreviousActivity();
             }
         });
-
     }
-    // when back button is pressed
-    public void backToPreviousActivity(){
+
+    // Navigate back to the previous activity
+    public void backToPreviousActivity() {
         Intent intent = new Intent(activity_complete_continue_course.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);

@@ -32,17 +32,27 @@ public class fragment_course_completed extends Fragment {
     private CoursesCompletedContinueAdapter coursesCompletedContinueAdapter;
     List<Course> courseList;
     SwipeRefreshLayout RVForumRefresh;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_course_completed, container, false);
+
+        // Initialize Firebase and UI components
         db = FirebaseFirestore.getInstance();
         RVForumRefresh = view.findViewById(R.id.RVCourseRefresh);
         recyclerView = view.findViewById(R.id.course_recycle_view);
+
+        // Get user ID from Firebase authentication
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         userID = user.getUid();
+
+        // Set up the RecyclerView and fetch completed courses
         setUpRVCourse();
+
+        // Set up the SwipeRefreshLayout for refreshing the data
         RVForumRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -50,17 +60,19 @@ public class fragment_course_completed extends Fragment {
                 RVForumRefresh.setRefreshing(false);
             }
         });
+
         return view;
     }
 
-    public void setUpRVCourse(){
+    // Fetch and display the completed courses
+    public void setUpRVCourse() {
         courseList = new ArrayList<>();
         CollectionReference collectionReference = db.collection("USER_DETAILS").document(userID).collection("COURSES_COMPLETED");
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 List<Course> listOfCourse = new ArrayList<>();
-                for(QueryDocumentSnapshot dc : task.getResult()){
+                for (QueryDocumentSnapshot dc : task.getResult()) {
                     Course topic = convertDocumentToListOfCourse(dc);
                     listOfCourse.add(topic);
                 }
@@ -70,22 +82,26 @@ public class fragment_course_completed extends Fragment {
         });
     }
 
-    public void onSearch(String s){
+    // Apply search filter
+    public void onSearch(String s) {
         coursesCompletedContinueAdapter.getFilter().filter(s);
     }
 
-    public void prepareRecyclerView(Context context, RecyclerView RV, List<Course> object){
+    // Set up RecyclerView with a LinearLayoutManager
+    public void prepareRecyclerView(Context context, RecyclerView RV, List<Course> object) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         RV.setLayoutManager(linearLayoutManager);
         preAdapter(context, RV, object);
     }
 
-    public void preAdapter(Context context, RecyclerView RV, List<Course> object){
+    // Set up the adapter for RecyclerView
+    public void preAdapter(Context context, RecyclerView RV, List<Course> object) {
         coursesCompletedContinueAdapter = new CoursesCompletedContinueAdapter(context, object);
         RV.setAdapter(coursesCompletedContinueAdapter);
     }
 
-    public Course convertDocumentToListOfCourse(QueryDocumentSnapshot dc){
+    // Convert Firestore document to Course object
+    public Course convertDocumentToListOfCourse(QueryDocumentSnapshot dc) {
         Course course = new Course();
         course.setCourseID(dc.getId());
         course.setCourseTitle(dc.get("title").toString());

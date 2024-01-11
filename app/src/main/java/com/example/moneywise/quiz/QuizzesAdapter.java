@@ -47,6 +47,7 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
     FirebaseUser user = auth.getCurrentUser();
     String userID = user.getUid();
 
+    // Constructor
     public QuizzesAdapter(Context context, List<Quiz> quizList) {
         this.quizList = quizList;
         this.context = context;
@@ -68,6 +69,7 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
         String advisorID = quiz.getAdvisorID();
         holder.setQuiz(quiz);
 
+        // Get advisor's name
         db = FirebaseFirestore.getInstance();
         DocumentReference ref = db.collection("USER_DETAILS").document(advisorID);
         ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -76,9 +78,11 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
                 holder.textViewAuthorName.setText(documentSnapshot.getString("name"));
             }
         });
+
+        // Load quiz cover image from Firebase Storage
         holder.imageViewQuizCover.setImageResource(R.drawable.outline_image_grey);
         storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference("QUIZ_COVER_IMAGE/" + quiz.getQuizID()+"/");
+        StorageReference storageReference = storage.getReference("QUIZ_COVER_IMAGE/" + quiz.getQuizID() + "/");
         storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {
             @Override
             public void onComplete(@NonNull Task<ListResult> task) {
@@ -107,8 +111,12 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
                 }
             }
         });
+
+        // Set other quiz details
         holder.textViewQuizTitle.setText(quizTitle);
-        holder.numOfQues.setText(quiz.getNumOfQues()+" Questions");
+        holder.numOfQues.setText(quiz.getNumOfQues() + " Questions");
+
+        // Open individual quiz page on item click
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +127,17 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
                 context.startActivity(intent);
             }
         });
-        if (quiz.isBookmarked()){
+
+        // Toggle bookmark state on bookmark button click
+        holder.bookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.toggleBookmark();
+            }
+        });
+
+        // Set bookmark icon based on the bookmark state
+        if (quiz.isBookmarked()) {
             holder.bookmark.setImageResource(R.drawable.baseline_bookmark_filled_24);
         }
     }
@@ -134,17 +152,18 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
         return quizFilter;
     }
 
+    // Filter for searching quizzes
     public Filter quizFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
             List<Quiz> filteredList = new ArrayList<>();
-            if (charSequence == null || charSequence.length() == 0){
+            if (charSequence == null || charSequence.length() == 0) {
                 filteredList.addAll(quizListFull);
             } else {
                 String filterPattern = charSequence.toString().toLowerCase().trim();
 
-                for (Quiz quiz : quizListFull){
-                    if (quiz.getQuizTitle().toLowerCase().contains(filterPattern)){
+                for (Quiz quiz : quizListFull) {
+                    if (quiz.getQuizTitle().toLowerCase().contains(filterPattern)) {
                         filteredList.add(quiz);
                     }
                 }
@@ -162,6 +181,7 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
         }
     };
 
+    // ViewHolder for a single quiz item
     public class QuizViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewQuizCover;
         TextView textViewQuizTitle;
@@ -170,10 +190,7 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
         ImageButton bookmark;
         Quiz quiz;
 
-        public void setQuiz(@NonNull Quiz quiz){
-            this.quiz = quiz;
-        }
-
+        // Constructor
         public QuizViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewQuizCover = itemView.findViewById(R.id.image_quiz_cover);
@@ -182,6 +199,7 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
             numOfQues = itemView.findViewById(R.id.numOfQues);
             bookmark = itemView.findViewById(R.id.bookmark);
 
+            // Set click listener for the bookmark button
             bookmark.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -189,7 +207,14 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
                 }
             });
         }
-        private void toggleBookmark() {
+
+        // Set the current quiz
+        public void setQuiz(@NonNull Quiz quiz) {
+            this.quiz = quiz;
+        }
+
+        // Toggle the bookmark state
+        public void toggleBookmark() {
             if (quiz.isBookmarked()) {
                 bookmark.setImageResource(R.drawable.baseline_bookmark_filled_24);
                 quiz.setBookmarked(false);
@@ -204,6 +229,7 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
         }
     }
 
+    // Save the bookmark state in Firestore
     private void saveBookmarkState(Quiz quiz, boolean isBookmarked) {
         Map<String, Object> map = new HashMap<>();
         map.put("quizID", quiz.getQuizID());
@@ -225,6 +251,7 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
         }
     }
 
+    // Load bookmarked quizzes from Firestore and update the adapter
     public void loadBookmarkedCourses() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("USER_DETAILS")

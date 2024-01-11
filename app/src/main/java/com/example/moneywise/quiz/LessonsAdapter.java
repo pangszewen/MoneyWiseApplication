@@ -27,6 +27,7 @@ public class LessonsAdapter extends RecyclerView.Adapter<LessonsAdapter.LessonVi
     @NonNull
     @Override
     public LessonViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Inflate the layout for a single lesson item
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_lesson_display, parent, false);
         return new LessonViewHolder(view);
     }
@@ -35,12 +36,19 @@ public class LessonsAdapter extends RecyclerView.Adapter<LessonsAdapter.LessonVi
     public void onBindViewHolder(@NonNull LessonViewHolder holder, int position) {
         Lesson lesson = lessonList.get(position);
 
+        // Display lesson title
         String lessonTitle = "Lesson " + (position + 1);
         holder.TVLessonTitle.setText(lessonTitle);
+
+        // Set up the VideoView for the lesson
         VideoView videoView = holder.VVLesson;
         videoView.setVideoPath(lesson.getLessonUrl());
+
+        // Handle video prepared event
         videoView.setOnPreparedListener(mp -> {
             mp.start();
+
+            // Get total duration and display it
             int totalDuration = videoView.getDuration();
             int durationSeconds = totalDuration / 1000;
             int minutes = durationSeconds / 60;
@@ -50,6 +58,7 @@ public class LessonsAdapter extends RecyclerView.Adapter<LessonsAdapter.LessonVi
             holder.TVLessonDuration.setText(durationString);
         });
 
+        // Handle click on the VideoView to open video in full screen
         videoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,21 +68,23 @@ public class LessonsAdapter extends RecyclerView.Adapter<LessonsAdapter.LessonVi
             }
         });
     }
+
     @Override
     public int getItemCount() {
         return lessonList.size();
     }
+
     public class LessonViewHolder extends RecyclerView.ViewHolder {
         VideoView VVLesson;
         TextView TVLessonTitle;
         TextView TVLessonDuration;
+
         public LessonViewHolder(@NonNull View itemView) {
             super(itemView);
+            // Initialize views from the lesson item layout
             VVLesson = itemView.findViewById(R.id.VVLesson);
             TVLessonTitle = itemView.findViewById(R.id.TVLessonTitle);
             TVLessonDuration = itemView.findViewById(R.id.TVLessonDuration);
         }
     }
 }
-
-
