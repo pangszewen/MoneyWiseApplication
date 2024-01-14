@@ -59,7 +59,7 @@ public class ForumTopic_SearchAdapter extends ArrayAdapter<ForumTopic> {
                     String filterPattern = constraint.toString().toLowerCase().trim();
 
                     for (ForumTopic topic : originalList) {
-                        if (topic.getSubject().toLowerCase().contains(filterPattern)) {         // compare the search keywords with topic subject title
+                        if (topic.getSubject().toLowerCase().contains(filterPattern)) {  // compare the search keywords with topic subject title
                             filtered.add(topic);
                         }
                     }
