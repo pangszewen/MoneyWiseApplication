@@ -60,11 +60,13 @@ public class ApproveQuizAdapter extends RecyclerView.Adapter<ApproveQuizAdapter.
         holder.option3.setText(options.get(2));
         holder.option4.setText(options.get(3));
 
+        // Reset background for all options
         holder.A.setBackgroundResource(R.drawable.quiz_button_outline);
         holder.B.setBackgroundResource(R.drawable.quiz_button_outline);
         holder.C.setBackgroundResource(R.drawable.quiz_button_outline);
         holder.D.setBackgroundResource(R.drawable.quiz_button_outline);
 
+        // Highlight the correct answer
         if (options.get(0).equals(ques.getCorrectAns())){
             holder.A.setBackgroundResource(R.drawable.quiz_button_outline_green);
         }

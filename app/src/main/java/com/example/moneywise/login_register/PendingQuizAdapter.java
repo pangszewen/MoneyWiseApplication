@@ -61,6 +61,8 @@ public class PendingQuizAdapter extends RecyclerView.Adapter<PendingQuizAdapter.
         String courseTitle = quiz.getQuizTitle();
         String advisorID = quiz.getAdvisorID();
 
+        // Retrieve advisor's name from USER_DETAILS collection in Firestore
+        db = FirebaseFirestore.getInstance();
         db = FirebaseFirestore.getInstance();
         DocumentReference ref = db.collection("USER_DETAILS").document(advisorID); // Need change
         ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -69,7 +71,11 @@ public class PendingQuizAdapter extends RecyclerView.Adapter<PendingQuizAdapter.
                 holder.textViewAuthorName.setText(documentSnapshot.getString("name"));
             }
         });
+
+        // Set default quiz cover image
         holder.imageViewQuizCover.setImageResource(R.drawable.outline_image_grey);
+
+        // Retrieve and display the quiz cover image from Firebase Storage
         storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference("QUIZ_COVER_IMAGE/" + quiz.getQuizID()+"/");
         storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {

@@ -17,6 +17,7 @@ public class Firebase_User {
         void onUserReceived(User user);
     }
 
+    // Get user information from Firestore based on the userID
     public void getUser(String userID, UserCallback callback){
         DocumentReference userDocRef = userRef.document(userID);
         userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -28,6 +29,7 @@ public class Firebase_User {
         });
     }
 
+    // Convert Firestore document snapshot to a User object
     public User convertDocumentToUser(DocumentSnapshot dc){
         User user = new User();
         user.setUserID(dc.getId().toString());

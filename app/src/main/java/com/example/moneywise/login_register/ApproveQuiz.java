@@ -117,6 +117,7 @@ public class ApproveQuiz extends AppCompatActivity {
         RV.setAdapter(AQAdapter);
     }
 
+    // Create a AlertDialog to confirm quiz approval
     private void showApproveDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ApproveQuiz.this);
         builder.setTitle("Confirmation");
@@ -137,6 +138,7 @@ public class ApproveQuiz extends AppCompatActivity {
         dialog.show();
     }
 
+    //Save approved quiz into firebase
     private void saveApproveStatusToDatabase() {
         Map<String, Object> map = new HashMap<>();
         map.put("dateCreated", dateCreated);
@@ -163,6 +165,7 @@ public class ApproveQuiz extends AppCompatActivity {
         });
     }
 
+    //Create a AlertDialog to confirm quiz rejection
     private void showRejectDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ApproveQuiz.this);
         builder.setTitle("Confirmation");
@@ -183,6 +186,7 @@ public class ApproveQuiz extends AppCompatActivity {
         dialog.show();
     }
 
+    // Load questions associated with the quiz from the database
     private void loadQuestionFromDatabase() {
         CollectionReference quizRef = FirebaseFirestore.getInstance()
                 .collection("QUIZ_PENDING")
@@ -202,7 +206,7 @@ public class ApproveQuiz extends AppCompatActivity {
                 });
     }
 
-    // insert questions to database
+    // Insert questions to database
     private void insertQuesIntoDatabase(CollectionReference collectionReference, Question ques) {
         Map<String, Object> map = new HashMap<>();
         map.put("quesText", ques.getQuestionText());
@@ -223,6 +227,7 @@ public class ApproveQuiz extends AppCompatActivity {
                 });
     }
 
+    // Delete the quiz document from firebase
     private void saveRejectStatusToDatabase() {
         DocumentReference quizRef = FirebaseFirestore.getInstance()
                 .collection("QUIZ_PENDING")
@@ -236,7 +241,7 @@ public class ApproveQuiz extends AppCompatActivity {
                 });
     }
 
-
+    // Display details of the quiz
     private void displayQuiz() {
         db.collection("QUIZ_PENDING").document(quizID)
                 .get()
@@ -256,6 +261,7 @@ public class ApproveQuiz extends AppCompatActivity {
                 });
     }
 
+    // Retrieve and display advisor name from firebase
     private void displayAdvisorName(String advisorID) {
         db.collection("USER_DETAILS").document(advisorID)
                 .get()
@@ -270,6 +276,7 @@ public class ApproveQuiz extends AppCompatActivity {
                 });
     }
 
+    // Load and display the course cover image from firebase
     private void displayCoverImage() {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference("QUIZ_COVER_IMAGE/" + quizID + "/");
@@ -279,6 +286,7 @@ public class ApproveQuiz extends AppCompatActivity {
         });
     }
 
+    // Navigate back to the AdministratorModeActivity
     public void backToPreviousActivity() {
         Intent intent = new Intent(ApproveQuiz.this, AdministratorModeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -286,6 +294,7 @@ public class ApproveQuiz extends AppCompatActivity {
         finish();
     }
 
+    // Convert a document snapshot to a Question object
     public Question convertDocumentToListOfQues(QueryDocumentSnapshot dc) {
         Question ques = new Question();
         ques.setQuesID(dc.getId().toString());

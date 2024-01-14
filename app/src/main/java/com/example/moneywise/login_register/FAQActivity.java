@@ -54,7 +54,8 @@ public class FAQActivity extends AppCompatActivity {
         });
     }
 
-    public void setUpRVCourse() { // Not in latest sequence
+    // Initialize and retrieve the list of FAQs from Firestore
+    public void setUpRVCourse() {
         faqList = new ArrayList<>();
         CollectionReference collectionReference = db.collection("FAQ");
 
@@ -85,6 +86,7 @@ public class FAQActivity extends AppCompatActivity {
         RV.setAdapter(faqAdapter);
     }
 
+    // Convert a Firestore document snapshot to a FAQ object
     public FAQ convertDocumentToListOfFAQ(QueryDocumentSnapshot dc) {
         FAQ faq = new FAQ();
         faq.setId(dc.getId().toString());

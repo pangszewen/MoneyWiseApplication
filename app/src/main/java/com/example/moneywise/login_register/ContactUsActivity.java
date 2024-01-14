@@ -83,6 +83,7 @@ public class ContactUsActivity extends AppCompatActivity {
         });
     }
 
+    // Check if WhatsApp is installed on the device
     private boolean isWhatsAppInstalled(){
         PackageManager packageManager= getApplicationContext().getPackageManager();
         boolean whatsappInstalled;

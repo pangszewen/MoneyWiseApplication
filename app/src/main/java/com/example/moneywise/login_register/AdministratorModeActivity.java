@@ -51,6 +51,7 @@ public class AdministratorModeActivity extends AppCompatActivity {
 
     }
 
+    // Navigate back to the ProfileActivity
     public void backToPreviousActivity(){
         Intent intent = new Intent(AdministratorModeActivity.this, ProfileActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

@@ -65,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),ForgetPasswordActivity.class));
-                finish();
             }
         });
 
@@ -94,14 +93,12 @@ public class LoginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
+                                    // Check if email is verified
                                     if (mAuth.getCurrentUser().isEmailVerified()) {
-                                        // Sign in success, update UI with the signed-in user's information
                                         Log.d("TAG", "signInWithEmail:success");
                                         Toast.makeText(LoginActivity.this, "Login Successful.",
                                                 Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                                        //FirebaseUser user = mAuth.getCurrentUser();
-                                        //updateUI(user);
                                     }else {
                                         Toast.makeText(LoginActivity.this, "Please verify your email.",
                                                 Toast.LENGTH_SHORT).show();
@@ -112,7 +109,6 @@ public class LoginActivity extends AppCompatActivity {
                                     Log.w("TAG", "signInWithEmail:failure", task.getException());
                                     Toast.makeText(LoginActivity.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
-                                    //updateUI(null);
                                 }
                             }
                         });

@@ -157,6 +157,7 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
+                // Create user with Firebase authentication
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -182,6 +183,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    // Save user details to Firestore
     private void saveUserDetails(String uid,String name,String gender,String DOB,String role) {
         DocumentReference documentReference=fstore.collection("USER_DETAILS").document(uid);
         Map<String,Object> userdetails=new HashMap<>();
@@ -197,7 +199,4 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
 }

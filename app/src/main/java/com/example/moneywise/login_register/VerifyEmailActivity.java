@@ -49,14 +49,12 @@ public class VerifyEmailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 verifyEmail(user);
-                btn_send.setVisibility(View.GONE);
-                cooldown.setVisibility(View.VISIBLE);
             }
         });
     }
 
+    // Send email verification to the user
     private void verifyEmail(FirebaseUser user){
-        setCooldown();
         user.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -65,6 +63,9 @@ public class VerifyEmailActivity extends AppCompatActivity {
                             Log.d("TAG", "Email sent.");
                             Toast.makeText(VerifyEmailActivity.this, "Registered successfully. Please check your email.",
                                     Toast.LENGTH_LONG).show();
+                            setCooldown();
+                            btn_send.setVisibility(View.GONE);
+                            cooldown.setVisibility(View.VISIBLE);
                         }
                         else {
                             Log.e("TAG", "sendEmailVerification", task.getException());
@@ -75,6 +76,7 @@ public class VerifyEmailActivity extends AppCompatActivity {
                 });
     }
 
+    // Set cooldown timer for the send button
     private void setCooldown() {
         btn_send.setVisibility(View.GONE);
         new CountDownTimer(60000, 1000) {
