@@ -81,7 +81,7 @@ public class ApplyScholarship extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         userID = user.getUid();
 
-
+        // Create notification channel for deadlines
         createNotificationChannel();
 
 
@@ -110,6 +110,7 @@ public class ApplyScholarship extends AppCompatActivity {
         txtCriteria = findViewById(R.id.txtCriteria);
         txtWebsite = findViewById(R.id.txtWebsite);
 
+        // Retrieve scholarship information from the Intent
         scholarshipID = getIntent().getStringExtra("scholarshipID");
         institution = getIntent().getStringExtra("institution");
         title = getIntent().getExtras().getString("title");
@@ -120,17 +121,21 @@ public class ApplyScholarship extends AppCompatActivity {
         website = getIntent().getExtras().getString("website");
         isSaved = getIntent().getExtras().getBoolean("saved");
 
+        // Create the scholarship object in this activity
         Scholarship scholarship = new Scholarship(scholarshipID, institution, title, description, criteria, award, deadline, website, saved);
 
+        // Set scholarship details to corresponding TextViews
         txtTitle.setText(getIntent().getExtras().getString("title"));
         txtAbout.setText(getIntent().getExtras().getString("description"));
         txtValue.setText(getIntent().getExtras().getString("award"));
         txtCriteria.setText(getIntent().getExtras().getString("criteria"));
         txtWebsite.setText(getIntent().getExtras().getString("website"));
 
+        // Use scholarship ID to generate scholarshipNum, unique id for pending intent and alarm manager
         String numericPart = scholarshipID.replaceAll("\\D+", "");
         scholarshipNum = Integer.parseInt(numericPart) + defaultValue;
 
+        // Listen for changes in notification preference from Firestore
         DocumentReference ref= db.collection("USER_DETAILS").document(userID);
         ref.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -146,7 +151,7 @@ public class ApplyScholarship extends AppCompatActivity {
             }
         });
 
-
+        // Ask for user's permission to send notification
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
             if(ContextCompat.checkSelfPermission(ApplyScholarship.this,
                     Manifest.permission.POST_NOTIFICATIONS)!=
@@ -157,12 +162,12 @@ public class ApplyScholarship extends AppCompatActivity {
             }
         }
 
-        //change bookmark according to saved/not saved
-
+        // Set bookmark image based on saved status
         bookmark = findViewById(R.id.imageSave);
 
         setBookmarkImage(isSaved);
 
+        // Toggle saved status and update UI and Firestore on bookmark click
         bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,10 +190,8 @@ public class ApplyScholarship extends AppCompatActivity {
         });
 
 
-
+        // Open scholarship website in browser on "Apply" button click
         apply = findViewById(R.id.btnApply);
-
-        // Set an OnClickListener for the TextView
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,7 +204,7 @@ public class ApplyScholarship extends AppCompatActivity {
         });
 
 
-        // Header, back to the page before
+        // Navigate back to the previous page on back arrow click
         ImageView back = findViewById(R.id.imageArrowleft);
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -227,10 +230,6 @@ public class ApplyScholarship extends AppCompatActivity {
 
 
 
-        ImageView save = findViewById(R.id.imageSave);
-
-
-
     }
     @Override
     protected void onDestroy() {
@@ -239,8 +238,8 @@ public class ApplyScholarship extends AppCompatActivity {
         super.onDestroy();
     }
 
+    // Create a notification channel for the app (for Android Oreo and above)
     private void createNotificationChannel(){
-
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             CharSequence name = "ReminderChannel";
@@ -253,8 +252,9 @@ public class ApplyScholarship extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
-    public void makeNotification(String scholarshipTitle){
 
+    // Display a notification with a reminder message
+    public void makeNotification(String scholarshipTitle){
 
             String channelID = "notifyDeadline";
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channelID);
@@ -273,7 +273,6 @@ public class ApplyScholarship extends AppCompatActivity {
 
             Intent intent = new Intent(getApplicationContext(), BookmarkActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        intent.putExtra("title",scholarshipTitle);
 
             PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), scholarshipNum, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
             builder.setContentIntent(pendingIntent);
@@ -298,11 +297,7 @@ public class ApplyScholarship extends AppCompatActivity {
 
     }
 
-
-
-
-
-
+    // Set the bookmark image based on saved status
     private void setBookmarkImage(boolean isSaved) {
         if (isSaved) {
             bookmark.setImageResource(R.drawable.img_bookmark_checked);
@@ -311,6 +306,7 @@ public class ApplyScholarship extends AppCompatActivity {
         }
     }
 
+    // Update the saved status in Firestore based on user interactions
     private void updateSavedStatusInFirestore(boolean isSaved, String userId, String scholarshipId) {
         // Get the reference to the user_details document
         DocumentReference userRef = db.collection("USER_DETAILS").document(userId);
@@ -361,9 +357,8 @@ public class ApplyScholarship extends AppCompatActivity {
         }
     }
 
+    // Schedule a notification for a scholarship deadline
     private void scheduleNotification(long timeDifference) {
-
-//        int scholarshipNum = scholarshipID.hashCode();
 
         if ((timeDifference - 24 * 60 * 60 * 1000 )>0) {
 
@@ -405,10 +400,8 @@ public class ApplyScholarship extends AppCompatActivity {
         }
     }
 
+    // Cancel a scheduled notification
     private void cancelNotification() {
-
-
-//        int scholarshipNum = scholarshipId.hashCode();
 
         Intent notificationIntent = new Intent(this, NotificationReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(

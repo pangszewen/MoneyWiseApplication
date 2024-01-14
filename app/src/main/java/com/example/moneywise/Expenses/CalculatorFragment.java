@@ -107,9 +107,6 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         return binding.getRoot();
     }
 
-
-
-
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -192,6 +189,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         btn.setOnClickListener(this);
     }
 
+    // Handles click events for numeric buttons
     public void onClick (View view){
         MaterialButton button = (MaterialButton) view;
         String buttonText = button.getText().toString();
@@ -215,6 +213,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         resultTv.setText(data);
     }
 
+    // Highlights the clicked category button
     private void onButtonClick(Button clickedButton) {
         if (currentlySelectedButton != null) {
             currentlySelectedButton.setBackgroundColor(Color.parseColor("#fffeec"));
@@ -224,6 +223,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         currentlySelectedButton = clickedButton;
     }
 
+    // Saves expense to Firestore
     private void saveExpenseToFirestore() {
         if (currentlySelectedButton == null) {
             // No category selected

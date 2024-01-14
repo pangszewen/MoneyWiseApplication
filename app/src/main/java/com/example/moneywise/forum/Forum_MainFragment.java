@@ -241,6 +241,7 @@ public class Forum_MainFragment extends Fragment {
 
     // Method to display the forum topics in descending order based on their date posted (newest to oldest)
     public void setMostRecentFilter(){
+        // The arraylist of forum topics get from firebase is already arranged in descending order based on date posted
         firebaseForum.getForumTopicsInOrder(new Firebase_Forum.ForumTopicInOrderCallback() {
             @Override
             public void onForumTopicsReceived(ArrayList<ForumTopic> forumTopics) {

@@ -126,6 +126,7 @@ public class AnalyticsFragment extends Fragment {
         TextView tvPercent6 = rootView.findViewById(R.id.tvPercentMedical);
         TextView tvPercent7 = rootView.findViewById(R.id.tvPercentOthers);
 
+        // Callback to calculate total expenses and category-wise expenses
         fbe.calculateTotalExpense(new Firebase_Expenses.TotalExpenseCallback() {
             double newExpense;
 
@@ -140,8 +141,10 @@ public class AnalyticsFragment extends Fragment {
                     expenseTV.setText("RM" + Double.toString(newExpense));
                 }
 
+                // Loop to calculate and display expenses for each category
                 for (int i=1; i<=7; i++){
                     int finalI = i;
+                    // Callback to calculate and display category-wise expenses
                     fbe.calculateCategoryExpense(i, new Firebase_Expenses.CategoryExpenseCallback() {
                         @Override
                         public void onCategoryExpenseCalculated(double expenseC) {

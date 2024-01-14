@@ -163,6 +163,7 @@ public class BudgetFragment extends Fragment {
 
         SwipeRefreshLayout swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
         ConstraintLayout budgetCL = rootView.findViewById(R.id.budgetCL);
+        // Set refresh listener for SwipeRefreshLayout
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -175,6 +176,7 @@ public class BudgetFragment extends Fragment {
         return rootView;
     }
 
+    // Method to replace the current fragment with another fragment
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -187,7 +189,7 @@ public class BudgetFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Assuming your ConstraintLayout has the ID 'book'
+        // Set click listener for a button
         view.findViewById(R.id.buttonSetBudget).setOnClickListener(v -> {
             // Replace with the fragment you want to navigate to
             replaceFragment(new SetBudgetFragment());
@@ -195,6 +197,7 @@ public class BudgetFragment extends Fragment {
 
     }
 
+    // Method to set overall budget information
     public void setTV(){
         fbe.getBudget(0, new Firebase_Expenses.BudgetCallback() {
             @Override
@@ -253,6 +256,7 @@ public class BudgetFragment extends Fragment {
 
     }
 
+    // Method to set budget information for specific expense categories
     public void setCategoryTV (){
         for (int i=1; i<=7; i++){
             int finalI = i;
@@ -376,6 +380,7 @@ public class BudgetFragment extends Fragment {
         }
     }
 
+    // Method to set budget text based on conditions
     public void setBudgetText (TextView tv, String budget){
         if (budget.equals("0")){
             tv.setText("not set");
@@ -384,6 +389,7 @@ public class BudgetFragment extends Fragment {
         }
     }
 
+    // Method to set expense text based on conditions
     public void setExpenseText (TextView tv, double expense){
         if (expense%1==0){
             tv.setText("RM"+Integer.toString((int)expense));
@@ -393,12 +399,14 @@ public class BudgetFragment extends Fragment {
         }
     }
 
+    // Method to set visibility of TextViews and ProgressBar
     public void setVisibility (TextView tv1, TextView tv2, ProgressBar pb){
         tv1.setVisibility(View.INVISIBLE);
         tv2.setVisibility(View.INVISIBLE);
         pb.setVisibility(View.INVISIBLE);
     }
 
+    // Method to set visibility of TextViews and ProgressBar
     public void setVisibile (TextView tv1, TextView tv2, ProgressBar pb){
         tv1.setVisibility(View.VISIBLE);
         tv2.setVisibility(View.VISIBLE);

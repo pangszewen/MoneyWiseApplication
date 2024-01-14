@@ -119,6 +119,7 @@ public class SetBudgetFragment extends Fragment {
         assignId(etMedical, R.id.ETBudgetMedical, 6);
         assignId(etOthers, R.id.ETBudgetOthers, 7);
 
+        // Retrieve existing budget values from Firestore
         monthBudgetCollection.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -195,6 +196,7 @@ public class SetBudgetFragment extends Fragment {
         et.setTag(categoryId);
     }
 
+    // Callback for saving budget to Firestore
     private void saveBudgetToFirestore(EditText et) {
 
         // Get the selected category ID
@@ -255,6 +257,7 @@ public class SetBudgetFragment extends Fragment {
                 });
     }
 
+    // Set the value in the corresponding EditText based on the category
     private void setEditTextValue(EditText editText, Object value) {
         if (value != null && !value.toString().equals("not set")) {
             editText.setText(value.toString());

@@ -66,7 +66,7 @@ public class BookmarkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmark);
 
-
+        // Initialize Firebase authentication and Firestore database
         auth= FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
@@ -83,10 +83,11 @@ public class BookmarkActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(bookmarkAdapter);
 
+        // Listen for changes in the SCHOLARSHIP collection in Firestore
         EventChangeListener();
 
+        // Set up the back arrow click listener to navigate to the HomeActivity
         ImageView back = findViewById(R.id.imageArrowleft);
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,10 +98,9 @@ public class BookmarkActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
+
+    // Listen for changes in the SCHOLARSHIP collection in Firestore
     private void EventChangeListener() {
         db.collection("SCHOLARSHIP")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -133,6 +133,7 @@ public class BookmarkActivity extends AppCompatActivity {
     }
 
 
+    // Check if a scholarship is saved by the user
     private void checkIfScholarshipIsSaved(final Scholarship scholarship) {
 
         db.collection("USER_DETAILS")
@@ -149,8 +150,6 @@ public class BookmarkActivity extends AppCompatActivity {
                             if (savedScholarships != null && savedScholarships.contains(scholarship.getScholarshipID())) {
                                 // Set the saved field in the Scholarship object to true
                                 scholarship.setSaved(true);
-
-                                scheduleNotification(scholarship);
 
                                 // Add the scholarship to the sorted list
                                 sortedBookmarkList.add(scholarship);
@@ -184,26 +183,5 @@ public class BookmarkActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    private void scheduleNotification(Scholarship scholarship) {
-        // Calculate the time difference between the current time and the scholarship deadline
-        long currentTimeMillis = System.currentTimeMillis();
-        long deadlineMillis = scholarship.getDeadline().getTime();
-        long oneDayInMillis = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-
-        long timeDifference = deadlineMillis - currentTimeMillis;
-
-        // If the time difference is approximately one day, schedule an FCM notification
-        if (timeDifference > 0 && timeDifference <= oneDayInMillis) {
-            // Schedule your FCM notification
-            String notificationTitle = "Scholarship Deadline Reminder";
-            String notificationBody = "The deadline for '" + scholarship.getTitle() + "' is tomorrow.";
-        }
-    }
-
-
-
-
-
 
 }
