@@ -49,6 +49,7 @@ public class FAQAdapter extends RecyclerView.Adapter<FAQAdapter.FAQViewHolder> {
         String originalString = faq.getAnswer();
         StringBuilder rebuiltString = new StringBuilder();
 
+        // Replace escape characters in the answer with actual formatting
         for (int i = 0; i < originalString.length(); i++) {
             char currentChar = originalString.charAt(i);
 

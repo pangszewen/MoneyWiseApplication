@@ -55,6 +55,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         });
     }
 
+    // Reset the user's password using Firebase authentication
     private void resetpassword() {
         mAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -39,6 +39,7 @@ public class FragmentDescription extends Fragment {
         return view;
     }
 
+    // Fetch and display pending course details from Firestore
     private void displayPending() {
         db = FirebaseFirestore.getInstance();
         db.collection("COURSE_PENDING").document(courseID)

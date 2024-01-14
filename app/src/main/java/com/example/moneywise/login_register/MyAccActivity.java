@@ -131,32 +131,12 @@ public class MyAccActivity extends AppCompatActivity {
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name=editTextname.getText().toString();
-                String gender=spinner_gender.getText().toString();
-                String dob=editTextDOB.getText().toString();
-                if (name.isEmpty()||gender.isEmpty()||dob.isEmpty()){
-                    Toast.makeText(MyAccActivity.this,"One or Many field are empty.",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
+                updateUserDetails();
                 uploadProfilePicture(profilepic_uri, new UploadProfilePicture() {
                     @Override
                     public void onUploadProfilePicture(boolean status) {
                         if(status){
-                            DocumentReference ref= fStore.collection("USER_DETAILS").document(uid);
-                            Map<String,Object> userDetails=new HashMap<>();
-                            userDetails.put("name",name);
-                            userDetails.put("gender",gender);
-                            userDetails.put("dob",dob);
-                            ref.update(userDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Toast.makeText(MyAccActivity.this,"Profile updated",Toast.LENGTH_SHORT).show();
-                                    Intent intent=new Intent(getApplicationContext(),ProfileActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            });
+                            Toast.makeText(MyAccActivity.this,"Profile picture uploaded",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -164,6 +144,7 @@ public class MyAccActivity extends AppCompatActivity {
         });
     }
 
+    // Load user details from Firestore database and update UI components
     private void loadDetailsFromDB(){
         String email=mAuth.getCurrentUser().getEmail();
         detail_email.setText(email);
@@ -186,11 +167,13 @@ public class MyAccActivity extends AppCompatActivity {
         });
     }
 
+    // Change the displayed profile picture in the UI
     private void changeProfilePic(Uri profilePicUri){
         profileImageView.setImageURI(profilePicUri);
         profilepic_uri=profilePicUri;
     }
 
+    // Display the profile picture from Firebase Storage
     private void displayProfilePic(String uid) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference().child("USER_PROFILE_PIC").child(uid).child("Profile Pic.jpg"); // Replace with your image file extension
@@ -207,6 +190,7 @@ public class MyAccActivity extends AppCompatActivity {
         void onUploadProfilePicture(boolean status);
     }
 
+    // Upload the profile picture to Firebase Storage
     private void uploadProfilePicture(Uri profilePictureUri, UploadProfilePicture callback) {
         if(profilePictureUri!=null) {
             StorageReference reference = fStorage.getReference().child("USER_PROFILE_PIC").child(uid);
@@ -225,6 +209,31 @@ public class MyAccActivity extends AppCompatActivity {
         }
     }
 
+    private void updateUserDetails(){
+        String name=editTextname.getText().toString();
+        String gender=spinner_gender.getText().toString();
+        String dob=editTextDOB.getText().toString();
+        if (name.isEmpty()||gender.isEmpty()||dob.isEmpty()){
+            Toast.makeText(MyAccActivity.this,"One or Many field are empty.",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        DocumentReference ref= fStore.collection("USER_DETAILS").document(uid);
+        Map<String,Object> userDetails=new HashMap<>();
+        userDetails.put("name",name);
+        userDetails.put("gender",gender);
+        userDetails.put("dob",dob);
+        ref.update(userDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(MyAccActivity.this,"Profile updated",Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(getApplicationContext(),ProfileActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+    // Start an intent to pick an image from the device's gallery
     private void pickImageFromGallery() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -245,6 +254,7 @@ public class MyAccActivity extends AppCompatActivity {
         }
     }
 
+    // Check and request permission to read external storage
     private void checkPermission(){
         int check = ContextCompat.checkSelfPermission(MyAccActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
         if(check!= PackageManager.PERMISSION_GRANTED){

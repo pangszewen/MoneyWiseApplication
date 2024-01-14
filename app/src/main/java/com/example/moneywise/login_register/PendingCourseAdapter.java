@@ -65,6 +65,7 @@ public class PendingCourseAdapter extends RecyclerView.Adapter<PendingCourseAdap
         String courseTitle = course.getCourseTitle();
         String advisorID = course.getAdvisorID();
 
+        // Retrieve advisor's name from USER_DETAILS collection in Firestore
         db = FirebaseFirestore.getInstance();
         DocumentReference ref = db.collection("USER_DETAILS").document(advisorID); // Need change
         ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -73,7 +74,11 @@ public class PendingCourseAdapter extends RecyclerView.Adapter<PendingCourseAdap
                 holder.textViewAuthorName.setText(documentSnapshot.getString("name"));
             }
         });
+
+        // Set default course cover image
         holder.imageViewCourseCover.setImageResource(R.drawable.outline_image_grey);
+
+        // Retrieve and display the course cover image from Firebase Storage
         storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference("COURSE_COVER_IMAGE/" + course.getCourseID() + "/");
         storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {
@@ -140,5 +145,3 @@ public class PendingCourseAdapter extends RecyclerView.Adapter<PendingCourseAdap
         }
     }
 }
-
-

@@ -50,7 +50,8 @@ public class UserGuideActivity extends AppCompatActivity {
         });
     }
 
-    public void setUpRVCourse() { // Not in latest sequence
+    // Fetch FAQ data from Firestore and set up the RecyclerView
+    public void setUpRVCourse() {
         faqList = new ArrayList<>();
         CollectionReference collectionReference = db.collection("USER_GUIDE");
 
@@ -81,6 +82,7 @@ public class UserGuideActivity extends AppCompatActivity {
         RV.setAdapter(faqAdapter);
     }
 
+    // Convert Firestore document to FAQ object
     public FAQ convertDocumentToListOfFAQ(QueryDocumentSnapshot dc){
         FAQ faq = new FAQ();
         faq.setId(dc.getId().toString());

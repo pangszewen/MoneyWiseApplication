@@ -55,6 +55,7 @@ public class QuizPendingFragment extends Fragment {
         return view;
     }
 
+    // Set up the RecyclerView with pending quizzes
     public void setUpRVCourse() {
         quizList = new ArrayList<>();
             CollectionReference coursesRef = db.collection("QUIZ_PENDING");
@@ -84,6 +85,7 @@ public class QuizPendingFragment extends Fragment {
         RV.setAdapter(quizAdapter);
     }
 
+    // Convert a Firestore document to a Quiz object
     public Quiz convertDocumentToListOfQuiz(QueryDocumentSnapshot dc){
         Quiz quiz = new Quiz();
         quiz.setQuizID(dc.getId());

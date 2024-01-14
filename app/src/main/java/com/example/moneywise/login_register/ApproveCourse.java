@@ -45,6 +45,7 @@ public class ApproveCourse extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
     Button approve, reject;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +81,7 @@ public class ApproveCourse extends AppCompatActivity {
         approve = findViewById(R.id.approveButton);
         reject = findViewById(R.id.rejectButton);
 
+        // One fragment for each tab
         CourseViewpagerAdapter courseViewpagerAdapter = new CourseViewpagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         FragmentDescription fragDesc = new FragmentDescription();
         fragDesc.setArguments(bundle);
@@ -117,6 +119,7 @@ public class ApproveCourse extends AppCompatActivity {
         });
     }
 
+    //Create a AlertDialog to confirm course approval
     private void showApproveDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ApproveCourse.this);
         builder.setTitle("Confirmation");
@@ -137,6 +140,7 @@ public class ApproveCourse extends AppCompatActivity {
         dialog.show();
     }
 
+    //Save approved course into firebase
     private void saveApproveStatusToDatabase() {
         Map<String, Object> courseData = new HashMap<>();
         courseData.put("advisorID", course.getAdvisorID());
@@ -160,7 +164,7 @@ public class ApproveCourse extends AppCompatActivity {
                 });
     }
 
-
+    // Create a AlertDialog to confirm course rejection
     private void showRejectDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ApproveCourse.this);
         builder.setTitle("Confirmation");
@@ -181,6 +185,7 @@ public class ApproveCourse extends AppCompatActivity {
         dialog.show();
     }
 
+    //Delete the course document from firebase
     private void saveRejectStatusToDatabase() {
         DocumentReference courseRef = FirebaseFirestore.getInstance()
                 .collection("COURSE_PENDING")
@@ -195,7 +200,7 @@ public class ApproveCourse extends AppCompatActivity {
                 });
     }
 
-
+    //Retrieve and display course details from firebase
     private void displayCourse() {
         db.collection("COURSE_PENDING").document(courseID)
                 .get()
@@ -214,6 +219,7 @@ public class ApproveCourse extends AppCompatActivity {
                 });
     }
 
+    // Retrieve and display advisor name from firebase
     private void displayAdvisorName(String advisorID) {
         db.collection("USER_DETAILS").document(advisorID)
                 .get()
@@ -228,6 +234,7 @@ public class ApproveCourse extends AppCompatActivity {
                 });
     }
 
+    // Load and display the course cover image from firebase
     private void displayCoverImage() {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference("COURSE_COVER_IMAGE/" + courseID + "/");
@@ -239,7 +246,8 @@ public class ApproveCourse extends AppCompatActivity {
         });
     }
 
-    public void backToPreviousActivity(){
+    // Navigate back to the AdministratorModeActivity
+    public void backToPreviousActivity() {
         Intent intent = new Intent(ApproveCourse.this, AdministratorModeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);

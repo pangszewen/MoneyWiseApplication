@@ -55,6 +55,7 @@ public class CoursePendingFragment extends Fragment {
         return view;
     }
 
+    // Initialize and retrieve the list of pending courses from Firestore
     public void setUpRVCourse(){
         courseList = new ArrayList<>();
         CollectionReference coursesRef = db.collection("COURSE_PENDING");
@@ -84,6 +85,7 @@ public class CoursePendingFragment extends Fragment {
         RV.setAdapter(pendingCourseAdapter);
     }
 
+    // Convert a Firestore document snapshot to a Course object
     public Course convertDocumentToListOfCourse(QueryDocumentSnapshot dc){
         Course course = new Course();
         course.setCourseID(dc.getId());

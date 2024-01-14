@@ -144,6 +144,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    // Load user details from Firestore
     private void loadDetailFromDB(){
         DocumentReference documentReference=fStore.collection("USER_DETAILS").document(uid);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
@@ -163,6 +164,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    // Display user profile picture from Firebase Storage
     private void displayProfilePic(String uid) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference().child("USER_PROFILE_PIC").child(uid).child("Profile Pic.jpg"); // Replace with your image file extension
