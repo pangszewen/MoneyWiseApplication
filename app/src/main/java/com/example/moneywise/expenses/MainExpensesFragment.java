@@ -1,4 +1,4 @@
-package com.example.moneywise.Expenses;
+package com.example.moneywise.expenses;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;

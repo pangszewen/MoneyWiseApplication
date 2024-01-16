@@ -116,8 +116,8 @@ public class Firebase_Forum {
             public void onComplete(@NonNull Task<ListResult> task) {
                 if (task.isSuccessful()) {
                     List<StorageReference> items = task.getResult().getItems();
-                    final String[] images = new String[items.size()];
-                    final AtomicInteger count = new AtomicInteger(0);
+                    final String[] IMAGES = new String[items.size()];
+                    final AtomicInteger COUNT = new AtomicInteger(0);
 
                     for (int i = 0; i < items.size(); i++) {
                         final int index = i;
@@ -125,13 +125,13 @@ public class Firebase_Forum {
                             @Override
                             public void onSuccess(Uri uri) {
                                 String imageUri = uri.toString();
-                                images[index] = imageUri;       // insert the images into the correct index of array
-                                int completedCount = count.incrementAndGet();   // track the number of images inserted into array
+                                IMAGES[index] = imageUri;       // insert the images into the correct index of array
+                                int completedCount = COUNT.incrementAndGet();   // track the number of images inserted into array
 
                                 // if all the images has inserted into the array, pass the array of images into callback method
                                 if (completedCount == items.size()) {
                                     // All download URLs have been fetched
-                                    callback.onTopicImagesReceived(images);
+                                    callback.onTopicImagesReceived(IMAGES);
                                 }
                             }
                         });

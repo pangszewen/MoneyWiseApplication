@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Base.Theme.Expenses"
-    tools:context=".Expenses.TrendFragment">
+    tools:context=".expenses.TrendFragment">
 
-    <com.example.moneywise.Expenses.LineGraph
+    <com.example.moneywise.expenses.LineGraph
         android:id="@+id/lineGraph"
         android:layout_width="350dp"
         android:layout_height="280dp"

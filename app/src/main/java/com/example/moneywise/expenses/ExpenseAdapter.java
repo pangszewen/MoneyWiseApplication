@@ -1,4 +1,4 @@
-package com.example.moneywise.Expenses;
+package com.example.moneywise.expenses;
 
 import android.view.LayoutInflater;
 import android.view.View;

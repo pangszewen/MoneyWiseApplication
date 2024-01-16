@@ -1,4 +1,4 @@
-package com.example.moneywise.Expenses;
+package com.example.moneywise.expenses;
 
 import android.os.Bundle;
 import android.text.TextUtils;

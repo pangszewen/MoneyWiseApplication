@@ -1,41 +1,28 @@
 package com.example.moneywise.home;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.moneywise.Expenses.MainExpensesFragment;
+import com.example.moneywise.expenses.MainExpensesFragment;
 import com.example.moneywise.R;
-import com.example.moneywise.forum.Firebase_Forum;
 import com.example.moneywise.forum.Forum_MainFragment;
 import com.example.moneywise.login_register.AboutAppActivity;
-import com.example.moneywise.login_register.Firebase_User;
 import com.example.moneywise.login_register.LoginActivity;
-import com.example.moneywise.login_register.ProfileActivity;
-import com.example.moneywise.login_register.User;
 import com.example.moneywise.quiz.fragment_MAIN_CnQ;
 import com.example.moneywise.scholarship.ScholarshipMainFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class HomeActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
@@ -82,6 +69,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    // Allow synchronization of side nav and bottom nav
     private void handleMenuItemSelection(MenuItem item) {
         int itemID = item.getItemId();
         if (itemID == R.id.iconHome)

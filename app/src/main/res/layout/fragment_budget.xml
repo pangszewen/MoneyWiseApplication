@@ -7,14 +7,14 @@
     android:layout_height="match_parent"
     android:id="@+id/swipeRefreshLayout"
     android:theme="@style/Base.Theme.Expenses"
-    tools:context=".Expenses.BudgetFragment">
+    tools:context=".expenses.BudgetFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/budgetCL"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <com.example.moneywise.Expenses.CircularProgressBar
+    <com.example.moneywise.expenses.CircularProgressBar
         android:id="@+id/PBBudget"
         android:layout_width="256dp"
         android:layout_height="220dp"

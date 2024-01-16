@@ -7,10 +7,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Base.Theme.Expenses"
-    tools:context=".Expenses.AnalyticsFragment">
+    tools:context=".expenses.AnalyticsFragment">
 
 
-    <com.example.moneywise.Expenses.PieChart
+    <com.example.moneywise.expenses.PieChart
         android:id="@+id/pieChart"
         android:layout_width="245dp"
         android:layout_height="245dp"

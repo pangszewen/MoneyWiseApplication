@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,25 +17,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.moneywise.Expenses.BookFragment;
-import com.example.moneywise.Expenses.Firebase_Expenses;
+import com.example.moneywise.expenses.Firebase_Expenses;
 import com.example.moneywise.R;
-import com.example.moneywise.forum.Firebase_Forum;
 import com.example.moneywise.login_register.Firebase_User;
 import com.example.moneywise.login_register.ProfileActivity;
 
 import com.example.moneywise.login_register.User;
 
 import com.example.moneywise.quiz.Course;
-import com.example.moneywise.quiz.CoursesAdapter;
-import com.example.moneywise.quiz.CoursesCompletedContinueAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -220,7 +214,6 @@ public class HomeFragment extends Fragment {
     }
 
     public void getNews(String query) {
-
         NewsApiClient newsApiClient = new NewsApiClient("d4c7f8fe18694e589bd30e86e04a908e");
         newsApiClient.getTopHeadlines(
                 new TopHeadlinesRequest.Builder()
@@ -234,14 +227,6 @@ public class HomeFragment extends Fragment {
                         articleList = (ArrayList<Article>) response.getArticles();
                         adapter.updateData(articleList);
                         adapter.notifyDataSetChanged();
-//                        getActivity().runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                    articleList = (ArrayList<Article>) response.getArticles();
-//                                    adapter.updateData(articleList);
-//                                    adapter.notifyDataSetChanged();
-//                            }
-//                        });
                     }
                     @Override
                     public void onFailure(Throwable throwable) {
@@ -267,12 +252,6 @@ public class HomeFragment extends Fragment {
         course.setCourseID(dc.getId());
         course.setCourseTitle(dc.get("title").toString());
         course.setAdvisorID(dc.get("advisorID").toString());
-//        if (dc.get("description").toString()!=null) {
-//            course.setCourseDesc(dc.get("description").toString());
-//            course.setCourseLanguage(dc.get("language").toString());
-//            course.setCourseLevel(dc.get("level").toString());
-//            course.setCourseMode(dc.get("mode").toString());
-//        }
         return course;
     }
 }

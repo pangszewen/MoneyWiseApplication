@@ -1,4 +1,4 @@
-package com.example.moneywise.Expenses;
+package com.example.moneywise.expenses;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;

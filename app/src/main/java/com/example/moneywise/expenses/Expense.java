@@ -1,4 +1,4 @@
-package com.example.moneywise.Expenses;
+package com.example.moneywise.expenses;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
