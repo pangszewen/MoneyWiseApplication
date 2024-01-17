@@ -23,9 +23,6 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".login_register.ThemeActivity"
-            android:exported="false" />
-        <activity
             android:name=".login_register.AdministratorModeActivity"
             android:exported="false" />
         <activity

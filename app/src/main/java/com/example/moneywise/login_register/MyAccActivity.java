@@ -144,7 +144,7 @@ public class MyAccActivity extends AppCompatActivity {
         });
     }
 
-    // Load user details from Firestore database and update UI components
+    // Load user details from Firestore database and display
     private void loadDetailsFromDB(){
         String email=mAuth.getCurrentUser().getEmail();
         detail_email.setText(email);
@@ -157,10 +157,6 @@ public class MyAccActivity extends AppCompatActivity {
                 detail_name.setText(name);
                 editTextname.setText(name);
                 String selectedGender = value.getString("gender");
-                //int position = g_adapter.getPosition(selectedGender);
-                //if (position != -1) {
-                    //spinner_gender.setListSelection(position);
-                //}
                 spinner_gender.setText(selectedGender,false);
                 editTextDOB.setText(value.getString("dob"));
             }
@@ -209,6 +205,7 @@ public class MyAccActivity extends AppCompatActivity {
         }
     }
 
+    // Update user's details in Firestore
     private void updateUserDetails(){
         String name=editTextname.getText().toString();
         String gender=spinner_gender.getText().toString();

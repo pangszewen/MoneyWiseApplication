@@ -36,7 +36,7 @@ import java.util.Map;
 public class RegisterActivity extends AppCompatActivity {
 
     TextInputEditText editTextname,editTextemail,editTextpassword,editTextcpassword,editTextDOB;
-    TextInputLayout editLayoutDOB;
+    TextInputLayout editLayoutname,editLayoutemail,editLayoutgender,editLayoutDOB,editLayoutrole,editLayoutpassword,editLayoutcpassword;
     AutoCompleteTextView spinner_gender,spinner_role;
     TextView signIn;
     Button btn_reg;
@@ -50,9 +50,13 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         mAuth=FirebaseAuth.getInstance();
+        editLayoutname=findViewById(R.id.nameEditLayout);
         editTextname=findViewById(R.id.editTextName);
+        editLayoutemail=findViewById(R.id.emailEditLayout);
         editTextemail=findViewById(R.id.editTextEmail);
+        editLayoutpassword=findViewById(R.id.passwordEditLayout);
         editTextpassword=findViewById(R.id.editTextPassword);
+        editLayoutcpassword=findViewById(R.id.cpasswordEditLayout);
         editTextcpassword=findViewById(R.id.editTextCPassword);
         editLayoutDOB=findViewById(R.id.EditLayoutDOB);
         editTextDOB=findViewById(R.id.editTextDOB);
@@ -61,6 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
         progressBar=findViewById(R.id.progressBar);
         fstore=FirebaseFirestore.getInstance();
 
+        editLayoutgender=findViewById(R.id.genderEditLayout);
         spinner_gender=findViewById(R.id.gender_spinner);
         ArrayAdapter<CharSequence> g_adapter=ArrayAdapter.createFromResource(
                 this,
@@ -75,6 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        editLayoutrole=findViewById(R.id.roleEditLayout);
         spinner_role=findViewById(R.id.role_spinner);
         ArrayAdapter<CharSequence> r_adapter=ArrayAdapter.createFromResource(
                 this,
@@ -92,18 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
         editLayoutDOB.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar calendar=Calendar.getInstance();
-                int y = calendar.get(Calendar.YEAR);
-                int m = calendar.get(Calendar.MONTH);
-                int d = calendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dialog=new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        editTextDOB.setText(year+"/"+(month+1)+"/"+dayOfMonth);
-                    }
-                }, y, m, d);
-
-                dialog.show();
+                datePicker(v);
             }
         });
 
@@ -129,32 +124,67 @@ public class RegisterActivity extends AppCompatActivity {
                 cpassword=editTextcpassword.getText().toString();
 
                 if (TextUtils.isEmpty(name)){
-                    editTextname.setError("Name field can't be empty");
+                    editLayoutname.setError("Name field can't be empty");
+                    progressBar.setVisibility(View.INVISIBLE);
                     return;
-                }
-                if (TextUtils.isEmpty(gender)){
-                    editTextname.setError("Gender field can't be empty");
-                    return;
+                }else{
+                    editLayoutname.setErrorEnabled(false);
                 }
                 if (TextUtils.isEmpty(email)){
-                    editTextname.setError("Email field can't be empty");
+                    editLayoutemail.setError("Email field can't be empty");
+                    progressBar.setVisibility(View.INVISIBLE);
                     return;
+                }else{
+                    editLayoutemail.setErrorEnabled(false);
+                }
+                if (TextUtils.isEmpty(gender)){
+                    editLayoutgender.setError("Gender field can't be empty");
+                    progressBar.setVisibility(View.INVISIBLE);
+                    return;
+                }else{
+                    editLayoutgender.setErrorEnabled(false);
                 }
                 if (TextUtils.isEmpty(DOB)){
-                    editTextname.setError("Date of birth field can't be empty");
+                    editLayoutDOB.setError("Date of birth field can't be empty");
+                    editLayoutDOB.setErrorIconDrawable(R.drawable.baseline_calendar_today_24);
+                    editLayoutDOB.setErrorIconOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            datePicker(v);
+                        }
+                    });
+                    progressBar.setVisibility(View.INVISIBLE);
                     return;
+                }else{
+                    editLayoutDOB.setErrorEnabled(false);
+                }
+                if (TextUtils.isEmpty(gender)){
+                    editLayoutrole.setError("Role field can't be empty");
+                    progressBar.setVisibility(View.INVISIBLE);
+                    return;
+                }else{
+                    editLayoutrole.setErrorEnabled(false);
                 }
                 if (TextUtils.isEmpty(password)){
-                    editTextname.setError("Password field can't be empty");
+                    editLayoutpassword.setError("Password field can't be empty");
+                    progressBar.setVisibility(View.INVISIBLE);
                     return;
+                }else{
+                    editLayoutpassword.setErrorEnabled(false);
                 }
                 if (TextUtils.isEmpty(cpassword)){
-                    editTextname.setError("Please confirm your password");
+                    editLayoutcpassword.setError("Please confirm your password");
+                    progressBar.setVisibility(View.INVISIBLE);
                     return;
+                }else{
+                    editLayoutcpassword.setErrorEnabled(false);
                 }
                 if (!password.equals(cpassword)){
-                    editTextname.setError("Password does not match");
+                    editLayoutcpassword.setError("Password does not match");
+                    progressBar.setVisibility(View.INVISIBLE);
                     return;
+                }else{
+                    editLayoutcpassword.setErrorEnabled(false);
                 }
 
                 // Create user with Firebase authentication
@@ -181,6 +211,21 @@ public class RegisterActivity extends AppCompatActivity {
                         });
             }
         });
+    }
+
+    private void datePicker(View v){
+        Calendar calendar=Calendar.getInstance();
+        int y = calendar.get(Calendar.YEAR);
+        int m = calendar.get(Calendar.MONTH);
+        int d = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog dialog=new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                editTextDOB.setText(year+"/"+(month+1)+"/"+dayOfMonth);
+            }
+        }, y, m, d);
+
+        dialog.show();
     }
 
     // Save user details to Firestore
