@@ -144,7 +144,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    // Load user details from Firestore
+    // Load user details from Firestore and display
     private void loadDetailFromDB(){
         DocumentReference documentReference=fStore.collection("USER_DETAILS").document(uid);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
