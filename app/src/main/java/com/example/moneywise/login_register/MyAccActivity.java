@@ -107,7 +107,7 @@ public class MyAccActivity extends AppCompatActivity {
                 String dob=editTextDOB.getText().toString();
                 String[] dateParts = dob.split("/");
                 int y = Integer.parseInt(dateParts[0]);
-                int m = Integer.parseInt(dateParts[1]);
+                int m = Integer.parseInt(dateParts[1])-1;
                 int d = Integer.parseInt(dateParts[2]);
                 DatePickerDialog dialog=new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
